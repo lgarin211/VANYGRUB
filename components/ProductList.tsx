@@ -1,0 +1,216 @@
+'use client';
+
+import React, { useState } from 'react';
+import Image from 'next/image';
+import Link from 'next/link';
+import productsData from '../constants/productsData.json';
+
+interface Product {
+  id: number;
+  name: string;
+  category: string;
+  price: string;
+  originalPrice: number;
+  image: string;
+  description: string;
+  serial: string;
+  inStock: boolean;
+  featured: boolean;
+}
+
+const ProductList: React.FC = () => {
+  const [searchTerm, setSearchTerm] = useState('');
+  const [selectedCategory, setSelectedCategory] = useState('Semua Kategori');
+  const [selectedSerial, setSelectedSerial] = useState('Semua');
+  const [selectedPriceRange, setSelectedPriceRange] = useState(0);
+
+  // Load data from JSON
+  const products: Product[] = productsData.products;
+  const categories = productsData.categories;
+  const serials = productsData.serials;
+  const priceRanges = productsData.priceRanges;
+
+  // Remove the hardcoded products array
+  // Filter products
+  const filteredProducts = products.filter(product => {
+    const matchesSearch = product.name.toLowerCase().includes(searchTerm.toLowerCase());
+    const matchesCategory = selectedCategory === 'Semua Kategori' || product.category === selectedCategory;
+    const matchesSerial = selectedSerial === 'Semua' || product.serial === selectedSerial;
+    
+    const selectedRange = priceRanges[selectedPriceRange];
+    const matchesPrice = product.originalPrice >= selectedRange.min && product.originalPrice <= selectedRange.max;
+    
+    return matchesSearch && matchesCategory && matchesSerial && matchesPrice;
+  });
+
+  return (
+    <div className="bg-gray-100 min-h-screen">
+      {/* Header */}
+      <header className="bg-red-800 text-white py-4">
+        <div className="container mx-auto px-4 flex justify-between items-center">
+          {/* Search Bar */}
+          <div className="flex items-center">
+            <div className="mr-8">
+              <input
+                type="text"
+                placeholder="Q Search"
+                className="bg-transparent border-b border-white text-white placeholder-white/70 py-1 px-2 focus:outline-none focus:border-white/100"
+                value={searchTerm}
+                onChange={(e) => setSearchTerm(e.target.value)}
+              />
+            </div>
+          </div>
+
+          {/* Logo */}
+          <Link href="/" className="text-2xl font-bold">
+            VNY
+          </Link>
+
+          {/* Navigation */}
+          <div className="flex space-x-6">
+            <button className="hover:text-gray-300">CART</button>
+            <button className="hover:text-gray-300">TRANSACTION</button>
+          </div>
+        </div>
+
+        {/* Navigation Menu */}
+        <nav className="container mx-auto px-4 mt-4">
+          <div className="flex space-x-8">
+            <Link href="/" className="hover:text-gray-300">HOME</Link>
+            <Link href="/product" className="border-b-2 border-white pb-1">PRODUCT</Link>
+            <Link href="/about" className="hover:text-gray-300">ABOUT VNY</Link>
+            <Link href="/gallery" className="hover:text-gray-300">GALLERY</Link>
+          </div>
+        </nav>
+      </header>
+
+      <div className="container mx-auto px-4 py-8 flex">
+        {/* Sidebar Filter */}
+        <aside className="w-64 bg-white rounded-lg p-6 h-fit mr-8">
+          {/* Filter Header */}
+          <div className="flex items-center mb-6">
+            <div className="w-4 h-4 bg-red-600 rounded mr-2"></div>
+            <h2 className="text-lg font-semibold">Filter</h2>
+          </div>
+
+          {/* Category Filter */}
+          <div className="mb-6">
+            <h3 className="font-semibold text-gray-700 mb-3">Jenis</h3>
+            <select
+              className="w-full bg-red-800 text-white p-2 rounded"
+              value={selectedCategory}
+              onChange={(e) => setSelectedCategory(e.target.value)}
+            >
+              {categories.map(category => (
+                <option key={category} value={category}>{category}</option>
+              ))}
+            </select>
+
+            <div className="mt-3 space-y-2">
+              <div className="text-sm text-gray-600">Slip On</div>
+              <div className="text-sm text-gray-600">Sneakers</div>
+              <div className="text-sm text-gray-600">Low Top</div>
+            </div>
+          </div>
+
+          {/* Serial Filter */}
+          <div className="mb-6">
+            <h3 className="font-semibold text-gray-700 mb-3">Serial</h3>
+            <div className="flex flex-wrap gap-2">
+              {serials.map(serial => (
+                <button
+                  key={serial}
+                  className={`px-3 py-1 text-sm rounded ${
+                    selectedSerial === serial
+                      ? 'bg-red-800 text-white'
+                      : 'bg-gray-200 text-gray-700 hover:bg-gray-300'
+                  }`}
+                  onClick={() => setSelectedSerial(serial)}
+                >
+                  {serial}
+                </button>
+              ))}
+            </div>
+          </div>
+
+          {/* Price Filter */}
+          <div className="mb-6">
+            <h3 className="font-semibold text-gray-700 mb-3">Harga</h3>
+            <select
+              className="w-full bg-red-800 text-white p-2 rounded mb-3"
+              value={selectedPriceRange}
+              onChange={(e) => setSelectedPriceRange(Number(e.target.value))}
+            >
+              {priceRanges.map((range, index) => (
+                <option key={range.label} value={index}>{range.label}</option>
+              ))}
+            </select>
+
+            <div className="space-y-2 text-sm text-gray-600">
+              {priceRanges.slice(1).map(range => (
+                <div key={range.label}>{range.label}</div>
+              ))}
+            </div>
+          </div>
+        </aside>
+
+        {/* Main Content */}
+        <main className="flex-1">
+          {/* Search Results Header */}
+          <div className="mb-6">
+            <div className="relative">
+              <input
+                type="text"
+                placeholder="Find Your Shoes"
+                className="w-full bg-white rounded-lg p-3 pl-10 border border-gray-300 focus:outline-none focus:border-red-500"
+                value={searchTerm}
+                onChange={(e) => setSearchTerm(e.target.value)}
+              />
+              <div className="absolute left-3 top-3.5">
+                <svg className="w-5 h-5 text-gray-400" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                  <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0z" />
+                </svg>
+              </div>
+            </div>
+          </div>
+
+          {/* Product Grid */}
+          <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-6">
+            {filteredProducts.map((product) => (
+              <Link key={product.id} href={`/product/${product.id}`}>
+                <div className="bg-white rounded-lg overflow-hidden shadow-md hover:shadow-lg transition-shadow cursor-pointer">
+                  <div className="aspect-square bg-gray-200 relative">
+                    <Image
+                      src={product.image}
+                      alt={product.name}
+                      fill
+                      className="object-cover hover:scale-105 transition-transform duration-300"
+                      sizes="(max-width: 768px) 100vw, (max-width: 1200px) 50vw, 25vw"
+                    />
+                  </div>
+                  <div className="p-4">
+                    <h3 className="font-semibold text-gray-900 mb-1">{product.name}</h3>
+                    <p className="text-sm text-gray-600 mb-2">{product.description}</p>
+                    <p className="text-lg font-bold text-gray-900">{product.price}</p>
+                    {!product.inStock && (
+                      <p className="text-sm text-red-500 mt-1">Out of Stock</p>
+                    )}
+                  </div>
+                </div>
+              </Link>
+            ))}
+          </div>
+
+          {/* No Results */}
+          {filteredProducts.length === 0 && (
+            <div className="text-center py-12">
+              <p className="text-gray-500 text-lg">Tidak ada produk yang ditemukan</p>
+            </div>
+          )}
+        </main>
+      </div>
+    </div>
+  );
+};
+
+export default ProductList;

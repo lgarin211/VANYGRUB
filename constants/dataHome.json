@@ -1,0 +1,284 @@
+{
+  "heroSection": {
+    "slides": [
+      {
+        "id": 1,
+        "title": "VNY",
+        "subtitle": "Premium Collection",
+        "description": "Discover the ultimate blend of style and comfort with our exclusive sneaker collection",
+        "image": "/product/air-force-1-07-wb-shoes-j46FxX.png",
+        "bgColor": "#dc2626",
+        "textColor": "#ffffff",
+        "buttonText": "Shop Now",
+        "price": "$299"
+      },
+      {
+        "id": 2,
+        "title": "URBAN",
+        "subtitle": "Street Fashion",
+        "description": "Step into the streets with confidence wearing our urban-inspired footwear designs",
+        "image": "/product/air-max-tl-2-5-shoes-7PdW4h.png",
+        "bgColor": "#7c3aed",
+        "textColor": "#ffffff",
+        "buttonText": "Explore",
+        "price": "$329"
+      },
+      {
+        "id": 3,
+        "title": "ATHLETIC",
+        "subtitle": "Performance Pro",
+        "description": "Engineered for athletes who demand excellence in every step and movement",
+        "image": "/product/dunk-low-shoes-R7nORyh7.png",
+        "bgColor": "#1d4ed8",
+        "textColor": "#ffffff",
+        "buttonText": "Get Yours",
+        "price": "$399"
+      },
+      {
+        "id": 4,
+        "title": "CLASSIC",
+        "subtitle": "Timeless Elegance",
+        "description": "Experience the perfect harmony of traditional craftsmanship and modern innovation",
+        "image": "/product/killshot-2-leather-shoes-vGoul0WL.png",
+        "bgColor": "#059669",
+        "textColor": "#ffffff",
+        "buttonText": "Order Now",
+        "price": "$279"
+      },
+      {
+        "id": 5,
+        "title": "LIMITED",
+        "subtitle": "Exclusive Edition",
+        "description": "Own a piece of sneaker history with our limited edition collector's series",
+        "image": "/product/pegasus-road-running-shoes-xzQQKz.png",
+        "bgColor": "#ea580c",
+        "textColor": "#ffffff",
+        "buttonText": "Reserve Now",
+        "price": "$499"
+      }
+    ],
+    "autoPlayInterval": 5000
+  },
+  "productGrid": {
+    "products": [
+      {
+        "id": 1,
+        "title": "Nike Pegasus Premium",
+        "subtitle": "For the Ultimate Energised Ride",
+        "image": "/temp/kegiatan.png",
+        "buttonText": "Shop",
+        "bgColor": "from-gray-900 to-gray-700",
+        "bgImage": "bg-gradient-to-br"
+      },
+      {
+        "id": 2,
+        "title": "Women's Training Gear",
+        "subtitle": "Power Up Your Workouts",
+        "image": "/temp/kegiatan1.png",
+        "buttonText": "Shop",
+        "bgColor": "from-gray-800 to-gray-900",
+        "bgImage": "bg-gradient-to-bl"
+      },
+      {
+        "id": 3,
+        "title": "Tiempo Legend RCMA",
+        "subtitle": "Touch of Gold",
+        "image": "/temp/kegiatan2.png",
+        "buttonText": "Notify Me",
+        "bgColor": "from-yellow-600 to-yellow-800",
+        "bgImage": "bg-gradient-to-tr"
+      },
+      {
+        "id": 4,
+        "title": "Tatum x 'Bred'",
+        "subtitle": "Never Be The Same",
+        "image": "/temp/kegiatan3.png",
+        "buttonText": "Shop",
+        "bgColor": "from-gray-300 to-gray-100",
+        "bgImage": "bg-gradient-to-tl"
+      }
+    ],
+    "sizeConfig": {
+      "minHeight": 300,
+      "maxHeight": 380,
+      "minWidth": 350,
+      "maxWidth": 500,
+      "animationInterval": 8000,
+      "transitionDuration": "3000ms"
+    }
+  },
+  "specialOffers": {
+    "title": "Special Offer",
+    "subtitle": "Discover exclusive collections and limited edition items with special pricing",
+    "offers": [
+      {
+        "id": 1,
+        "brand": "Nike x Stranger Things",
+        "title": "Apparel Collection",
+        "image": "/temp/kegiatan.png",
+        "status": "Coming Soon",
+        "bgColor": "bg-gray-100"
+      },
+      {
+        "id": 2,
+        "brand": "Nike x Stranger Things",
+        "title": "Apparel Collection",
+        "image": "/temp/kegiatan1.png",
+        "status": "Coming Soon",
+        "bgColor": "bg-gray-800"
+      },
+      {
+        "id": 3,
+        "brand": "Air Force 1 Low",
+        "title": "Pink Cooler and Mulberry Rose",
+        "image": "/temp/kegiatan2.png",
+        "status": "Coming Soon",
+        "bgColor": "bg-gray-50"
+      },
+      {
+        "id": 4,
+        "brand": "Nike Premium",
+        "title": "Limited Edition Collection",
+        "image": "/temp/kegiatan3.png",
+        "status": "Coming Soon",
+        "bgColor": "bg-gray-200"
+      },
+      {
+        "id": 5,
+        "brand": "Nike Athletic",
+        "title": "Performance Series",
+        "image": "/temp/kegiatan4.png",
+        "status": "Coming Soon",
+        "bgColor": "bg-gray-600"
+      },
+      {
+        "id": 6,
+        "brand": "Nike Classic",
+        "title": "Retro Collection",
+        "image": "/temp/kegiatan5.png",
+        "status": "Coming Soon",
+        "bgColor": "bg-gray-300"
+      }
+    ],
+    "cardConfig": {
+      "height": 400,
+      "hoverScaleFactor": 1.05,
+      "imageHoverScaleFactor": 1.1,
+      "transitionDuration": "500ms"
+    }
+  },
+  "ourCollection": {
+    "title": "Our Collection",
+    "subtitle": "Shop by Icons",
+    "products": [
+      {
+        "id": 1,
+        "name": "Air Jordan 1",
+        "category": "Basketball",
+        "price": "$170",
+        "image": "/temp/nike-just-do-it(6).jpg",
+        "badge": "New",
+        "badgeColor": "bg-red-500"
+      },
+      {
+        "id": 2,
+        "name": "Nike Dunk Low",
+        "category": "Lifestyle",
+        "price": "$100",
+        "image": "/temp/nike-just-do-it(7).jpg",
+        "badge": "Popular",
+        "badgeColor": "bg-blue-500"
+      },
+      {
+        "id": 3,
+        "name": "Converse Chuck 70",
+        "category": "Classic",
+        "price": "$85",
+        "image": "/temp/nike-just-do-it(8).jpg",
+        "badge": "Limited",
+        "badgeColor": "bg-purple-500"
+      },
+      {
+        "id": 4,
+        "name": "Vans Old Skool",
+        "category": "Skateboard",
+        "price": "$65",
+        "image": "/temp/nike-just-do-it(9).jpg",
+        "badge": "Sale",
+        "badgeColor": "bg-green-500"
+      },
+      {
+        "id": 5,
+        "name": "Nike Air Force 1",
+        "category": "Classic",
+        "price": "$120",
+        "image": "/temp/nike-just-do-it(10).jpg",
+        "badge": "Trending",
+        "badgeColor": "bg-orange-500"
+      },
+      {
+        "id": 6,
+        "name": "Adidas Superstar",
+        "category": "Lifestyle",
+        "price": "$90",
+        "image": "/temp/nike-just-do-it(11).jpg",
+        "badge": "Classic",
+        "badgeColor": "bg-gray-500"
+      },
+      {
+        "id": 7,
+        "name": "Nike Blazer Mid",
+        "category": "Retro",
+        "price": "$110",
+        "image": "/temp/nike-just-do-it(12).jpg",
+        "badge": "Retro",
+        "badgeColor": "bg-yellow-500"
+      },
+      {
+        "id": 8,
+        "name": "Puma RS-X",
+        "category": "Running",
+        "price": "$130",
+        "image": "/temp/nike-just-do-it(13).jpg",
+        "badge": "Sport",
+        "badgeColor": "bg-indigo-500"
+      },
+      {
+        "id": 9,
+        "name": "Reebok Club C",
+        "category": "Tennis",
+        "price": "$75",
+        "image": "/temp/nike-just-do-it(14).jpg",
+        "badge": "Budget",
+        "badgeColor": "bg-teal-500"
+      }
+    ],
+    "carouselConfig": {
+      "autoScroll": true,
+      "scrollInterval": 4000,
+      "cardWidth": 290,
+      "cardHeight": 200,
+      "gap": 20
+    }
+  },
+  "globalSettings": {
+    "animations": {
+      "enableAOS": true,
+      "enableGSAP": true,
+      "defaultTransitionDuration": "300ms",
+      "defaultEasing": "ease-in-out"
+    },
+    "layout": {
+      "maxContainerWidth": "7xl",
+      "defaultPadding": "px-4",
+      "sectionSpacing": "py-16"
+    },
+    "colors": {
+      "primary": "#dc2626",
+      "secondary": "#1f2937",
+      "accent": "#f59e0b",
+      "background": "#ffffff",
+      "backgroundAlt": "#f3f4f6"
+    }
+  }
+}

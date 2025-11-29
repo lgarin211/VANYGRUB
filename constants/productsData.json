@@ -1,0 +1,181 @@
+{
+  "products": [
+    {
+      "id": 1,
+      "name": "Air Jordan 1 Retro",
+      "category": "Sneakers",
+      "price": "Rp. 5.000.000",
+      "originalPrice": 5000000,
+      "image": "/temp/nike-just-do-it(6).jpg",
+      "description": "Desak singgal sepatu",
+      "serial": "Limited",
+      "inStock": true,
+      "featured": true
+    },
+    {
+      "id": 2,
+      "name": "Nike Dunk Low",
+      "category": "Sneakers",
+      "price": "Rp. 5.000.000", 
+      "originalPrice": 5000000,
+      "image": "/temp/nike-just-do-it(7).jpg",
+      "description": "Desak singgal sepatu",
+      "serial": "Casual",
+      "inStock": true,
+      "featured": true
+    },
+    {
+      "id": 3,
+      "name": "Converse Chuck 70",
+      "category": "Sneakers",
+      "price": "Rp. 5.000.000",
+      "originalPrice": 5000000,
+      "image": "/temp/nike-just-do-it(8).jpg", 
+      "description": "Desak singgal sepatu",
+      "serial": "Limited",
+      "inStock": true,
+      "featured": false
+    },
+    {
+      "id": 4,
+      "name": "Vans Old Skool",
+      "category": "Sneakers",
+      "price": "Rp. 5.000.000",
+      "originalPrice": 5000000,
+      "image": "/temp/nike-just-do-it(9).jpg",
+      "description": "Desak singgal sepatu", 
+      "serial": "Casual",
+      "inStock": true,
+      "featured": false
+    },
+    {
+      "id": 5,
+      "name": "Nike Air Force 1",
+      "category": "Sneakers",
+      "price": "Rp. 5.000.000",
+      "originalPrice": 5000000,
+      "image": "/temp/nike-just-do-it(10).jpg",
+      "description": "Desak singgal sepatu",
+      "serial": "Evens",
+      "inStock": true,
+      "featured": true
+    },
+    {
+      "id": 6,
+      "name": "Adidas Superstar",
+      "category": "Sneakers",
+      "price": "Rp. 5.000.000",
+      "originalPrice": 5000000,
+      "image": "/temp/nike-just-do-it(11).jpg",
+      "description": "Desak singgal sepatu",
+      "serial": "Casual",
+      "inStock": true,
+      "featured": false
+    },
+    {
+      "id": 7,
+      "name": "Nike Blazer Mid",
+      "category": "Sneakers",
+      "price": "Rp. 5.000.000",
+      "originalPrice": 5000000,
+      "image": "/temp/nike-just-do-it(12).jpg",
+      "description": "Desak singgal sepatu",
+      "serial": "Limited",
+      "inStock": false,
+      "featured": true
+    },
+    {
+      "id": 8,
+      "name": "Puma RS-X",
+      "category": "Sneakers", 
+      "price": "Rp. 5.000.000",
+      "originalPrice": 5000000,
+      "image": "/temp/nike-just-do-it(13).jpg",
+      "description": "Desak singgal sepatu",
+      "serial": "Evens",
+      "inStock": true,
+      "featured": false
+    },
+    {
+      "id": 9,
+      "name": "Reebok Club C",
+      "category": "Low Top",
+      "price": "Rp. 1.200.000",
+      "originalPrice": 1200000,
+      "image": "/temp/nike-just-do-it(14).jpg",
+      "description": "Desak singgal sepatu",
+      "serial": "Casual",
+      "inStock": true,
+      "featured": false
+    },
+    {
+      "id": 10,
+      "name": "Nike React Element",
+      "category": "Low Top",
+      "price": "Rp. 1.800.000",
+      "originalPrice": 1800000,
+      "image": "/temp/nike-just-do-it(15).jpg",
+      "description": "Desak singgal sepatu",
+      "serial": "Evens",
+      "inStock": true,
+      "featured": true
+    },
+    {
+      "id": 11,
+      "name": "Jordan Retro 4",
+      "category": "Sneakers",
+      "price": "Rp. 2.500.000",
+      "originalPrice": 2500000,
+      "image": "/temp/nike-just-do-it(16).jpg",
+      "description": "Desak singgal sepatu",
+      "serial": "Limited",
+      "inStock": true,
+      "featured": true
+    },
+    {
+      "id": 12,
+      "name": "New Balance 574",
+      "category": "Low Top",
+      "price": "Rp. 1.400.000",
+      "originalPrice": 1400000,
+      "image": "/temp/nike-just-do-it(17).jpg",
+      "description": "Desak singgal sepatu",
+      "serial": "Casual",
+      "inStock": true,
+      "featured": false
+    }
+  ],
+  "categories": [
+    "Semua Kategori",
+    "Sneakers", 
+    "Low Top"
+  ],
+  "serials": [
+    "Semua",
+    "Casual",
+    "Limited", 
+    "Evens"
+  ],
+  "priceRanges": [
+    {
+      "label": "Semua Harga",
+      "min": 0,
+      "max": 999999999
+    },
+    {
+      "label": "Di bawah Rp 1.500.000",
+      "min": 0,
+      "max": 1500000
+    },
+    {
+      "label": "Rp 1.500.000 - Rp 2.000.000", 
+      "min": 1500000,
+      "max": 2000000
+    },
+    {
+      "label": "Di atas Rp 2.000.000",
+      "min": 2000000,
+      "max": 999999999
+    }
+  ]
+}
