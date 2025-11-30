@@ -117,9 +117,9 @@ const HeroSection: React.FC = () => {
   // Show loading state
   if (loading) {
     return (
-      <section className="relative h-screen bg-gradient-to-br from-red-600 to-red-800 flex items-center justify-center">
+      <section className="relative flex items-center justify-center h-screen bg-gradient-to-br from-red-600 to-red-800">
         <div className="text-center text-white">
-          <div className="inline-block animate-spin rounded-full h-12 w-12 border-b-2 border-white mb-4"></div>
+          <div className="inline-block w-12 h-12 mb-4 border-b-2 border-white rounded-full animate-spin"></div>
           <p className="text-xl">Loading Hero Content...</p>
         </div>
       </section>
@@ -129,11 +129,11 @@ const HeroSection: React.FC = () => {
   // Show fallback if no slides available
   if (!slidesData.length) {
     return (
-      <section className="relative h-screen bg-gradient-to-br from-red-600 to-red-800 flex items-center justify-center">
-        <div className="text-center text-white max-w-4xl px-4">
-          <h1 className="text-6xl font-bold mb-4">VNY</h1>
-          <p className="text-2xl mb-8">Premium Sneaker Collection</p>
-          <button className="bg-white text-red-600 px-8 py-4 rounded-full font-semibold hover:bg-gray-100 transition-colors">
+      <section className="relative flex items-center justify-center h-screen bg-gradient-to-br from-red-600 to-red-800">
+        <div className="max-w-4xl px-4 text-center text-white">
+          <h1 className="mb-4 text-6xl font-bold">VNY</h1>
+          <p className="mb-8 text-2xl">Premium Sneaker Collection</p>
+          <button className="px-8 py-4 font-semibold text-red-600 transition-colors bg-white rounded-full hover:bg-gray-100">
             Shop Now
           </button>
         </div>
@@ -156,7 +156,7 @@ const HeroSection: React.FC = () => {
           {slidesData.map((slide, index) => (
             <div 
               key={slide.id}
-              className="relative w-full h-full flex-shrink-0"
+              className="relative flex-shrink-0 w-full h-full"
               style={{ 
                 background: `linear-gradient(135deg, ${slide.bgColor}dd, ${slide.bgColor}aa)` 
               }}
@@ -177,26 +177,26 @@ const HeroSection: React.FC = () => {
               <div className="absolute inset-0 bg-gradient-to-r from-black/20 via-transparent to-black/20"></div>
 
               {/* Slide content */}
-              <div className="absolute inset-0 flex items-center justify-between px-8 md:px-16 z-20">
+              <div className="absolute inset-0 z-20 flex items-center justify-between px-8 md:px-16">
                 {/* Text content */}
                 <div 
                   ref={index === currentSlide ? textRef : null}
-                  className="flex-1 max-w-2xl relative z-30"
+                  className="relative z-30 flex-1 max-w-2xl"
                   style={{ color: slide.textColor }}
                 >
-                  <h1 className="text-7xl md:text-9xl font-black mb-4 tracking-wider drop-shadow-lg">
+                  <h1 className="mb-4 font-black tracking-wider text-7xl md:text-9xl drop-shadow-lg">
                     {slide.title}
                   </h1>
-                  <h2 className="text-3xl md:text-5xl font-bold mb-6 opacity-90">
+                  <h2 className="mb-6 text-3xl font-bold md:text-5xl opacity-90">
                     {slide.subtitle}
                   </h2>
-                  <p className="text-xl md:text-2xl leading-relaxed mb-8 opacity-80 max-w-xl">
+                  <p className="max-w-xl mb-8 text-xl leading-relaxed md:text-2xl opacity-80">
                     {slide.description}
                   </p>
                   <div className="flex items-center gap-6 mb-8">
                     <span className="text-4xl font-bold">{slide.price}</span>
                     <button 
-                      className="bg-white/90 text-gray-800 px-8 py-4 rounded-full text-lg font-bold hover:bg-white transition-all duration-300 transform hover:scale-105 shadow-xl backdrop-blur-sm"
+                      className="px-8 py-4 text-lg font-bold text-gray-800 transition-all duration-300 transform rounded-full shadow-xl bg-white/90 hover:bg-white hover:scale-105 backdrop-blur-sm"
                       style={{ 
                         backgroundColor: slide.textColor === '#ffffff' ? 'rgba(255,255,255,0.9)' : 'rgba(0,0,0,0.9)',
                         color: slide.textColor === '#ffffff' ? '#1f2937' : '#ffffff'
@@ -208,10 +208,10 @@ const HeroSection: React.FC = () => {
                 </div>
 
                 {/* Product image */}
-                <div className="flex-1 flex items-center justify-center relative z-30">
+                <div className="relative z-30 flex items-center justify-center flex-1">
                   <div className="relative w-[300px] h-[300px] md:w-[500px] md:h-[500px]">
                     {/* Background blur effect behind image */}
-                    <div className="absolute inset-0 -z-10 blur-3xl opacity-30 scale-110"
+                    <div className="absolute inset-0 scale-110 -z-10 blur-3xl opacity-30"
                          style={{ backgroundColor: slide.textColor }}
                     ></div>
                     
@@ -219,7 +219,7 @@ const HeroSection: React.FC = () => {
                       src={slide.image} 
                       alt={slide.title}
                       fill
-                      className="object-contain drop-shadow-2xl transform hover:scale-105 transition-transform duration-500 relative z-10"
+                      className="relative z-10 object-contain transition-transform duration-500 transform drop-shadow-2xl hover:scale-105"
                       priority={index === currentSlide}
                       sizes="(max-width: 768px) 300px, 500px"
                       onError={(e) => {
@@ -260,11 +260,11 @@ const HeroSection: React.FC = () => {
       </div>
 
       {/* Navigation controls */}
-      <div className="absolute bottom-8 left-1/2 transform -translate-x-1/2 flex items-center gap-4">
+      <div className="absolute flex items-center gap-4 transform -translate-x-1/2 bottom-8 left-1/2">
         {/* Previous button */}
         <button 
           onClick={prevSlide}
-          className="p-3 rounded-full bg-white/20 backdrop-blur-sm border border-white/30 hover:bg-white/30 transition-all duration-300"
+          className="p-3 transition-all duration-300 border rounded-full bg-white/20 backdrop-blur-sm border-white/30 hover:bg-white/30"
         >
           <svg className="w-6 h-6 text-white" fill="none" stroke="currentColor" viewBox="0 0 24 24">
             <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M15 19l-7-7 7-7" />
@@ -289,7 +289,7 @@ const HeroSection: React.FC = () => {
         {/* Next button */}
         <button 
           onClick={nextSlide}
-          className="p-3 rounded-full bg-white/20 backdrop-blur-sm border border-white/30 hover:bg-white/30 transition-all duration-300"
+          className="p-3 transition-all duration-300 border rounded-full bg-white/20 backdrop-blur-sm border-white/30 hover:bg-white/30"
         >
           <svg className="w-6 h-6 text-white" fill="none" stroke="currentColor" viewBox="0 0 24 24">
             <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M9 5l7 7-7 7" />
@@ -298,7 +298,7 @@ const HeroSection: React.FC = () => {
       </div>
 
       {/* Slide counter */}
-      <div className="absolute top-8 right-8 bg-black/30 backdrop-blur-sm rounded-full px-4 py-2 text-white">
+      <div className="absolute px-4 py-2 text-white rounded-full top-8 right-8 bg-black/30 backdrop-blur-sm">
         <span className="text-lg font-bold">
           {String(currentSlide + 1).padStart(2, '0')} / {String(slidesData.length).padStart(2, '0')}
         </span>
