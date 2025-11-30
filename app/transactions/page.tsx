@@ -303,7 +303,7 @@ const TransactionsPage: React.FC = () => {
 
           {/* Navigation */}
           <div className="flex space-x-4">
-            <Link href="/cart" className="relative flex items-center px-4 py-2 space-x-2 transition-all duration-300 rounded-lg hover:bg-white/10">
+            <Link href="/vny/cart" className="relative flex items-center px-4 py-2 space-x-2 transition-all duration-300 rounded-lg hover:bg-white/10">
               <svg className="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                 <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M3 3h2l.4 2M7 13h10l4-8H5.4m0 0L7 13m0 0l-2.5 5M7 13v6a2 2 0 002 2h10a2 2 0 002-2v-6m-10 0V9a2 2 0 012-2h6a2 2 0 012 2v4" />
               </svg>
@@ -322,7 +322,7 @@ const TransactionsPage: React.FC = () => {
         <nav className="container px-4 mx-auto mt-4">
           <div className="flex space-x-8">
             <Link href="/" className="hover:text-gray-300">HOME</Link>
-            <Link href="/product" className="hover:text-gray-300">PRODUCT</Link>
+            <Link href="/vny/product" className="hover:text-gray-300">PRODUCT</Link>
             <Link href="/about" className="hover:text-gray-300">ABOUT VNY</Link>
             <Link href="/gallery" className="hover:text-gray-300">GALLERY</Link>
           </div>

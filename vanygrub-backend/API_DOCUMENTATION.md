@@ -2,7 +2,7 @@
 
 ## Base URL
 ```
-https://vanyadmin.progesio.my.id/api/vny
+http://127.0.0.1:8000 /api/vny
 ```
 
 ## API Endpoints
@@ -278,14 +278,14 @@ CORS is configured to allow all origins for development. Update `config/cors.php
 
 ```javascript
 // Fetch all data for constants
-const response = await fetch('https://vanyadmin.progesio.my.id/api/vny/data');
+const response = await fetch('http://127.0.0.1:8000 /api/vny/data');
 const { categories, products, heroSections } = await response.json();
 
 // Fetch featured products
-const featuredResponse = await fetch('https://vanyadmin.progesio.my.id/api/vny/featured-products');
+const featuredResponse = await fetch('http://127.0.0.1:8000 /api/vny/featured-products');
 const { data: featuredProducts } = await featuredResponse.json();
 
 // Search products
-const searchResponse = await fetch('https://vanyadmin.progesio.my.id/api/vny/products?search=nike');
+const searchResponse = await fetch('http://127.0.0.1:8000 /api/vny/products?search=nike');
 const { data: searchResults } = await searchResponse.json();
 ```

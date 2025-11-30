@@ -37,7 +37,7 @@ const Footer: React.FC = () => {
           <div data-aos="fade-up" data-aos-delay="200">
             <h3 className="text-lg font-semibold mb-4">Quick Action</h3>
             <div className="space-y-2">
-              <Link href="/product" className="block hover:text-red-200 transition-colors">
+              <Link href="/vny/product" className="block hover:text-red-200 transition-colors">
                 Product
               </Link>
               <Link href="/gallery" className="block hover:text-red-200 transition-colors">

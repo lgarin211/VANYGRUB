@@ -109,7 +109,7 @@ const CartModal: React.FC<CartModalProps> = ({
               <h3 className="text-xl font-semibold text-gray-900 mb-2">Keranjang Kosong</h3>
               <p className="text-gray-500 mb-6 max-w-xs">Belum ada produk yang ditambahkan ke keranjang. Mulai berbelanja sekarang!</p>
               <Link 
-                href="/product"
+                href="/vny/product"
                 className="bg-red-600 text-white px-6 py-3 rounded-lg font-semibold hover:bg-red-700 transition-colors"
                 onClick={onClose}
               >

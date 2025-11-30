@@ -12,11 +12,14 @@ class Cart extends Model
     protected $table = 'vany_cart_items';
 
     protected $fillable = [
+        'session_id',
         'user_id',
         'product_id',
         'quantity',
         'price',
-        'total'
+        'total',
+        'size',
+        'color'
     ];
 
     protected $casts = [

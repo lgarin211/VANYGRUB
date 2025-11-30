@@ -248,3 +248,160 @@ export const useCategories = () => {
 
   return { categories, loading, error };
 };
+
+// Cart and Checkout hooks
+export const useCart = (sessionId?: string) => {
+  const [cart, setCart] = useState<any>(null);
+  const [loading, setLoading] = useState(true);
+  const [error, setError] = useState<string | null>(null);
+
+  const fetchCart = async () => {
+    try {
+      setLoading(true);
+      const response = await withErrorHandling(() => apiClient.getCart(sessionId));
+      if (response) {
+        setCart(response.data);
+      }
+    } catch (err) {
+      setError('Failed to fetch cart');
+      console.error('Cart fetch error:', err);
+    } finally {
+      setLoading(false);
+    }
+  };
+
+  const addToCart = async (data: {
+    product_id: number;
+    quantity: number;
+    size?: string;
+    color?: string;
+  }) => {
+    try {
+      const response = await withErrorHandling(() => 
+        apiClient.addToCart({ ...data, session_id: sessionId })
+      );
+      if (response) {
+        await fetchCart(); // Refresh cart
+        return response;
+      }
+    } catch (err) {
+      console.error('Add to cart error:', err);
+      throw err;
+    }
+  };
+
+  const updateCartItem = async (id: number, quantity: number) => {
+    try {
+      const response = await withErrorHandling(() => 
+        apiClient.updateCartItem(id, { quantity })
+      );
+      if (response) {
+        await fetchCart(); // Refresh cart
+        return response;
+      }
+    } catch (err) {
+      console.error('Update cart error:', err);
+      throw err;
+    }
+  };
+
+  const removeFromCart = async (id: number) => {
+    try {
+      const response = await withErrorHandling(() => apiClient.removeFromCart(id));
+      if (response) {
+        await fetchCart(); // Refresh cart
+        return response;
+      }
+    } catch (err) {
+      console.error('Remove from cart error:', err);
+      throw err;
+    }
+  };
+
+  const clearCart = async () => {
+    try {
+      const response = await withErrorHandling(() => apiClient.clearCart(sessionId));
+      if (response) {
+        await fetchCart(); // Refresh cart
+        return response;
+      }
+    } catch (err) {
+      console.error('Clear cart error:', err);
+      throw err;
+    }
+  };
+
+  useEffect(() => {
+    fetchCart();
+  }, [sessionId]);
+
+  return { 
+    cart, 
+    loading, 
+    error, 
+    addToCart, 
+    updateCartItem, 
+    removeFromCart, 
+    clearCart,
+    refreshCart: fetchCart
+  };
+};
+
+export const useCheckout = () => {
+  const [loading, setLoading] = useState(false);
+  const [error, setError] = useState<string | null>(null);
+
+  const createOrder = async (data: {
+    customer_name: string;
+    customer_email: string;
+    customer_phone: string;
+    shipping_address: string;
+    shipping_city: string;
+    shipping_postal_code: string;
+    payment_method: string;
+    notes?: string;
+    session_id?: string;
+  }) => {
+    try {
+      setLoading(true);
+      setError(null);
+      const response = await withErrorHandling(() => apiClient.createOrder(data));
+      return response;
+    } catch (err) {
+      setError('Failed to create order');
+      console.error('Checkout error:', err);
+      throw err;
+    } finally {
+      setLoading(false);
+    }
+  };
+
+  return { createOrder, loading, error };
+};
+
+// Hook for fetching orders
+export const useOrders = () => {
+  const [orders, setOrders] = useState<any[]>([]);
+  const [loading, setLoading] = useState(true);
+  const [error, setError] = useState<string | null>(null);
+
+  const fetchOrders = async () => {
+    try {
+      setLoading(true);
+      setError(null);
+      const response = await withErrorHandling(() => apiClient.getOrders());
+      setOrders(response || []);
+    } catch (err) {
+      setError('Failed to fetch orders');
+      console.error('Orders fetch error:', err);
+    } finally {
+      setLoading(false);
+    }
+  };
+
+  useEffect(() => {
+    fetchOrders();
+  }, []);
+
+  return { orders, loading, error, refreshOrders: fetchOrders };
+};

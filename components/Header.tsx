@@ -28,7 +28,7 @@ const Header: React.FC = () => {
 
           {/* Right menu */}
           <div className="flex items-center space-x-6">
-            <Link href="/cart" className="hover:text-red-200 transition-colors">
+            <Link href="/vny/cart" className="hover:text-red-200 transition-colors">
               CART
             </Link>
             <Link href="/transaction" className="hover:text-red-200 transition-colors">
@@ -47,7 +47,7 @@ const Header: React.FC = () => {
               HOME
             </Link>
             <Link 
-              href="/product" 
+              href="/vny/product" 
               className="text-white/80 hover:text-white pb-1 transition-colors"
             >
               PRODUCT

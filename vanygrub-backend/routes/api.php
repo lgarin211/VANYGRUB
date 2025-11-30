@@ -43,4 +43,11 @@ Route::prefix('vny')->group(function () {
     // Product Grid API
     Route::apiResource('product-grids', ProductGridController::class);
     Route::get('product-grid-data', [ProductGridController::class, 'getGridData']);
+
+    // Cart API
+    Route::apiResource('cart', \App\Http\Controllers\Api\CartController::class);
+    Route::post('cart/clear', [\App\Http\Controllers\Api\CartController::class, 'clear']);
+
+    // Order/Checkout API
+    Route::apiResource('orders', \App\Http\Controllers\Api\OrderController::class);
 });

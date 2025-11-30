@@ -278,7 +278,7 @@ const CartPage: React.FC = () => {
           </div>
 
           {/* Logo */}
-          <Link href="/" className="text-2xl font-bold">
+          <Link href="/vny" className="text-2xl font-bold">
             VNY
           </Link>
 
@@ -307,9 +307,9 @@ const CartPage: React.FC = () => {
         {/* Navigation Menu */}
         <nav className="container px-4 mx-auto mt-4">
           <div className="flex space-x-8">
-            <Link href="/" className="hover:text-gray-300">HOME</Link>
+            <Link href="/vny" className="hover:text-gray-300">HOME</Link>
             <Link href="/vny/product" className="hover:text-gray-300">PRODUCT</Link>
-            <Link href="/about" className="hover:text-gray-300">ABOUT VNY</Link>
+            <Link href="/vny/about" className="hover:text-gray-300">ABOUT VNY</Link>
             <Link href="/gallery" className="hover:text-gray-300">GALLERY</Link>
           </div>
         </nav>
@@ -319,7 +319,7 @@ const CartPage: React.FC = () => {
         {/* Breadcrumb */}
         <div className="mb-8">
           <div className="flex items-center space-x-2 text-sm">
-            <Link href="/" className="text-red-600 hover:text-red-700">Home</Link>
+            <Link href="/vny" className="text-red-600 hover:text-red-700">Home</Link>
             <span className="text-gray-400">/</span>
             <span className="text-gray-600">Keranjang Belanja</span>
           </div>

@@ -4,10 +4,10 @@ import React, { useState, useEffect } from 'react';
 import Image from 'next/image';
 import Link from 'next/link';
 import { useParams } from 'next/navigation';
-import { useProduct, useCart, useOrders } from '../../../hooks/useApi';
-import CartModal from '../../../components/CartModal';
-import TransactionModal from '../../../components/TransactionModal';
-import '../../../styles/product-detail.css';
+import { useProduct, useCart, useOrders } from '../../../../hooks/useApi';
+import CartModal from '../../../../components/CartModal';
+import TransactionModal from '../../../../components/TransactionModal';
+import '../../../../styles/product-detail.css';
 
 interface Product {
   id: number;
@@ -215,7 +215,7 @@ const ProductDetail: React.FC = () => {
           <p className="mb-4 text-gray-600">
             {error ? 'Please try again later' : 'The product you\'re looking for doesn\'t exist'}
           </p>
-          <Link href="/product" className="text-red-600 hover:text-red-800">
+          <Link href="/vny/product" className="text-red-600 hover:text-red-800">
             ← Kembali ke Produk
           </Link>
         </div>
@@ -261,7 +261,7 @@ const ProductDetail: React.FC = () => {
           </div>
 
           {/* Logo */}
-          <Link href="/" className="text-2xl font-bold">
+          <Link href="/vny" className="text-2xl font-bold">
             VNY
           </Link>
 
@@ -270,7 +270,7 @@ const ProductDetail: React.FC = () => {
             {/* Cart Button */}
             <div className="relative">
               <Link 
-                href="/cart"
+                href="/vny/cart"
                 className="relative flex items-center px-4 py-2 space-x-2 transition-all duration-300 rounded-lg hover:bg-white/10 hover:text-white group"
                 onMouseEnter={() => setShowCartPreview(true)}
                 onMouseLeave={() => setShowCartPreview(false)}
@@ -334,7 +334,7 @@ const ProductDetail: React.FC = () => {
                   </div>
                   <div className="p-4 border-t border-gray-100">
                     <Link 
-                      href="/cart"
+                      href="/vny/cart"
                       className="block w-full py-2 font-medium text-center text-white transition-colors bg-red-600 rounded-lg hover:bg-red-700"
                       onClick={() => setShowCartPreview(false)}
                     >
@@ -468,9 +468,9 @@ const ProductDetail: React.FC = () => {
         {/* Navigation Menu */}
         <nav className="container px-4 mx-auto mt-4">
           <div className="flex space-x-8">
-            <Link href="/" className="hover:text-gray-300">HOME</Link>
-            <Link href="/product" className="pb-1 border-b-2 border-white">PRODUCT</Link>
-            <Link href="/about" className="hover:text-gray-300">ABOUT VNY</Link>
+            <Link href="/vny" className="hover:text-gray-300">HOME</Link>
+            <Link href="/vny/product" className="pb-1 border-b-2 border-white">PRODUCT</Link>
+            <Link href="/vny/about" className="hover:text-gray-300">ABOUT VNY</Link>
             <Link href="/gallery" className="hover:text-gray-300">GALLERY</Link>
           </div>
         </nav>
@@ -479,7 +479,7 @@ const ProductDetail: React.FC = () => {
       <div className="container px-4 py-8 mx-auto">
         {/* Breadcrumb */}
         <div className="mb-6">
-          <Link href="/product" className="flex items-center text-red-600 hover:text-red-800">
+          <Link href="/vny/product" className="flex items-center text-red-600 hover:text-red-800">
             ← Kembali ke Produk
           </Link>
         </div>

@@ -1,5 +1,5 @@
 // API configuration and base URL
-const API_BASE_URL = process.env.NEXT_PUBLIC_API_URL || 'https://vanyadmin.progesio.my.id/api/vny';
+const API_BASE_URL = process.env.NEXT_PUBLIC_API_URL || 'http://127.0.0.1:8000 /api/vny';
 
 // API client with error handling
 class ApiClient {
@@ -96,6 +96,70 @@ class ApiClient {
 
   async getHeroSection(id: number) {
     return this.request(`/hero-sections/${id}`);
+  }
+
+  // Cart API
+  async getCart(sessionId?: string) {
+    return this.request(`/cart${sessionId ? `?session_id=${sessionId}` : ''}`);
+  }
+
+  async addToCart(data: {
+    product_id: number;
+    quantity: number;
+    size?: string;
+    color?: string;
+    session_id?: string;
+  }) {
+    return this.request('/cart', {
+      method: 'POST',
+      body: JSON.stringify(data),
+    });
+  }
+
+  async updateCartItem(id: number, data: { quantity: number }) {
+    return this.request(`/cart/${id}`, {
+      method: 'PUT',
+      body: JSON.stringify(data),
+    });
+  }
+
+  async removeFromCart(id: number) {
+    return this.request(`/cart/${id}`, {
+      method: 'DELETE',
+    });
+  }
+
+  async clearCart(sessionId?: string) {
+    return this.request('/cart/clear', {
+      method: 'POST',
+      body: JSON.stringify({ session_id: sessionId }),
+    });
+  }
+
+  // Order API
+  async getOrders(sessionId?: string) {
+    return this.request(`/orders${sessionId ? `?session_id=${sessionId}` : ''}`);
+  }
+
+  async createOrder(data: {
+    customer_name: string;
+    customer_email: string;
+    customer_phone: string;
+    shipping_address: string;
+    shipping_city: string;
+    shipping_postal_code: string;
+    payment_method: string;
+    notes?: string;
+    session_id?: string;
+  }) {
+    return this.request('/orders', {
+      method: 'POST',
+      body: JSON.stringify(data),
+    });
+  }
+
+  async getOrder(id: number) {
+    return this.request(`/orders/${id}`);
   }
 }
 

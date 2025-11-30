@@ -1,9 +1,9 @@
 'use client'
 
 import { useEffect, useState } from 'react'
-import './home.css'
+import './gallery2.css'
 
-export default function Home() {
+export default function Gallery2() {
   const [selectedItem, setSelectedItem] = useState<any>(null);
   const [currentIndex, setCurrentIndex] = useState(0);
 
@@ -481,7 +481,7 @@ export default function Home() {
   return (
     <div className="gallery2-page">
       <div className="header">
-        <p className="subtitle">The power of batak fashion</p>
+        <p className="subtitle">The powerr of batak fasion</p>
         <h1 className="main-title">Vany GROUP</h1>
       </div>
 
@@ -541,26 +541,10 @@ export default function Home() {
               <p className="gallery2-modal-description">{selectedItem.description}</p>
               <div className="gallery2-modal-price">{selectedItem.price}</div>
               <div className="gallery2-modal-actions">
-                <button 
-                  className="gallery2-modal-btn gallery2-modal-btn-primary"
-                  onClick={() => {
-                    if (selectedItem.id === 2) { // Vny Toba Shoes
-                      window.location.href = '/vny';
-                    } else {
-                      alert('Fitur ini akan segera tersedia!');
-                    }
-                  }}
-                >
+                <button className="gallery2-modal-btn gallery2-modal-btn-primary">
                   Lihat Detail
                 </button>
-                <button 
-                  className="gallery2-modal-btn gallery2-modal-btn-secondary"
-                  onClick={() => {
-                    const message = `Halo! Saya tertarik dengan ${selectedItem.title}. Bisakah Anda memberikan informasi lebih lanjut?`;
-                    const whatsappUrl = `https://wa.me/6282111424592?text=${encodeURIComponent(message)}`;
-                    window.open(whatsappUrl, '_blank');
-                  }}
-                >
+                <button className="gallery2-modal-btn gallery2-modal-btn-secondary">
                   Hubungi Kami
                 </button>
               </div>

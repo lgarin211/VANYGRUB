@@ -116,7 +116,7 @@ const ProductList: React.FC = () => {
         <nav className="container mx-auto px-4 mt-4">
           <div className="flex space-x-8">
             <Link href="/" className="hover:text-gray-300">HOME</Link>
-            <Link href="/product" className="border-b-2 border-white pb-1">PRODUCT</Link>
+            <Link href="/vny/product" className="border-b-2 border-white pb-1">PRODUCT</Link>
             <Link href="/about" className="hover:text-gray-300">ABOUT VNY</Link>
             <Link href="/gallery" className="hover:text-gray-300">GALLERY</Link>
           </div>
@@ -216,7 +216,7 @@ const ProductList: React.FC = () => {
           {/* Product Grid */}
           <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-6">
             {filteredProducts.map((product: any) => (
-              <Link key={product.id} href={`/product/${product.id}`}>
+              <Link key={product.id} href={`/vny/product/${product.id}`}>
                 <div className="bg-white rounded-lg overflow-hidden shadow-md hover:shadow-lg transition-shadow cursor-pointer">
                   <div className="aspect-square bg-gray-200 relative">
                     <Image

@@ -201,7 +201,7 @@ const CheckoutTrackingPage: React.FC = () => {
             VNY
           </Link>
           <div className="flex space-x-4">
-            <Link href="/cart" className="flex items-center px-4 py-2 space-x-2 transition-all duration-300 rounded-lg hover:bg-white/10">
+            <Link href="/vny/cart" className="flex items-center px-4 py-2 space-x-2 transition-all duration-300 rounded-lg hover:bg-white/10">
               <svg className="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                 <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M3 3h2l.4 2M7 13h10l4-8H5.4m0 0L7 13m0 0l-2.5 5M7 13v6a2 2 0 002 2h10a2 2 0 002-2v-6m-10 0V9a2 2 0 012-2h6a2 2 0 012 2v4" />
               </svg>
@@ -223,7 +223,7 @@ const CheckoutTrackingPage: React.FC = () => {
           <div className="flex items-center space-x-2 text-sm">
             <Link href="/" className="text-red-600 hover:text-red-700">Home</Link>
             <span className="text-gray-400">/</span>
-            <Link href="/cart" className="text-red-600 hover:text-red-700">Cart</Link>
+            <Link href="/vny/cart" className="text-red-600 hover:text-red-700">Cart</Link>
             <span className="text-gray-400">/</span>
             <span className="text-gray-600">Checkout</span>
             <span className="text-gray-400">/</span>
@@ -396,7 +396,7 @@ const CheckoutTrackingPage: React.FC = () => {
                   Print Receipt
                 </button>
                 <Link
-                  href="/cart"
+                  href="/vny/cart"
                   className="inline-flex items-center px-6 py-3 bg-red-600 text-white font-medium rounded-lg hover:bg-red-700 transition-colors"
                 >
                   Belanja Lagi
