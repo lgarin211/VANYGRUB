@@ -4,7 +4,7 @@ import React, { useState, useEffect } from 'react';
 import Image from 'next/image';
 import Link from 'next/link';
 import { useParams } from 'next/navigation';
-import productsData from '../../../constants/productsDataDetailed.json';
+import { useProduct } from '../../../hooks/useApi';
 import CartModal from '../../../components/CartModal';
 import TransactionModal from '../../../components/TransactionModal';
 import '../../../styles/product-detail.css';
@@ -16,7 +16,7 @@ interface Product {
   price: string;
   originalPrice: number;
   discount?: string;
-  images: string[];
+  gallery: string[];
   mainImage: string;
   description: string;
   detailDescription: string;
@@ -154,11 +154,11 @@ const ProductDetail: React.FC = () => {
     }
   ]);
 
-  // Find product by ID
-  const product: Product | undefined = productsData.products.find(p => p.id === productId);
+  // Load product from API
+  const { product, loading, error } = useProduct(productId);
 
   useEffect(() => {
-    if (product && product.colors.length > 0) {
+    if (product && product.colors && product.colors.length > 0) {
       // Set default color based on product ID to match the displayed image
       const getDefaultColor = (productId: number) => {
         switch (productId) {
@@ -179,7 +179,7 @@ const ProductDetail: React.FC = () => {
   // Keyboard navigation
   useEffect(() => {
     const handleKeyDown = (event: KeyboardEvent) => {
-      if (activeView === 'images' && product && product.images.length > 1) {
+      if (activeView === 'images' && product && product.gallery && product.gallery.length > 1) {
         if (event.key === 'ArrowLeft') {
           event.preventDefault();
           handleImageNavigation('prev');
@@ -209,11 +209,29 @@ const ProductDetail: React.FC = () => {
     return modelUrls[productId % modelUrls.length] || modelUrls[0];
   };
 
-  if (!product) {
+  // Show loading state
+  if (loading) {
     return (
       <div className="flex items-center justify-center min-h-screen">
         <div className="text-center">
-          <h1 className="mb-4 text-2xl font-bold text-gray-900">Produk tidak ditemukan</h1>
+          <div className="inline-block w-12 h-12 mb-4 border-b-2 border-red-600 rounded-full animate-spin"></div>
+          <p className="text-xl text-gray-600">Loading product...</p>
+        </div>
+      </div>
+    );
+  }
+
+  // Show error or product not found
+  if (error || !product) {
+    return (
+      <div className="flex items-center justify-center min-h-screen">
+        <div className="text-center">
+          <h1 className="mb-4 text-2xl font-bold text-gray-900">
+            {error ? 'Error loading product' : 'Produk tidak ditemukan'}
+          </h1>
+          <p className="mb-4 text-gray-600">
+            {error ? 'Please try again later' : 'The product you\'re looking for doesn\'t exist'}
+          </p>
           <Link href="/product" className="text-red-600 hover:text-red-800">
             ← Kembali ke Produk
           </Link>
@@ -269,13 +287,13 @@ const ProductDetail: React.FC = () => {
   };
 
   const handleImageNavigation = (direction: 'prev' | 'next') => {
-    if (!product || product.images.length <= 1) return;
+    if (!product || !product.gallery || product.gallery.length <= 1) return;
     
     if (direction === 'prev') {
-      const newIndex = activeImageIndex === 0 ? product.images.length - 1 : activeImageIndex - 1;
+      const newIndex = activeImageIndex === 0 ? product.gallery.length - 1 : activeImageIndex - 1;
       setActiveImageIndex(newIndex);
     } else {
-      const newIndex = activeImageIndex === product.images.length - 1 ? 0 : activeImageIndex + 1;
+      const newIndex = activeImageIndex === product.gallery.length - 1 ? 0 : activeImageIndex + 1;
       setActiveImageIndex(newIndex);
     }
     
@@ -285,8 +303,8 @@ const ProductDetail: React.FC = () => {
 
   // Get current image to display
   const getCurrentImage = () => {
-    if (!product) return '';
-    return product.images[activeImageIndex] || product.images[0];
+    if (!product || !product.gallery || product.gallery.length === 0) return '';
+    return product.gallery[activeImageIndex] || product.gallery[0];
   };
 
   return (
@@ -558,7 +576,7 @@ const ProductDetail: React.FC = () => {
                     />
                     
                     {/* Image Navigation Arrows */}
-                    {product.images.length > 1 && (
+                    {product.gallery && product.gallery.length > 1 && (
                       <>
                         <button 
                           onClick={(e) => {
@@ -589,7 +607,7 @@ const ProductDetail: React.FC = () => {
                     
                     {/* Image Counter & Color Info */}
                     <div className="absolute px-3 py-1 text-sm text-white rounded-full bottom-4 right-4 bg-black/50">
-                      {activeImageIndex + 1} / {product.images.length}
+                      {activeImageIndex + 1} / {product.gallery?.length || 0}
                     </div>
                     <div className="absolute px-3 py-1 text-sm text-white rounded-full bottom-4 left-4 bg-black/50">
                       {selectedColor}
@@ -601,7 +619,7 @@ const ProductDetail: React.FC = () => {
               {/* Thumbnail Images Grid */}
               <div className="flex flex-wrap justify-start gap-2">
                 {/* Image Thumbnails */}
-                {product.images.map((image, index) => (
+                {product.gallery?.map((image, index) => (
                   <div 
                     key={index}
                     onClick={() => {
@@ -649,7 +667,7 @@ const ProductDetail: React.FC = () => {
                         : 'bg-gray-100 text-gray-700 hover:bg-gray-200'
                     }`}
                   >
-                    📷 Images ({product.images.length})
+                    📷 Images ({product.gallery?.length || 0})
                   </button>
                   <button
                     onClick={() => setActiveView('3d')}

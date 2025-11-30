@@ -6,6 +6,7 @@ use App\Http\Controllers\Controller;
 use App\Models\Category;
 use App\Models\Product;
 use App\Models\HeroSection;
+use App\Models\ProductGrid;
 use Illuminate\Http\Request;
 
 class DataController extends Controller
@@ -19,6 +20,7 @@ class DataController extends Controller
             'categories' => $this->getFormattedCategories(),
             'products' => $this->getFormattedProducts(),
             'heroSections' => $this->getFormattedHeroSections(),
+            'productGrid' => $this->getFormattedProductGrid(),
             'homeData' => $this->getHomeData()
         ]);
     }
@@ -31,11 +33,13 @@ class DataController extends Controller
         $categories = $this->getFormattedCategories();
         $featuredProducts = $this->getFormattedProducts(true);
         $heroSections = $this->getFormattedHeroSections();
+        $productGrid = $this->getFormattedProductGrid();
 
         return response()->json([
             'heroSections' => $heroSections,
             'categories' => $categories,
-            'featuredProducts' => $featuredProducts
+            'featuredProducts' => $featuredProducts,
+            'productGrid' => $productGrid
         ]);
     }
 
@@ -53,7 +57,7 @@ class DataController extends Controller
                     'name' => $category->name,
                     'slug' => $category->slug,
                     'description' => $category->description,
-                    'image' => $category->image,
+                    'image' => $category->image ? url('storage/' . $category->image) : null,
                     'isActive' => $category->is_active,
                     'sortOrder' => $category->sort_order
                 ];
@@ -90,9 +94,11 @@ class DataController extends Controller
                     'manageStock' => $product->manage_stock,
                     'inStock' => $product->in_stock,
                     'status' => $product->status,
-                    'image' => $product->image,
-                    'mainImage' => $product->main_image,
-                    'gallery' => $product->gallery ?: [],
+                    'image' => $product->image ? url('storage/' . $product->image) : null,
+                    'mainImage' => $product->main_image ? url('storage/' . $product->main_image) : null,
+                    'gallery' => $product->gallery ? array_map(function ($image) {
+                        return url('storage/' . $image);
+                    }, $product->gallery) : [],
                     'weight' => $product->weight,
                     'dimensions' => $product->dimensions,
                     'categoryId' => $product->category_id,
@@ -127,7 +133,7 @@ class DataController extends Controller
                     'title' => $hero->title,
                     'subtitle' => $hero->subtitle,
                     'description' => $hero->description,
-                    'image' => $hero->image,
+                    'image' => $hero->image ? url('storage/' . $hero->image) : null,
                     'bgColor' => $hero->bg_color,
                     'textColor' => $hero->text_color,
                     'buttonText' => $hero->button_text,
@@ -137,5 +143,41 @@ class DataController extends Controller
                 ];
             })
             ->toArray();
+    }
+
+    /**
+     * Get formatted product grid
+     */
+    private function getFormattedProductGrid()
+    {
+        $products = ProductGrid::where('is_active', true)
+            ->orderBy('sort_order')
+            ->get()
+            ->map(function ($item) {
+                return [
+                    'id' => $item->id,
+                    'title' => $item->title,
+                    'subtitle' => $item->subtitle,
+                    'image' => $item->image ? url('storage/' . $item->image) : null,
+                    'buttonText' => $item->button_text,
+                    'bgColor' => $item->bg_color,
+                    'bgImage' => $item->bg_image,
+                    'isActive' => $item->is_active,
+                    'sortOrder' => $item->sort_order
+                ];
+            })
+            ->toArray();
+
+        return [
+            'items' => $products,
+            'sizeConfig' => [
+                'itemsPerRow' => [
+                    'desktop' => 3,
+                    'tablet' => 2,
+                    'mobile' => 1
+                ],
+                'spacing' => 'medium'
+            ]
+        ];
     }
 }

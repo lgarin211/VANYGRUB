@@ -1,9 +1,9 @@
 'use client';
 
-import React, { useState } from 'react';
+import React, { useState, useMemo } from 'react';
 import Image from 'next/image';
 import Link from 'next/link';
-import productsData from '../constants/productsData.json';
+import { useProducts, useCategories } from '../hooks/useApi';
 
 interface Product {
   id: number;
@@ -24,15 +24,43 @@ const ProductList: React.FC = () => {
   const [selectedSerial, setSelectedSerial] = useState('Semua');
   const [selectedPriceRange, setSelectedPriceRange] = useState(0);
 
-  // Load data from JSON
-  const products: Product[] = productsData.products;
-  const categories = productsData.categories;
-  const serials = productsData.serials;
-  const priceRanges = productsData.priceRanges;
+  // Load data from API with fallback
+  const { products, loading: productsLoading } = useProducts({ search: searchTerm });
+  const { categories: rawCategories, loading: categoriesLoading } = useCategories();
+  
+  const isLoading = productsLoading || categoriesLoading;
+  
+  // Transform categories data
+  const categories = useMemo(() => {
+    const categoryNames = ['Semua Kategori'];
+    if (Array.isArray(rawCategories)) {
+      rawCategories.forEach(cat => {
+        if (typeof cat === 'object' && cat.name) {
+          categoryNames.push(cat.name);
+        } else if (typeof cat === 'string') {
+          categoryNames.push(cat);
+        }
+      });
+    }
+    return categoryNames;
+  }, [rawCategories]);
+  
+  // Generate serials and price ranges from products
+  const serials = useMemo(() => {
+    const uniqueSerials = ['Semua', ...new Set(products.map((p: Product) => p.serial))];
+    return uniqueSerials;
+  }, [products]);
+  
+  const priceRanges = [
+    { label: 'Semua Harga', min: 0, max: Infinity },
+    { label: 'Di bawah 1 Juta', min: 0, max: 1000000 },
+    { label: '1-3 Juta', min: 1000000, max: 3000000 },
+    { label: '3-5 Juta', min: 3000000, max: 5000000 },
+    { label: 'Di atas 5 Juta', min: 5000000, max: Infinity }
+  ];
 
-  // Remove the hardcoded products array
   // Filter products
-  const filteredProducts = products.filter(product => {
+  const filteredProducts = products.filter((product: Product) => {
     const matchesSearch = product.name.toLowerCase().includes(searchTerm.toLowerCase());
     const matchesCategory = selectedCategory === 'Semua Kategori' || product.category === selectedCategory;
     const matchesSerial = selectedSerial === 'Semua' || product.serial === selectedSerial;
@@ -42,6 +70,17 @@ const ProductList: React.FC = () => {
     
     return matchesSearch && matchesCategory && matchesSerial && matchesPrice;
   });
+
+  if (isLoading) {
+    return (
+      <div className="bg-gray-100 min-h-screen flex items-center justify-center">
+        <div className="text-center">
+          <div className="animate-spin rounded-full h-32 w-32 border-b-2 border-red-800 mx-auto"></div>
+          <p className="mt-4 text-gray-600">Loading products...</p>
+        </div>
+      </div>
+    );
+  }
 
   return (
     <div className="bg-gray-100 min-h-screen">
@@ -101,8 +140,8 @@ const ProductList: React.FC = () => {
               value={selectedCategory}
               onChange={(e) => setSelectedCategory(e.target.value)}
             >
-              {categories.map(category => (
-                <option key={category} value={category}>{category}</option>
+              {categories.map((category, index) => (
+                <option key={`category-${index}`} value={category}>{category}</option>
               ))}
             </select>
 

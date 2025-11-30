@@ -182,9 +182,11 @@ class ProductController extends Controller
             'manageStock' => $product->manage_stock,
             'inStock' => $product->in_stock,
             'status' => $product->status,
-            'image' => $product->image,
-            'mainImage' => $product->main_image,
-            'gallery' => $product->gallery ?: [],
+            'image' => $product->image ? url('storage/' . $product->image) : null,
+            'mainImage' => $product->main_image ? url('storage/' . $product->main_image) : null,
+            'gallery' => $product->gallery ? array_map(function ($image) {
+                return url('storage/' . $image);
+            }, $product->gallery) : [],
             'weight' => $product->weight,
             'dimensions' => $product->dimensions,
             'categoryId' => $product->category_id,

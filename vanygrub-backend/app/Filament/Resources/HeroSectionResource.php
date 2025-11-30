@@ -35,12 +35,12 @@ class HeroSectionResource extends Resource
                 Forms\Components\FileUpload::make('image')
                     ->image()
                     ->required(),
-                Forms\Components\TextInput::make('bg_color')
-                    ->required()
-                    ->maxLength(20),
-                Forms\Components\TextInput::make('text_color')
-                    ->required()
-                    ->maxLength(20),
+                Forms\Components\ColorPicker::make('bg_color')
+                    ->label('Background Color')
+                    ->required(),
+                Forms\Components\ColorPicker::make('text_color')
+                    ->label('Text Color')
+                    ->required(),
                 Forms\Components\TextInput::make('button_text')
                     ->required()
                     ->maxLength(255),
@@ -65,10 +65,10 @@ class HeroSectionResource extends Resource
                 Tables\Columns\TextColumn::make('subtitle')
                     ->searchable(),
                 Tables\Columns\ImageColumn::make('image'),
-                Tables\Columns\TextColumn::make('bg_color')
-                    ->searchable(),
-                Tables\Columns\TextColumn::make('text_color')
-                    ->searchable(),
+                Tables\Columns\ColorColumn::make('bg_color')
+                    ->label('Background Color'),
+                Tables\Columns\ColorColumn::make('text_color')
+                    ->label('Text Color'),
                 Tables\Columns\TextColumn::make('button_text')
                     ->searchable(),
                 Tables\Columns\TextColumn::make('price')

@@ -6,6 +6,7 @@ use App\Http\Controllers\Api\DataController;
 use App\Http\Controllers\Api\CategoryController;
 use App\Http\Controllers\Api\ProductController;
 use App\Http\Controllers\Api\HeroSectionController;
+use App\Http\Controllers\Api\ProductGridController;
 
 /*
 |--------------------------------------------------------------------------
@@ -38,4 +39,8 @@ Route::prefix('vny')->group(function () {
 
     // Hero Sections API
     Route::apiResource('hero-sections', HeroSectionController::class);
+
+    // Product Grid API
+    Route::apiResource('product-grids', ProductGridController::class);
+    Route::get('product-grid-data', [ProductGridController::class, 'getGridData']);
 });

@@ -2,17 +2,33 @@
 
 import React from 'react';
 import Image from 'next/image';
-import homeData from '../constants/dataHome.json';
+import { useHomeData } from '../hooks/useApi';
 
 interface SpecialOfferProps {
   title?: string;
 }
 
 const SpecialOffer: React.FC<SpecialOfferProps> = ({ title }) => {
-  // Load data from JSON
-  const { title: defaultTitle, subtitle, offers: specialOffers, cardConfig } = homeData.specialOffers;
+  // Load data from API with fallback
+  const { data: homeData, loading } = useHomeData();
+  const { title: defaultTitle, subtitle, offers: specialOffers, cardConfig } = homeData?.specialOffers || {
+    title: "Special Offers",
+    subtitle: "Don't miss out on these amazing deals",
+    offers: [],
+    cardConfig: { showDiscount: true }
+  };
   const displayTitle = title || defaultTitle;
 
+  if (loading) {
+    return (
+      <section className="bg-white py-16">
+        <div className="container mx-auto px-4">
+          <div className="text-center">Loading special offers...</div>
+        </div>
+      </section>
+    );
+  }
+  
   return (
     <section className="bg-white py-16">
       <div className="container mx-auto px-4">

@@ -2,7 +2,7 @@
 
 import React, { useState, useEffect } from 'react';
 import Image from 'next/image';
-import homeData from '../constants/dataHome.json';
+import { useHomeData } from '../hooks/useApi';
 
 interface ProductGridProps {
   title?: string;
@@ -12,47 +12,62 @@ const ProductGrid: React.FC<ProductGridProps> = ({ title }) => {
   // State untuk ukuran dinamis setiap card
   const [cardSizes, setCardSizes] = useState<number[]>([]);
   
+  // Load data from API with fallback
+  const { data: homeData, loading } = useHomeData();
+  
   // Generate ukuran random setiap kali component mount
   useEffect(() => {
-    const config = homeData.productGrid.sizeConfig;
-    const sizes = [
-      Math.floor(Math.random() * (config.maxHeight - config.minHeight)) + config.minHeight,
-      Math.floor(Math.random() * (config.maxHeight - config.minHeight)) + config.minHeight,
-      Math.floor(Math.random() * (config.maxHeight - config.minHeight)) + config.minHeight,
-      Math.floor(Math.random() * (config.maxHeight - config.minHeight)) + config.minHeight
-    ];
+    if (loading || !homeData?.productGrid?.items) return;
+    
+    // Gunakan default config karena struktur sizeConfig sudah berubah
+    const defaultConfig = {
+      minHeight: 300,
+      maxHeight: 380,
+      animationInterval: 8000
+    };
+    
+    const itemCount = homeData.productGrid.items.length;
+    const sizes = Array.from({ length: itemCount }, () => 
+      Math.floor(Math.random() * (defaultConfig.maxHeight - defaultConfig.minHeight)) + defaultConfig.minHeight
+    );
     setCardSizes(sizes);
     
     // Update ukuran setiap interval dengan animasi bertahap
     const interval = setInterval(() => {
-      const newSizes = [
-        Math.floor(Math.random() * (config.maxHeight - config.minHeight)) + config.minHeight,
-        Math.floor(Math.random() * (config.maxHeight - config.minHeight)) + config.minHeight,
-        Math.floor(Math.random() * (config.maxHeight - config.minHeight)) + config.minHeight,
-        Math.floor(Math.random() * (config.maxHeight - config.minHeight)) + config.minHeight
-      ];
+      const newSizes = Array.from({ length: itemCount }, () =>
+        Math.floor(Math.random() * (defaultConfig.maxHeight - defaultConfig.minHeight)) + defaultConfig.minHeight
+      );
       setCardSizes(newSizes);
-    }, config.animationInterval);
+    }, defaultConfig.animationInterval);
 
     return () => clearInterval(interval);
-  }, []);
+  }, [loading, homeData?.productGrid?.items]);
 
-  // Load data from JSON
-  const products = homeData.productGrid.products;
+  // Load data from API
+  const products = homeData?.productGrid?.items || [];
 
+  if (loading) {
+    return (
+      <section className="bg-gray-100 py-16">
+        <div className="container mx-auto px-4">
+          <div className="text-center">Loading products...</div>
+        </div>
+      </section>
+    );
+  }
+  
   return (
     <section className="bg-gray-100 py-16">
       <div className="container mx-auto px-4">
-        {/* Grid Layout - 2x2 dengan konten sesuai gambar referensi */}
-        <div className="flex flex-wrap justify-center items-center gap-4 max-w-7xl mx-auto mb-16">
+        {/* Responsive Grid Layout */}
+        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4 max-w-7xl mx-auto mb-16">
           {products.map((product, index) => (
             <div 
               key={product.id}
-              className={`relative rounded-xl overflow-hidden group cursor-pointer transform hover:scale-105 transition-all duration-[3000ms] ease-in-out ${product.bgImage} ${product.bgColor}`}
+              className={`relative rounded-xl overflow-hidden group cursor-pointer transform hover:scale-105 transition-all duration-[3000ms] ease-in-out bg-gradient-to-br ${product.bgColor}`}
               style={{ 
                 height: `${cardSizes[index] || 320}px`,
-                width: `${Math.min(500, Math.max(350, (cardSizes[index] || 320) * 1.1))}px`,
-                flex: '1 1 calc(50% - 8px)'
+                minHeight: '300px'
               }}
               data-aos={index % 2 === 0 ? "fade-right" : "fade-left"}
               data-aos-delay={`${(index + 1) * 100}`}

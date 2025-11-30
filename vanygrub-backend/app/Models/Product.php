@@ -40,9 +40,10 @@ class Product extends Model
     ];
 
     protected $casts = [
-        'price' => 'decimal:2',
-        'sale_price' => 'decimal:2',
+        'price' => 'integer',
+        'sale_price' => 'integer',
         'stock_quantity' => 'integer',
+        'weight' => 'decimal:2',
         'manage_stock' => 'boolean',
         'in_stock' => 'boolean',
         'gallery' => 'array',

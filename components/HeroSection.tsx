@@ -3,7 +3,7 @@
 import React, { useEffect, useRef, useState } from 'react';
 import Image from 'next/image';
 import { gsap } from 'gsap';
-import homeData from '../constants/dataHome.json';
+import { useHomeData } from '../hooks/useApi';
 
 interface SlideData {
   id: number;
@@ -26,19 +26,20 @@ const HeroSection: React.FC = () => {
   const [currentSlide, setCurrentSlide] = useState(0);
   const [isAutoPlay, setIsAutoPlay] = useState(true);
 
-  // Load data from JSON
-  const slidesData: SlideData[] = homeData.heroSection.slides;
+  // Load data from API with fallback
+  const { data: homeData, loading, error } = useHomeData();
+  const slidesData: SlideData[] = homeData?.heroSection?.slides || [];
 
   // Auto-play functionality
   useEffect(() => {
-    if (!isAutoPlay) return;
+    if (!isAutoPlay || loading || !slidesData.length) return;
 
     const interval = setInterval(() => {
       setCurrentSlide((prev) => (prev + 1) % slidesData.length);
-    }, homeData.heroSection.autoPlayInterval);
+    }, homeData?.heroSection?.autoPlayInterval || 5000);
 
     return () => clearInterval(interval);
-  }, [isAutoPlay, slidesData.length]);
+  }, [isAutoPlay, slidesData.length, loading, homeData]);
 
   // GSAP Animations for slide transitions
   useEffect(() => {
@@ -112,6 +113,33 @@ const HeroSection: React.FC = () => {
   };
 
 
+
+  // Show loading state
+  if (loading) {
+    return (
+      <section className="relative h-screen bg-gradient-to-br from-red-600 to-red-800 flex items-center justify-center">
+        <div className="text-center text-white">
+          <div className="inline-block animate-spin rounded-full h-12 w-12 border-b-2 border-white mb-4"></div>
+          <p className="text-xl">Loading Hero Content...</p>
+        </div>
+      </section>
+    );
+  }
+  
+  // Show fallback if no slides available
+  if (!slidesData.length) {
+    return (
+      <section className="relative h-screen bg-gradient-to-br from-red-600 to-red-800 flex items-center justify-center">
+        <div className="text-center text-white max-w-4xl px-4">
+          <h1 className="text-6xl font-bold mb-4">VNY</h1>
+          <p className="text-2xl mb-8">Premium Sneaker Collection</p>
+          <button className="bg-white text-red-600 px-8 py-4 rounded-full font-semibold hover:bg-gray-100 transition-colors">
+            Shop Now
+          </button>
+        </div>
+      </section>
+    );
+  }
 
   return (
     <section ref={sectionRef} className="relative min-h-screen overflow-hidden">

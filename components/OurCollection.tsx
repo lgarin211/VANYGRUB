@@ -3,13 +3,19 @@
 import React, { useState } from 'react';
 import Link from 'next/link';
 import Image from 'next/image';
-import homeData from '../constants/dataHome.json';
+import { useHomeData } from '../hooks/useApi';
 
 const OurCollection: React.FC = () => {
   const [currentIndex, setCurrentIndex] = useState(0);
   
-  // Load data from JSON
-  const { title, subtitle, products: collections, carouselConfig } = homeData.ourCollection;
+  // Load data from API with fallback
+  const { data: homeData, loading } = useHomeData();
+  const { title, subtitle, products: collections, carouselConfig } = homeData?.ourCollection || {
+    title: "Our Collection",
+    subtitle: "Discover our premium products",
+    products: [],
+    carouselConfig: { itemsPerView: 4, gap: 20 }
+  };
 
   const itemsPerView = 4; // Show 4 items at once
   const maxIndex = Math.max(0, collections.length - itemsPerView);
