@@ -42,7 +42,7 @@ Frontend (Next.js) → Laravel API → Database (MySQL) → Components
 ### 4. Environment Configuration
 ```env
 # .env.local
-NEXT_PUBLIC_API_URL=http://127.0.0.1:8000/api/vny
+NEXT_PUBLIC_API_URL=https://vanyadmin.progesio.my.id/api/vny
 ```
 
 ## Available API Endpoints
@@ -134,7 +134,7 @@ node test-api-integration.js
 ```
 
 ### Admin Panel Access
-- URL: `http://127.0.0.1:8000/admin`
+- URL: `https://vanyadmin.progesio.my.id/admin`
 - Email: `admin@vanygrub.com`
 - Password: `password123`
 
@@ -146,7 +146,7 @@ node test-api-integration.js
 NEXT_PUBLIC_API_URL=https://your-api-domain.com/api/vny
 
 # Development
-NEXT_PUBLIC_API_URL=http://127.0.0.1:8000/api/vny
+NEXT_PUBLIC_API_URL=https://vanyadmin.progesio.my.id/api/vny
 ```
 
 ### Backend Requirements

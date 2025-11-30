@@ -1,7 +1,7 @@
 // Test script untuk memastikan API integration berjalan dengan baik
 // Run: node test-api-integration.js
 
-const API_BASE_URL = 'http://127.0.0.1:8000/api/vny';
+const API_BASE_URL = 'https://vanyadmin.progesio.my.id/api/vny';
 
 const testEndpoints = [
   { name: 'All Data', url: '/data' },
