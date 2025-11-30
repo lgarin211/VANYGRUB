@@ -13,15 +13,15 @@ export default function Home() {
       title: 'Vany Songket',
       image: 'https://images.unsplash.com/photo-1546548970-71785318a17b?w=600&h=800&fit=crop',
       description: 'Koleksi songket tradisional dengan desain modern yang memadukan kearifan lokal dengan gaya kontemporer. Dibuat dengan benang emas dan perak berkualitas tinggi.',
-      price: 'Rp 2.500.000',
+      target:'/',
       category: 'Traditional Fashion'
     },
     {
       id: 2,
       title: 'Vny Toba Shoes',
-      image: 'https://images.unsplash.com/photo-1581578731548-c64695cc6952?w=600&h=800&fit=crop',
+      image: 'https://vanyadmin.progesio.my.id/storage/temp/01KBA3TQSB8X78WRK1YP7E9JT0.png',
       description: 'Sepatu berkualitas tinggi dengan desain yang nyaman dan gaya yang elegan untuk aktivitas sehari-hari. Terbuat dari kulit asli premium.',
-      price: 'Rp 1.800.000',
+      target:'/vny',
       category: 'Footwear'
     },
     {
@@ -29,7 +29,7 @@ export default function Home() {
       title: 'Vany Villa',
       image: 'https://images.unsplash.com/photo-1559056199-641a0ac8b55e?w=600&h=800&fit=crop',
       description: 'Villa mewah dengan pemandangan indah dan fasilitas lengkap untuk liburan yang tak terlupakan. Dilengkapi dengan kolam renang pribadi.',
-      price: 'Rp 15.000.000/malam',
+      target:'/',
       category: 'Hospitality'
     },
     {
@@ -37,7 +37,7 @@ export default function Home() {
       title: 'Vany Apartement',
       image: 'https://images.unsplash.com/photo-1598440947619-2c35fc9aa908?w=600&h=800&fit=crop',
       description: 'Apartemen modern dengan lokasi strategis dan fasilitas premium untuk hunian yang nyaman. Dilengkapi dengan gym dan rooftop garden.',
-      price: 'Rp 5.500.000.000',
+      target:'/',
       category: 'Real Estate'
     },
     {
@@ -45,7 +45,7 @@ export default function Home() {
       title: 'Vany Shalon',
       image: 'https://images.unsplash.com/photo-1556228578-8c89e6adf883?w=600&h=800&fit=crop',
       description: 'Salon kecantikan dengan layanan profesional dan perawatan terbaik untuk penampilan yang memukau. Treatment dengan produk premium.',
-      price: 'Mulai Rp 350.000',
+      target:'/',
       category: 'Beauty & Wellness'
     },
     {
@@ -53,7 +53,7 @@ export default function Home() {
       title: 'Vany Butik',
       image: 'https://images.unsplash.com/photo-1611930022073-b7a4ba5fcccd?w=600&h=800&fit=crop',
       description: 'Butik fashion dengan koleksi pakaian trendy dan berkualitas untuk gaya hidup modern. Desain eksklusif dari designer ternama.',
-      price: 'Mulai Rp 850.000',
+      target:'/',
       category: 'Fashion Retail'
     },
     {
@@ -61,7 +61,7 @@ export default function Home() {
       title: 'Vany Cafe',
       image: 'https://images.unsplash.com/photo-1505740420928-5e560c06d30e?w=600&h=800&fit=crop',
       description: 'Cafe dengan suasana cozy dan menu yang lezat untuk tempat berkumpul dan bersantai.',
-      price: 'Mulai Rp 25.000',
+      target:'/',
       category: 'Food & Beverage'
     },
     {
@@ -69,7 +69,7 @@ export default function Home() {
       title: 'Vany Store',
       image: 'https://images.unsplash.com/photo-1523381210434-271e8be1f52b?w=600&h=800&fit=crop',
       description: 'Toko retail dengan berbagai produk kebutuhan sehari-hari dan barang-barang berkualitas.',
-      price: 'Mulai Rp 15.000',
+      target:'/',
       category: 'Retail Store'
     },
     {
@@ -77,7 +77,7 @@ export default function Home() {
       title: 'Vany Tech',
       image: 'https://images.unsplash.com/photo-1583743814966-8936f5b7be1a?w=600&h=800&fit=crop',
       description: 'Layanan teknologi dan gadget dengan produk terdepan untuk kebutuhan digital modern.',
-      price: 'Mulai Rp 500.000',
+      target:'/',
       category: 'Technology'
     },
     {
@@ -85,7 +85,7 @@ export default function Home() {
       title: 'Vany Wellness',
       image: 'https://images.unsplash.com/photo-1610701596007-11502861dcfa?w=600&h=800&fit=crop',
       description: 'Pusat kesehatan dan kebugaran dengan program holistik untuk hidup yang sehat dan seimbang.',
-      price: 'Mulai Rp 150.000',
+      target:'/',
       category: 'Health & Fitness'
     },
     {
@@ -93,7 +93,7 @@ export default function Home() {
       title: 'Vany Home Decor',
       image: 'https://images.unsplash.com/photo-1564584217132-2271feaeb3c5?w=600&h=800&fit=crop',
       description: 'Dekorasi rumah dengan sentuhan kontemporer dan Skandinavia untuk hunian yang indah.',
-      price: 'Mulai Rp 250.000',
+      target:'/',
       category: 'Home & Living'
     }
   ];
@@ -570,29 +570,14 @@ export default function Home() {
               <div className="gallery2-modal-category">{selectedItem.category}</div>
               <h2 className="gallery2-modal-title">{selectedItem.title}</h2>
               <p className="gallery2-modal-description">{selectedItem.description}</p>
-              <div className="gallery2-modal-price">{selectedItem.price}</div>
               <div className="gallery2-modal-actions">
                 <button 
                   className="gallery2-modal-btn gallery2-modal-btn-primary"
                   onClick={() => {
-                    if (selectedItem.id === 2) { // Vny Toba Shoes
-                      window.location.href = '/vny';
-                    } else {
-                      alert('Fitur ini akan segera tersedia!');
-                    }
+                    window.location.href = selectedItem.target;
                   }}
                 >
-                  Lihat Detail
-                </button>
-                <button 
-                  className="gallery2-modal-btn gallery2-modal-btn-secondary"
-                  onClick={() => {
-                    const message = `Halo! Saya tertarik dengan ${selectedItem.title}. Bisakah Anda memberikan informasi lebih lanjut?`;
-                    const whatsappUrl = `https://wa.me/6282111424592?text=${encodeURIComponent(message)}`;
-                    window.open(whatsappUrl, '_blank');
-                  }}
-                >
-                  Hubungi Kami
+                  Kunjungi
                 </button>
               </div>
               <div className="gallery2-modal-counter">
