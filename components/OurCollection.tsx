@@ -76,7 +76,7 @@ const OurCollection: React.FC = () => {
                 transform: `translateX(-${currentIndex * 310}px)`
               }}
             >
-              {collections.map((item, index) => (
+              {collections.map((item: any, index: number) => (
                 <div 
                   key={item.id}
                   className="relative flex-shrink-0 bg-gray-800 rounded-xl cursor-pointer group overflow-hidden shadow-lg hover:shadow-2xl transition-all duration-300 transform hover:-translate-y-1"

@@ -6,7 +6,7 @@ import { apiClient, transformApiData, withErrorHandling } from '../lib/api';
 
 // Hook for fetching all data (replacement for dataHome.json)
 export const useHomeData = () => {
-  const [data, setData] = useState(null);
+  const [data, setData] = useState<any>(null);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState<string | null>(null);
 
@@ -14,7 +14,7 @@ export const useHomeData = () => {
     const fetchData = async () => {
       try {
         setLoading(true);
-        const response = await withErrorHandling(() => apiClient.getAllData());
+        const response: any = await withErrorHandling(() => apiClient.getAllData());
         
         if (response) {
           // Transform API data to match the expected format
@@ -85,7 +85,7 @@ export const useProducts = (params?: {
   featured?: boolean;
   search?: string;
 }) => {
-  const [products, setProducts] = useState([]);
+  const [products, setProducts] = useState<any[]>([]);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState<string | null>(null);
 
@@ -93,7 +93,7 @@ export const useProducts = (params?: {
     const fetchProducts = async () => {
       try {
         setLoading(true);
-        const response = await withErrorHandling(() => apiClient.getProducts(params));
+        const response: any = await withErrorHandling(() => apiClient.getProducts(params));
         
         if (response && response.data) {
           const transformedProducts = response.data.map(transformApiData.product);
@@ -125,7 +125,7 @@ export const useProducts = (params?: {
 
 // Hook for fetching single product
 export const useProduct = (id: number) => {
-  const [product, setProduct] = useState(null);
+  const [product, setProduct] = useState<any>(null);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState<string | null>(null);
 
@@ -133,7 +133,7 @@ export const useProduct = (id: number) => {
     const fetchProduct = async () => {
       try {
         setLoading(true);
-        const response = await withErrorHandling(() => apiClient.getProduct(id));
+        const response: any = await withErrorHandling(() => apiClient.getProduct(id));
         
         if (response && response.data) {
           const transformedProduct = transformApiData.product(response.data);
@@ -169,7 +169,7 @@ export const useProduct = (id: number) => {
 
 // Hook for fetching featured products
 export const useFeaturedProducts = () => {
-  const [products, setProducts] = useState([]);
+  const [products, setProducts] = useState<any[]>([]);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState<string | null>(null);
 
@@ -177,7 +177,7 @@ export const useFeaturedProducts = () => {
     const fetchFeaturedProducts = async () => {
       try {
         setLoading(true);
-        const response = await withErrorHandling(() => apiClient.getFeaturedProducts());
+        const response: any = await withErrorHandling(() => apiClient.getFeaturedProducts());
         
         if (response && response.data) {
           const transformedProducts = response.data.map(transformApiData.product);
@@ -211,7 +211,7 @@ export const useFeaturedProducts = () => {
 
 // Hook for fetching categories
 export const useCategories = () => {
-  const [categories, setCategories] = useState([]);
+  const [categories, setCategories] = useState<any[]>([]);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState<string | null>(null);
 
@@ -219,7 +219,7 @@ export const useCategories = () => {
     const fetchCategories = async () => {
       try {
         setLoading(true);
-        const response = await withErrorHandling(() => apiClient.getCategories());
+        const response: any = await withErrorHandling(() => apiClient.getCategories());
         
         if (response && response.data) {
           const transformedCategories = response.data.map(transformApiData.category);

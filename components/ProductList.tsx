@@ -34,7 +34,7 @@ const ProductList: React.FC = () => {
   const categories = useMemo(() => {
     const categoryNames = ['Semua Kategori'];
     if (Array.isArray(rawCategories)) {
-      rawCategories.forEach(cat => {
+      rawCategories.forEach((cat: any) => {
         if (typeof cat === 'object' && cat.name) {
           categoryNames.push(cat.name);
         } else if (typeof cat === 'string') {
@@ -47,7 +47,7 @@ const ProductList: React.FC = () => {
   
   // Generate serials and price ranges from products
   const serials = useMemo(() => {
-    const uniqueSerials = ['Semua', ...new Set(products.map((p: Product) => p.serial))];
+    const uniqueSerials = ['Semua', ...Array.from(new Set(products.map((p: Product) => p.serial)))];
     return uniqueSerials;
   }, [products]);
   
@@ -215,7 +215,7 @@ const ProductList: React.FC = () => {
 
           {/* Product Grid */}
           <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-6">
-            {filteredProducts.map((product) => (
+            {filteredProducts.map((product: any) => (
               <Link key={product.id} href={`/product/${product.id}`}>
                 <div className="bg-white rounded-lg overflow-hidden shadow-md hover:shadow-lg transition-shadow cursor-pointer">
                   <div className="aspect-square bg-gray-200 relative">

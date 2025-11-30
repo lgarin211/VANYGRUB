@@ -42,7 +42,7 @@ const SpecialOffer: React.FC<SpecialOfferProps> = ({ title }) => {
 
         {/* Special Offers Grid */}
         <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6 max-w-7xl mx-auto mb-8">
-          {specialOffers.map((offer, index) => (
+          {specialOffers.map((offer: any, index: number) => (
             <div
               key={offer.id}
               className={`relative rounded-2xl overflow-hidden group cursor-pointer transform hover:scale-[${cardConfig.hoverScaleFactor}] transition-all duration-[${cardConfig.transitionDuration}] shadow-lg hover:shadow-2xl`}

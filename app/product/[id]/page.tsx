@@ -38,7 +38,7 @@ interface CartItem {
   originalPrice: number;
   image: string;
   color: string;
-  size: number;
+  size: string | number;
   quantity: number;
 }
 
@@ -49,7 +49,7 @@ interface TransactionItem {
   quantity: number;
   price: string;
   color: string;
-  size: number;
+  size: string | number;
 }
 
 interface Transaction {
@@ -69,7 +69,7 @@ const ProductDetail: React.FC = () => {
   const [quantity, setQuantity] = useState(1);
   const [activeImageIndex, setActiveImageIndex] = useState(0);
   const [activeView, setActiveView] = useState<'images' | '3d'>('images');
-  const [selectedSize, setSelectedSize] = useState<number | null>(null);
+  const [selectedSize, setSelectedSize] = useState<string | number | null>(null);
   const [selectedColor, setSelectedColor] = useState<string>('');
   
   // Modal states
@@ -158,7 +158,7 @@ const ProductDetail: React.FC = () => {
   const { product, loading, error } = useProduct(productId);
 
   useEffect(() => {
-    if (product && product.colors && product.colors.length > 0) {
+    if (product && product.colors && Array.isArray(product.colors) && product.colors.length > 0) {
       // Set default color based on product ID to match the displayed image
       const getDefaultColor = (productId: number) => {
         switch (productId) {
@@ -619,7 +619,7 @@ const ProductDetail: React.FC = () => {
               {/* Thumbnail Images Grid */}
               <div className="flex flex-wrap justify-start gap-2">
                 {/* Image Thumbnails */}
-                {product.gallery?.map((image, index) => (
+                {product.gallery?.map((image: string, index: number) => (
                   <div 
                     key={index}
                     onClick={() => {
@@ -756,7 +756,7 @@ const ProductDetail: React.FC = () => {
                     </div>
                   </div>
                   <div className="grid grid-cols-2 gap-3 sm:grid-cols-3 lg:grid-cols-2 xl:grid-cols-3">
-                    {product.colors.map((color) => (
+                    {product.colors.map((color: string) => (
                       <button
                         key={color}
                         onClick={() => {
@@ -796,7 +796,7 @@ const ProductDetail: React.FC = () => {
                   )}
                 </div>
                 <div className="grid grid-cols-6 gap-2 sm:gap-3">
-                  {product.sizes.map((size) => (
+                  {product.sizes.map((size: string | number) => (
                     <button
                       key={size}
                       onClick={() => setSelectedSize(size)}

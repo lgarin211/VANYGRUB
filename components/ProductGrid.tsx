@@ -61,7 +61,7 @@ const ProductGrid: React.FC<ProductGridProps> = ({ title }) => {
       <div className="container mx-auto px-4">
         {/* Responsive Grid Layout */}
         <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4 max-w-7xl mx-auto mb-16">
-          {products.map((product, index) => (
+          {products.map((product: any, index: number) => (
             <div 
               key={product.id}
               className={`relative rounded-xl overflow-hidden group cursor-pointer transform hover:scale-105 transition-all duration-[3000ms] ease-in-out bg-gradient-to-br ${product.bgColor}`}

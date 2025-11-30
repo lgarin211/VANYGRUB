@@ -10,7 +10,7 @@ interface TransactionItem {
   quantity: number;
   price: string;
   color: string;
-  size: number;
+  size: string | number;
 }
 
 interface Transaction {
