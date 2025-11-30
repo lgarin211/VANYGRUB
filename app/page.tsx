@@ -225,6 +225,22 @@ export default function Home() {
         ];
 
         class CircularSlider {
+          container: HTMLElement | null;
+          track: HTMLElement | null;
+          cards: Element[];
+          totalCards: number;
+          isDragging: boolean;
+          startX: number;
+          dragDistance: number;
+          threshold: number;
+          processedSteps: number;
+          expandedCard: Element | null;
+          cardInfo: HTMLElement | null;
+          cardTitle: HTMLElement | null;
+          cardDesc: HTMLElement | null;
+          closeBtn: HTMLElement | null;
+          cardClone: HTMLElement | null;
+
           constructor() {
             this.container = document.getElementById("sliderContainer");
             this.track = document.getElementById("sliderTrack");
@@ -240,6 +256,7 @@ export default function Home() {
             this.cardTitle = document.getElementById("cardTitle");
             this.cardDesc = document.getElementById("cardDesc");
             this.closeBtn = document.getElementById("closeBtn");
+            this.cardClone = null;
 
             this.init();
           }
@@ -260,11 +277,13 @@ export default function Home() {
             });
           }
 
-          expandCard(card) {
+          expandCard(card: Element) {
             if (this.expandedCard) return;
 
+            const htmlCard = card as HTMLElement;
+            
             // Find the corresponding gallery item
-            const title = card.dataset.title;
+            const title = htmlCard.dataset.title;
             const galleryItem = galleryItems.find(item => item.title === title);
             const index = galleryItems.findIndex(item => item.title === title);
             
@@ -274,13 +293,13 @@ export default function Home() {
             }
 
             this.expandedCard = card;
-            const desc = card.dataset.desc;
+            const desc = htmlCard.dataset.desc;
 
-            this.cardTitle.textContent = title;
-            this.cardDesc.textContent = desc;
+            if (this.cardTitle) this.cardTitle.textContent = title || '';
+            if (this.cardDesc) this.cardDesc.textContent = desc || '';
 
-            const rect = card.getBoundingClientRect();
-            const clone = card.cloneNode(true);
+            const rect = htmlCard.getBoundingClientRect();
+            const clone = htmlCard.cloneNode(true) as HTMLElement;
             const overlay = clone.querySelector(".hover-overlay");
             if (overlay) overlay.remove();
 
@@ -297,7 +316,7 @@ export default function Home() {
             this.cardClone = clone;
 
             gsap.set(card, { opacity: 0 });
-            this.track.classList.add("blurred");
+            if (this.track) this.track.classList.add("blurred");
 
             const maxHeight = window.innerHeight * 0.8;
             const finalWidth = 500;
@@ -315,8 +334,8 @@ export default function Home() {
               duration: 0.8,
               ease: "power2.out",
               onComplete: () => {
-                this.cardInfo.classList.add("visible");
-                this.closeBtn.classList.add("visible");
+                if (this.cardInfo) this.cardInfo.classList.add("visible");
+                if (this.closeBtn) this.closeBtn.classList.add("visible");
               }
             });
           }
@@ -324,12 +343,16 @@ export default function Home() {
           closeCard() {
             if (!this.expandedCard) return;
 
-            this.cardInfo.classList.remove("visible");
-            this.closeBtn.classList.remove("visible");
+            if (this.cardInfo) this.cardInfo.classList.remove("visible");
+            if (this.closeBtn) this.closeBtn.classList.remove("visible");
 
             const card = this.expandedCard;
             const clone = this.cardClone;
-            const rect = card.getBoundingClientRect();
+            
+            if (!card || !clone) return;
+            
+            const htmlCard = card as HTMLElement;
+            const rect = htmlCard.getBoundingClientRect();
             const index = this.cards.indexOf(card);
             const pos = positions[index];
 
@@ -342,16 +365,16 @@ export default function Home() {
               duration: 0.8,
               ease: "power2.out",
               onComplete: () => {
-                clone.remove();
+                if (clone) clone.remove();
                 gsap.set(card, { opacity: 1 });
-                this.track.classList.remove("blurred");
+                if (this.track) this.track.classList.remove("blurred");
                 this.expandedCard = null;
                 this.cardClone = null;
               }
             });
           }
 
-          rotate(direction) {
+          rotate(direction: string) {
             if (this.expandedCard) return;
 
             this.cards.forEach((card, index) => {
@@ -381,12 +404,16 @@ export default function Home() {
 
             if (direction === "next") {
               const firstCard = this.cards.shift();
-              this.cards.push(firstCard);
-              this.track.appendChild(firstCard);
+              if (firstCard) {
+                this.cards.push(firstCard);
+                if (this.track) this.track.appendChild(firstCard);
+              }
             } else {
               const lastCard = this.cards.pop();
-              this.cards.unshift(lastCard);
-              this.track.prepend(lastCard);
+              if (lastCard) {
+                this.cards.unshift(lastCard);
+                if (this.track) this.track.prepend(lastCard);
+              }
             }
           }
 
@@ -399,16 +426,20 @@ export default function Home() {
               });
             });
 
-            this.closeBtn.addEventListener("click", () => this.closeCard());
+            if (this.closeBtn) {
+              this.closeBtn.addEventListener("click", () => this.closeCard());
+            }
 
-            this.container.addEventListener("mousedown", (e) =>
-              this.handleDragStart(e)
-            );
-            this.container.addEventListener(
-              "touchstart",
-              (e) => this.handleDragStart(e),
-              { passive: false }
-            );
+            if (this.container) {
+              this.container.addEventListener("mousedown", (e) =>
+                this.handleDragStart(e)
+              );
+              this.container.addEventListener(
+                "touchstart",
+                (e) => this.handleDragStart(e),
+                { passive: false }
+              );
+            }
 
             document.addEventListener("mousemove", (e) => this.handleDragMove(e));
             document.addEventListener("touchmove", (e) => this.handleDragMove(e), {
@@ -429,23 +460,23 @@ export default function Home() {
             });
           }
 
-          handleDragStart(e) {
+          handleDragStart(e: MouseEvent | TouchEvent) {
             if (this.expandedCard) return;
 
             this.isDragging = true;
-            this.container.classList.add("dragging");
-            this.startX = e.type.includes("mouse") ? e.clientX : e.touches[0].clientX;
+            if (this.container) this.container.classList.add("dragging");
+            this.startX = e.type.includes("mouse") ? (e as MouseEvent).clientX : (e as TouchEvent).touches[0].clientX;
             this.dragDistance = 0;
             this.processedSteps = 0;
           }
 
-          handleDragMove(e) {
+          handleDragMove(e: MouseEvent | TouchEvent) {
             if (!this.isDragging) return;
 
             e.preventDefault();
             const currentX = e.type.includes("mouse")
-              ? e.clientX
-              : e.touches[0].clientX;
+              ? (e as MouseEvent).clientX
+              : (e as TouchEvent).touches[0].clientX;
             this.dragDistance = currentX - this.startX;
 
             const steps = Math.floor(Math.abs(this.dragDistance) / this.threshold);
@@ -461,7 +492,7 @@ export default function Home() {
             if (!this.isDragging) return;
 
             this.isDragging = false;
-            this.container.classList.remove("dragging");
+            if (this.container) this.container.classList.remove("dragging");
           }
         }
 

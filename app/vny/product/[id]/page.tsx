@@ -88,7 +88,7 @@ const ProductDetail: React.FC = () => {
 
   // Load product from API
   const { product, loading, error } = useProduct(productId);
-  const { addToCart, isLoading: isAddingToCart } = useCart();
+  const { addToCart, loading: isAddingToCart } = useCart();
 
   useEffect(() => {
     if (product && product.colors && Array.isArray(product.colors) && product.colors.length > 0) {
@@ -159,7 +159,7 @@ const ProductDetail: React.FC = () => {
 
   const handleUpdateCartQuantity = async (itemId: number, newQuantity: number) => {
     try {
-      await updateCartItem(itemId, { quantity: newQuantity });
+      await updateCartItem(itemId, newQuantity);
       await refreshCart();
     } catch (error) {
       console.error('Error updating cart item:', error);
@@ -281,7 +281,7 @@ const ProductDetail: React.FC = () => {
                 <span className="font-medium">CART</span>
                 {cartItems.length > 0 && (
                   <span className="absolute flex items-center justify-center w-5 h-5 text-xs font-bold text-red-800 bg-yellow-400 rounded-full -top-1 -right-1 animate-pulse">
-                    {cartItems.reduce((sum, item) => sum + item.quantity, 0)}
+                    {cartItems.reduce((sum: number, item: any) => sum + item.quantity, 0)}
                   </span>
                 )}
               </Link>
@@ -305,7 +305,7 @@ const ProductDetail: React.FC = () => {
                       </div>
                     ) : (
                       <div className="p-4 space-y-3">
-                        {cartItems.slice(0, 3).map((item, index) => (
+                        {cartItems.slice(0, 3).map((item: any, index: number) => (
                           <div key={index} className="flex items-center space-x-3">
                             <div className="w-12 h-12 overflow-hidden bg-gray-100 rounded-lg">
                               <Image
@@ -416,7 +416,7 @@ const ProductDetail: React.FC = () => {
                               </div>
                               <div className="flex items-center justify-between">
                                 <div className="flex -space-x-1">
-                                  {transaction.items.slice(0, 3).map((item, itemIndex) => (
+                                  {transaction.items.slice(0, 3).map((item: any, itemIndex: number) => (
                                     <div key={itemIndex} className="w-6 h-6 overflow-hidden bg-gray-100 border-2 border-white rounded-full">
                                       <Image
                                         src={item.image}

@@ -260,7 +260,7 @@ export const useCart = (sessionId?: string) => {
       setLoading(true);
       const response = await withErrorHandling(() => apiClient.getCart(sessionId));
       if (response) {
-        setCart(response.data);
+        setCart((response as any).data || response);
       }
     } catch (err) {
       setError('Failed to fetch cart');
@@ -390,7 +390,7 @@ export const useOrders = () => {
       setLoading(true);
       setError(null);
       const response = await withErrorHandling(() => apiClient.getOrders());
-      setOrders(response || []);
+      setOrders((response as any[]) || []);
     } catch (err) {
       setError('Failed to fetch orders');
       console.error('Orders fetch error:', err);
