@@ -17,6 +17,7 @@ class DatabaseSeeder extends Seeder
             ProductSeeder::class,
             HeroSectionSeeder::class,
             HomepageGallerySeeder::class,
+            CustomerReviewSeeder::class,
         ]);
     }
 }

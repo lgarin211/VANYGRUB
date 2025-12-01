@@ -12,6 +12,7 @@ use App\Http\Controllers\Api\SessionDebugController;
 use App\Http\Controllers\Api\HomepageController;
 use App\Http\Controllers\Api\CartController;
 use App\Http\Controllers\Api\OrderController;
+use App\Http\Controllers\CustomerReviewController;
 
 /*
 |--------------------------------------------------------------------------
@@ -59,6 +60,7 @@ Route::prefix('vny')->group(function () {
     Route::apiResource('orders', OrderController::class);
     Route::get('orders/code/{orderCode}', [OrderController::class, 'getByOrderCode']);
     Route::get('orders/stats/summary', [OrderController::class, 'getStats']);
+    Route::get('orders/{id}/review-qr', [OrderController::class, 'getReviewQR']);
 
     // Hero Sections API
     Route::apiResource('hero-sections', HeroSectionController::class);
@@ -74,6 +76,16 @@ Route::prefix('vny')->group(function () {
         Route::delete('delete', [MediaController::class, 'deleteMedia']);
         Route::get('list', [MediaController::class, 'getMedia']);
         Route::get('debug/{id}', [MediaController::class, 'debugFileInfo']);
+    });
+
+    // Customer Reviews API
+    Route::prefix('reviews')->group(function () {
+        Route::get('approved', [CustomerReviewController::class, 'getApprovedReviews']);
+        Route::get('featured', [CustomerReviewController::class, 'getFeaturedReviews']);
+        Route::get('{token}', [CustomerReviewController::class, 'showReviewForm']);
+        Route::post('{token}/submit', [CustomerReviewController::class, 'submitReview']);
+        Route::post('batch-qr', [CustomerReviewController::class, 'batchGenerateQR']);
+        Route::post('batch-tokens', [CustomerReviewController::class, 'generateBatchTokens']);
     });
 
     // Debug routes (remove in production)

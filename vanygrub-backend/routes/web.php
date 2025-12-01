@@ -21,6 +21,15 @@ Route::get('/', function () {
 Route::get('/orders/{order}/invoice', [\App\Http\Controllers\OrderController::class, 'invoice'])
     ->name('orders.invoice');
 
+// Customer Review routes
+Route::get('/review/{token}', function ($token) {
+    return redirect("http://localhost:3000/review/{$token}");
+})->name('review.form');
+
+// QR Batch Routes
+Route::get('/qr/batch/paper-selection', [App\Http\Controllers\QrBatchController::class, 'selectPaper'])->name('qr.batch.paper-selection');
+Route::get('/qr/batch/preview', [App\Http\Controllers\QrBatchController::class, 'preview'])->name('qr.batch.preview');
+
 // Debug session untuk troubleshooting (hapus di production)
 Route::get('/debug/session', function () {
     return response()->json([

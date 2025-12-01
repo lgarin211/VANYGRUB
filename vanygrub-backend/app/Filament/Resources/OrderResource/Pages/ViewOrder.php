@@ -9,6 +9,7 @@ use Filament\Infolists\Infolist;
 use Filament\Infolists\Components\Section;
 use Filament\Infolists\Components\TextEntry;
 use Filament\Infolists\Components\RepeatableEntry;
+use App\Services\ReviewService;
 
 class ViewOrder extends ViewRecord
 {
@@ -68,6 +69,38 @@ class ViewOrder extends ViewRecord
 
                     $this->refreshFormData(['status']);
                 }),
+
+            Actions\Action::make('generateReviewQR')
+                ->label('Generate Review QR')
+                ->icon('heroicon-o-qr-code')
+                ->color('info')
+                ->visible(fn(): bool => !$this->record->hasReview())
+                ->action(function (): void {
+                    $reviewService = app(ReviewService::class);
+                    $reviewToken = $reviewService->generateReviewToken($this->record);
+                    $qrPath = $reviewService->generateCustomQRCode($reviewToken, $this->record);
+
+                    \Filament\Notifications\Notification::make()
+                        ->title('QR Code Generated')
+                        ->body("Review QR code generated for order {$this->record->order_number}")
+                        ->success()
+                        ->send();
+                })
+                ->requiresConfirmation()
+                ->modalHeading('Generate Review QR Code')
+                ->modalDescription('This will generate a QR code that customers can scan to submit their review.')
+                ->modalSubmitActionLabel('Generate'),
+
+            Actions\Action::make('viewReviewQR')
+                ->label('View Review')
+                ->icon('heroicon-o-eye')
+                ->color('success')
+                ->visible(fn(): bool => $this->record->hasReview())
+                ->url(function (): string {
+                    $review = $this->record->customerReviews()->first();
+                    return "/review/{$review->review_token}";
+                })
+                ->openUrlInNewTab(),
         ];
     }
 

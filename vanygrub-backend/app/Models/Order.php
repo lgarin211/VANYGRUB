@@ -46,4 +46,25 @@ class Order extends Model
     {
         return $this->hasMany(OrderItem::class);
     }
+
+    public function customerReviews()
+    {
+        return $this->hasMany(CustomerReview::class);
+    }
+
+    // Generate QR Code URL for review
+    public function getReviewUrlAttribute()
+    {
+        if ($this->customerReviews()->exists()) {
+            $review = $this->customerReviews()->first();
+            return url("/review/{$review->review_token}");
+        }
+        return null;
+    }
+
+    // Check if order has review
+    public function hasReview()
+    {
+        return $this->customerReviews()->exists();
+    }
 }

@@ -6,6 +6,7 @@ use App\Http\Controllers\Controller;
 use App\Models\Order;
 use App\Models\OrderItem;
 use App\Models\Product;
+use App\Services\ReviewService;
 use Illuminate\Http\Request;
 use Illuminate\Http\JsonResponse;
 use Illuminate\Support\Facades\Session;
@@ -190,6 +191,26 @@ class OrderController extends Controller
 
             // Clear cart after successful order
             $this->clearCartAfterOrder($sessionId);
+
+            // Auto-generate review QR code for the order
+            try {
+                $reviewService = app(ReviewService::class);
+                $reviewToken = $reviewService->generateReviewToken($order);
+                $qrPath = $reviewService->generateCustomQRCode($reviewToken, $order);
+
+                // Add review info to response
+                $orderData['review_url'] = url("/review/{$reviewToken}");
+                $orderData['review_qr_generated'] = true;
+
+                \Log::info("Review QR code generated for order {$orderCode}", [
+                    'review_token' => $reviewToken,
+                    'qr_path' => $qrPath
+                ]);
+            } catch (\Exception $e) {
+                // Don't fail the order if QR generation fails
+                \Log::error("Failed to generate review QR for order {$orderCode}: " . $e->getMessage());
+                $orderData['review_qr_generated'] = false;
+            }
 
             return response()->json([
                 'success' => true,
@@ -534,6 +555,58 @@ class OrderController extends Controller
             \Log::error('Failed to create customer user, using default:', ['error' => $e->getMessage()]);
             // Fallback to default user
             return 1;
+        }
+    }
+
+    /**
+     * Get review QR code information for an order
+     */
+    public function getReviewQR(string $id): JsonResponse
+    {
+        try {
+            $order = Order::with('customerReviews')->find($id);
+
+            if (!$order) {
+                return response()->json([
+                    'success' => false,
+                    'message' => 'Order not found'
+                ], 404);
+            }
+
+            $review = $order->customerReviews()->first();
+
+            if (!$review) {
+                // Generate QR code if not exists
+                $reviewService = app(ReviewService::class);
+                $reviewToken = $reviewService->generateReviewToken($order);
+                $qrPath = $reviewService->generateCustomQRCode($reviewToken, $order);
+
+                return response()->json([
+                    'success' => true,
+                    'data' => [
+                        'review_url' => url("/review/{$reviewToken}"),
+                        'qr_code_path' => asset("storage/{$qrPath}"),
+                        'status' => 'generated'
+                    ]
+                ]);
+            }
+
+            // Return existing review info
+            return response()->json([
+                'success' => true,
+                'data' => [
+                    'review_url' => url("/review/{$review->review_token}"),
+                    'review_submitted' => !empty($review->photo_url),
+                    'status' => !empty($review->photo_url) ? 'completed' : 'pending'
+                ]
+            ]);
+
+        } catch (\Exception $e) {
+            return response()->json([
+                'success' => false,
+                'message' => 'Failed to get review QR info',
+                'error' => $e->getMessage()
+            ], 500);
         }
     }
 }
