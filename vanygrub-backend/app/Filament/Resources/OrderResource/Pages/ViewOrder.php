@@ -8,7 +8,6 @@ use Filament\Resources\Pages\ViewRecord;
 use Filament\Infolists\Infolist;
 use Filament\Infolists\Components\Section;
 use Filament\Infolists\Components\TextEntry;
-use Filament\Infolists\Components\BadgeEntry;
 use Filament\Infolists\Components\RepeatableEntry;
 
 class ViewOrder extends ViewRecord
@@ -81,15 +80,17 @@ class ViewOrder extends ViewRecord
                         TextEntry::make('order_number')
                             ->label('Nomor Order'),
 
-                        BadgeEntry::make('status')
+                        TextEntry::make('status')
                             ->label('Status')
-                            ->colors([
-                                'warning' => 'pending',
-                                'primary' => 'processing',
-                                'info' => 'shipped',
-                                'success' => 'delivered',
-                                'danger' => 'cancelled',
-                            ]),
+                            ->badge()
+                            ->color(fn(string $state): string => match ($state) {
+                                'pending' => 'warning',
+                                'processing' => 'primary',
+                                'shipped' => 'info',
+                                'delivered' => 'success',
+                                'cancelled' => 'danger',
+                                default => 'gray',
+                            }),
 
                         TextEntry::make('created_at')
                             ->label('Tanggal Order')
