@@ -106,14 +106,19 @@ class MediaResource extends Resource
                                     if (empty($extension)) {
                                         try {
                                             $mimeType = Storage::disk('public')->mimeType($filePath);
-                                            
+
                                             // Simple MIME to extension mapping
                                             $mimeToExt = [
-                                                'image/jpeg' => 'jpg', 'image/png' => 'png', 'image/gif' => 'gif',
-                                                'image/webp' => 'webp', 'video/mp4' => 'mp4', 'video/avi' => 'avi',
-                                                'application/pdf' => 'pdf', 'text/plain' => 'txt'
+                                                'image/jpeg' => 'jpg',
+                                                'image/png' => 'png',
+                                                'image/gif' => 'gif',
+                                                'image/webp' => 'webp',
+                                                'video/mp4' => 'mp4',
+                                                'video/avi' => 'avi',
+                                                'application/pdf' => 'pdf',
+                                                'text/plain' => 'txt'
                                             ];
-                                            
+
                                             $extension = $mimeToExt[$mimeType] ?? 'bin';
                                         } catch (\Exception $e) {
                                             $extension = 'bin'; // fallback
@@ -142,7 +147,7 @@ class MediaResource extends Resource
                                     // Generate filename - ALWAYS ensure extension is included
                                     $filename = pathinfo($originalName, PATHINFO_FILENAME);
                                     $sluggedName = Str::slug($filename) . '-' . time();
-                                    
+
                                     // CRITICAL: Always append the extension
                                     $finalFilename = $sluggedName . '.' . $extension;
                                     $set('filename', $finalFilename);

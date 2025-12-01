@@ -23,10 +23,10 @@ class CreateMedia extends CreateRecord
 
             // Get original file info to preserve format
             $originalName = $data['original_name'] ?? pathinfo($tempFile, PATHINFO_BASENAME);
-            
+
             // Try to get extension from multiple sources
             $originalExtension = strtolower(pathinfo($originalName, PATHINFO_EXTENSION));
-            
+
             // If no extension found from original name, try to detect from MIME type
             if (empty($originalExtension)) {
                 try {
@@ -37,15 +37,15 @@ class CreateMedia extends CreateRecord
                     $originalExtension = $type === 'image' ? 'png' : ($type === 'video' ? 'mp4' : 'pdf');
                 }
             }
-            
+
             // Ensure we have an extension
             if (empty($originalExtension)) {
                 $originalExtension = $type === 'image' ? 'png' : ($type === 'video' ? 'mp4' : 'pdf');
             }
-            
+
             // Generate filename with guaranteed extension
             $baseFilename = $data['filename'] ?? (Str::slug(pathinfo($originalName, PATHINFO_FILENAME)) . '-' . time());
-            
+
             // Remove extension from baseFilename if it already has one, then add the correct one
             $baseFilename = pathinfo($baseFilename, PATHINFO_FILENAME);
             $filename = $baseFilename . '.' . $originalExtension;            // Move file from temp to proper location
@@ -143,7 +143,7 @@ class CreateMedia extends CreateRecord
         $mimeToExtension = [
             // Images
             'image/jpeg' => 'jpg',
-            'image/jpg' => 'jpg', 
+            'image/jpg' => 'jpg',
             'image/png' => 'png',
             'image/gif' => 'gif',
             'image/webp' => 'webp',
@@ -151,7 +151,7 @@ class CreateMedia extends CreateRecord
             'image/bmp' => 'bmp',
             'image/tiff' => 'tiff',
             'image/x-icon' => 'ico',
-            
+
             // Videos
             'video/mp4' => 'mp4',
             'video/avi' => 'avi',
@@ -161,7 +161,7 @@ class CreateMedia extends CreateRecord
             'video/webm' => 'webm',
             'video/x-msvideo' => 'avi',
             'video/ogg' => 'ogv',
-            
+
             // Documents
             'application/pdf' => 'pdf',
             'application/msword' => 'doc',
