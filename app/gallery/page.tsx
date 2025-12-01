@@ -2,6 +2,7 @@
 
 import React, { useState } from 'react';
 import Link from 'next/link';
+import Header from '../components/Header';
 import '../../styles/gallery.css';
 
 const Gallery: React.FC = () => {
@@ -100,22 +101,7 @@ const Gallery: React.FC = () => {
 
   return (
     <div className="gallery-container">
-      {/* Header */}
-      <header className="gallery-header">
-        <div className="container px-4 py-6 mx-auto">
-          <div className="flex items-center justify-between">
-            <Link href="/" className="text-3xl font-bold text-white">
-              VNY
-            </Link>
-            <nav className="hidden space-x-8 md:flex">
-              <Link href="/" className="text-white transition-colors hover:text-red-300">HOME</Link>
-              <Link href="/vny/product" className="text-white transition-colors hover:text-red-300">PRODUCT</Link>
-              <Link href="/about" className="text-white transition-colors hover:text-red-300">ABOUT VNY</Link>
-              <Link href="/gallery" className="pb-1 text-white border-b-2 border-white">GALLERY</Link>
-            </nav>
-          </div>
-        </div>
-      </header>
+      <Header />
 
       {/* Main Gallery */}
       <main className="gallery-main">

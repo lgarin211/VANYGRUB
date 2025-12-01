@@ -84,46 +84,25 @@ const ProductList: React.FC = () => {
 
   return (
     <div className="bg-gray-100 min-h-screen">
-      {/* Header */}
-      <header className="bg-red-800 text-white py-4">
-        <div className="container mx-auto px-4 flex justify-between items-center">
-          {/* Search Bar */}
-          <div className="flex items-center">
-            <div className="mr-8">
+      {/* Search Section */}
+      <div className="container mx-auto px-4 pt-8 pb-4">
+        <div className="bg-white rounded-lg p-6 mb-6">
+          <div className="flex items-center justify-between">
+            <h1 className="text-2xl font-bold text-gray-900">Produk VNY</h1>
+            <div className="flex items-center">
               <input
                 type="text"
-                placeholder="Q Search"
-                className="bg-transparent border-b border-white text-white placeholder-white/70 py-1 px-2 focus:outline-none focus:border-white/100"
+                placeholder="Cari produk..."
+                className="border border-gray-300 rounded-lg py-2 px-4 w-64 focus:outline-none focus:ring-2 focus:ring-red-500"
                 value={searchTerm}
                 onChange={(e) => setSearchTerm(e.target.value)}
               />
             </div>
           </div>
-
-          {/* Logo */}
-          <Link href="/" className="text-2xl font-bold">
-            VNY
-          </Link>
-
-          {/* Navigation */}
-          <div className="flex space-x-6">
-            <button className="hover:text-gray-300">CART</button>
-            <button className="hover:text-gray-300">TRANSACTION</button>
-          </div>
         </div>
+      </div>
 
-        {/* Navigation Menu */}
-        <nav className="container mx-auto px-4 mt-4">
-          <div className="flex space-x-8">
-            <Link href="/" className="hover:text-gray-300">HOME</Link>
-            <Link href="/vny/product" className="border-b-2 border-white pb-1">PRODUCT</Link>
-            <Link href="/about" className="hover:text-gray-300">ABOUT VNY</Link>
-            <Link href="/gallery" className="hover:text-gray-300">GALLERY</Link>
-          </div>
-        </nav>
-      </header>
-
-      <div className="container mx-auto px-4 py-8 flex">
+      <div className="container mx-auto px-4 pb-8 flex">
         {/* Sidebar Filter */}
         <aside className="w-64 bg-white rounded-lg p-6 h-fit mr-8">
           {/* Filter Header */}

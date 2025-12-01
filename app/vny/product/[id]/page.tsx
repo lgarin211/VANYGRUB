@@ -5,6 +5,7 @@ import Image from 'next/image';
 import Link from 'next/link';
 import { useParams } from 'next/navigation';
 import { useProduct, useCart, useOrders } from '../../../../hooks/useApi';
+import Header from '../../../../components/Header';
 import CartModal from '../../../../components/CartModal';
 import TransactionModal from '../../../../components/TransactionModal';
 import '../../../../styles/product-detail.css';
@@ -75,8 +76,6 @@ const ProductDetail: React.FC = () => {
   // Modal states
   const [showCartModal, setShowCartModal] = useState(false);
   const [showTransactionModal, setShowTransactionModal] = useState(false);
-  const [showCartPreview, setShowCartPreview] = useState(false);
-  const [showTransactionPreview, setShowTransactionPreview] = useState(false);
   
   // Cart and transaction data from API
   const { cart, refreshCart } = useCart();
@@ -247,237 +246,31 @@ const ProductDetail: React.FC = () => {
   return (
     <div className="min-h-screen bg-gray-100">
       {/* Header */}
-      <header className="py-4 text-white bg-red-800">
-        <div className="container flex items-center justify-between px-4 mx-auto">
-          {/* Search Bar */}
-          <div className="flex items-center">
-            <div className="mr-8">
-              <input
-                type="text"
-                placeholder="Q Search"
-                className="px-2 py-1 text-white bg-transparent border-b border-white placeholder-white/70 focus:outline-none focus:border-white/100"
-              />
-            </div>
-          </div>
-
-          {/* Logo */}
-          <Link href="/vny" className="text-2xl font-bold">
-            VNY
-          </Link>
-
-          {/* Navigation */}
-          <div className="flex space-x-4">
-            {/* Cart Button */}
-            <div className="relative">
-              <Link 
-                href="/vny/cart"
-                className="relative flex items-center px-4 py-2 space-x-2 transition-all duration-300 rounded-lg hover:bg-white/10 hover:text-white group"
-                onMouseEnter={() => setShowCartPreview(true)}
-                onMouseLeave={() => setShowCartPreview(false)}
-              >
-                <svg className="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                  <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M3 3h2l.4 2M7 13h10l4-8H5.4m0 0L7 13m0 0l-2.5 5M7 13v6a2 2 0 002 2h10a2 2 0 002-2v-6m-10 0V9a2 2 0 012-2h6a2 2 0 012 2v4" />
-                </svg>
-                <span className="font-medium">CART</span>
-                {cartItems.length > 0 && (
-                  <span className="absolute flex items-center justify-center w-5 h-5 text-xs font-bold text-red-800 bg-yellow-400 rounded-full -top-1 -right-1 animate-pulse">
-                    {cartItems.reduce((sum: number, item: any) => sum + item.quantity, 0)}
-                  </span>
-                )}
-              </Link>
-              
-              {/* Cart Hover Preview */}
-              {showCartPreview && (
-                <div className="absolute left-0 z-50 mt-2 transition-all duration-300 transform bg-white border border-gray-200 rounded-lg shadow-2xl top-full w-80">
-                  <div className="p-4 border-b border-gray-100">
-                    <h3 className="font-semibold text-gray-900">Keranjang Belanja</h3>
-                    <p className="text-sm text-gray-500">{cartItems.length} item{cartItems.length !== 1 ? 's' : ''}</p>
-                  </div>
-                  <div className="overflow-y-auto max-h-60">
-                    {cartItems.length === 0 ? (
-                      <div className="p-6 text-center">
-                        <div className="flex items-center justify-center w-16 h-16 mx-auto mb-3 bg-gray-100 rounded-full">
-                          <svg className="w-8 h-8 text-gray-400" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                            <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={1} d="M3 3h2l.4 2M7 13h10l4-8H5.4m0 0L7 13m0 0l-2.5 5M7 13v6a2 2 0 002 2h10a2 2 0 002-2v-6m-10 0V9a2 2 0 012-2h6a2 2 0 012 2v4" />
-                          </svg>
-                        </div>
-                        <p className="text-sm text-gray-500">Keranjang kosong</p>
-                      </div>
-                    ) : (
-                      <div className="p-4 space-y-3">
-                        {cartItems.slice(0, 3).map((item: any, index: number) => (
-                          <div key={index} className="flex items-center space-x-3">
-                            <div className="w-12 h-12 overflow-hidden bg-gray-100 rounded-lg">
-                              <Image
-                                src={item.image}
-                                alt={item.name}
-                                width={48}
-                                height={48}
-                                className="object-cover w-full h-full"
-                              />
-                            </div>
-                            <div className="flex-1 min-w-0">
-                              <h4 className="text-sm font-medium text-gray-900 truncate">{item.name}</h4>
-                              <p className="text-xs text-gray-500">{item.color} • Size {item.size}</p>
-                              <p className="text-xs font-semibold text-red-600">{item.price}</p>
-                            </div>
-                            <span className="text-sm text-gray-500">×{item.quantity}</span>
-                          </div>
-                        ))}
-                        {cartItems.length > 3 && (
-                          <div className="pt-2 text-sm text-center text-gray-500 border-t">
-                            +{cartItems.length - 3} item lainnya
-                          </div>
-                        )}
-                      </div>
-                    )}
-                  </div>
-                  <div className="p-4 border-t border-gray-100">
-                    <Link 
-                      href="/vny/cart"
-                      className="block w-full py-2 font-medium text-center text-white transition-colors bg-red-600 rounded-lg hover:bg-red-700"
-                      onClick={() => setShowCartPreview(false)}
-                    >
-                      Lihat Keranjang
-                    </Link>
-                  </div>
-                </div>
-              )}
-            </div>
-            
-            {/* Transaction Button */}
-            <div className="relative">
-              <button 
-                className="relative flex items-center px-4 py-2 space-x-2 transition-all duration-300 rounded-lg hover:bg-white/10 hover:text-white group"
-                onClick={() => setShowTransactionModal(true)}
-                onMouseEnter={() => setShowTransactionPreview(true)}
-                onMouseLeave={() => setShowTransactionPreview(false)}
-              >
-                <svg className="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                  <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M9 5H7a2 2 0 00-2 2v10a2 2 0 002 2h8a2 2 0 002-2V7a2 2 0 00-2-2h-2M9 5a2 2 0 002 2h2a2 2 0 002-2M9 5a2 2 0 012-2h2a2 2 0 012 2" />
-                </svg>
-                <span className="font-medium">TRANSACTION</span>
-                {transactions.length > 0 && (
-                  <span className="absolute flex items-center justify-center w-5 h-5 text-xs font-bold text-white bg-blue-400 rounded-full -top-1 -right-1">
-                    {transactions.length}
-                  </span>
-                )}
-              </button>
-              
-              {/* Transaction Hover Preview */}
-              {showTransactionPreview && (
-                <div className="absolute right-0 z-50 mt-2 transition-all duration-300 transform bg-white border border-gray-200 rounded-lg shadow-2xl top-full w-80">
-                  <div className="p-4 border-b border-gray-100">
-                    <h3 className="font-semibold text-gray-900">Riwayat Transaksi</h3>
-                    <p className="text-sm text-gray-500">{transactions.length} transaksi</p>
-                  </div>
-                  <div className="overflow-y-auto max-h-60">
-                    {transactions.length === 0 ? (
-                      <div className="p-6 text-center">
-                        <div className="flex items-center justify-center w-16 h-16 mx-auto mb-3 bg-gray-100 rounded-full">
-                          <svg className="w-8 h-8 text-gray-400" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                            <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={1} d="M9 5H7a2 2 0 00-2 2v10a2 2 0 002 2h8a2 2 0 002-2V7a2 2 0 00-2-2h-2M9 5a2 2 0 002 2h2a2 2 0 002-2M9 5a2 2 0 012-2h2a2 2 0 012 2" />
-                          </svg>
-                        </div>
-                        <p className="text-sm text-gray-500">Belum ada transaksi</p>
-                      </div>
-                    ) : (
-                      <div className="p-4 space-y-3">
-                        {transactions.slice(0, 3).map((transaction, index) => {
-                          const getStatusColor = (status: string) => {
-                            switch (status) {
-                              case 'pending': return 'bg-yellow-100 text-yellow-700 border-yellow-200';
-                              case 'processing': return 'bg-blue-100 text-blue-700 border-blue-200';
-                              case 'shipped': return 'bg-purple-100 text-purple-700 border-purple-200';
-                              case 'delivered': return 'bg-green-100 text-green-700 border-green-200';
-                              case 'cancelled': return 'bg-red-100 text-red-700 border-red-200';
-                              default: return 'bg-gray-100 text-gray-700 border-gray-200';
-                            }
-                          };
-                          
-                          const getStatusText = (status: string) => {
-                            switch (status) {
-                              case 'pending': return 'Menunggu';
-                              case 'processing': return 'Diproses';
-                              case 'shipped': return 'Dikirim';
-                              case 'delivered': return 'Selesai';
-                              case 'cancelled': return 'Dibatalkan';
-                              default: return 'Unknown';
-                            }
-                          };
-                          
-                          return (
-                            <div key={index} className="p-3 border border-gray-100 rounded-lg">
-                              <div className="flex items-center justify-between mb-2">
-                                <span className="text-sm font-medium text-gray-900">#{transaction.id.slice(-6)}</span>
-                                <span className={`px-2 py-1 rounded-full text-xs font-medium border ${getStatusColor(transaction.status)}`}>
-                                  {getStatusText(transaction.status)}
-                                </span>
-                              </div>
-                              <div className="flex items-center justify-between">
-                                <div className="flex -space-x-1">
-                                  {transaction.items.slice(0, 3).map((item: any, itemIndex: number) => (
-                                    <div key={itemIndex} className="w-6 h-6 overflow-hidden bg-gray-100 border-2 border-white rounded-full">
-                                      <Image
-                                        src={item.image}
-                                        alt={item.name}
-                                        width={24}
-                                        height={24}
-                                        className="object-cover w-full h-full"
-                                      />
-                                    </div>
-                                  ))}
-                                  {transaction.items.length > 3 && (
-                                    <div className="flex items-center justify-center w-6 h-6 bg-gray-200 border-2 border-white rounded-full">
-                                      <span className="text-xs text-gray-600">+</span>
-                                    </div>
-                                  )}
-                                </div>
-                                <span className="text-sm font-semibold text-red-600">
-                                  Rp {transaction.total.toLocaleString('id-ID')}
-                                </span>
-                              </div>
-                            </div>
-                          );
-                        })}
-                        {transactions.length > 3 && (
-                          <div className="pt-2 text-sm text-center text-gray-500 border-t">
-                            +{transactions.length - 3} transaksi lainnya
-                          </div>
-                        )}
-                      </div>
-                    )}
-                  </div>
-                  <div className="p-4 border-t border-gray-100">
-                    <button 
-                      className="w-full py-2 font-medium text-white transition-colors bg-red-600 rounded-lg hover:bg-red-700"
-                      onClick={() => {
-                        setShowTransactionPreview(false);
-                        setShowTransactionModal(true);
-                      }}
-                    >
-                      Lihat Semua Transaksi
-                    </button>
-                  </div>
-                </div>
-              )}
-            </div>
+      <Header />
+      
+      {/* Breadcrumb */}
+      <div className="py-4 bg-gray-50">
+        <div className="container px-4 mx-auto">
+          <div className="flex items-center space-x-2 text-sm">
+            <Link href="/" className="text-red-600 hover:text-red-700">
+              Vany Group
+            </Link>
+            <span className="text-gray-400">/</span>
+            <Link href="/vny" className="text-red-600 hover:text-red-700">
+              VNY Store
+            </Link>
+            <span className="text-gray-400">/</span>
+            <Link href="/vny/product" className="text-red-600 hover:text-red-700">
+              Product
+            </Link>
+            <span className="text-gray-400">/</span>
+            <span className="font-medium text-gray-900">{product?.name || 'Product Detail'}</span>
           </div>
         </div>
-
-        {/* Navigation Menu */}
-        <nav className="container px-4 mx-auto mt-4">
-          <div className="flex space-x-8">
-            <Link href="/vny" className="hover:text-gray-300">HOME</Link>
-            <Link href="/vny/product" className="pb-1 border-b-2 border-white">PRODUCT</Link>
-            <Link href="/vny/about" className="hover:text-gray-300">ABOUT VNY</Link>
-            <Link href="/gallery" className="hover:text-gray-300">GALLERY</Link>
-          </div>
-        </nav>
-      </header>
+      </div>
 
       <div className="container px-4 py-8 mx-auto">
-        {/* Breadcrumb */}
+        {/* Back to Product Link */}
         <div className="mb-6">
           <Link href="/vny/product" className="flex items-center text-red-600 hover:text-red-800">
             ← Kembali ke Produk
