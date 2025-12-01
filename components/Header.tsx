@@ -7,7 +7,7 @@ import { useSiteConfig } from '../hooks/useHomepageApi';
 export default function Header() {
   const [searchQuery, setSearchQuery] = useState('');
   
-  const { data: siteConfig } = useSiteConfig();
+  const { config: siteConfig } = useSiteConfig();
 
   const navItems = [
     { name: 'HOME', href: '/vny' },

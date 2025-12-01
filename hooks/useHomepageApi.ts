@@ -21,7 +21,7 @@ export function useHomepageConstants() {
         // Fallback ke konstanta lokal jika API gagal
         try {
           const { HOMEPAGE_CONSTANTS } = await import('../constants');
-          setConstants(HOMEPAGE_CONSTANTS);
+          setConstants(JSON.parse(JSON.stringify(HOMEPAGE_CONSTANTS)));
         } catch (fallbackErr) {
           console.error('Failed to load fallback constants:', fallbackErr);
         }

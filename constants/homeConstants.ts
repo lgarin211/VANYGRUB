@@ -3,7 +3,7 @@ export const HOMEPAGE_CONSTANTS = {
   META: {
     TITLE: "VANYGRUB - Premium Lifestyle Collection",
     DESCRIPTION: "Discover premium lifestyle products from traditional fashion to modern hospitality services",
-    KEYWORDS: ["vany", "premium", "lifestyle", "fashion", "hospitality", "beauty"]
+    KEYWORDS: ["vany", "premium", "lifestyle", "fashion", "hospitality", "beauty"] as string[]
   },
 
   HERO_SECTION: {
