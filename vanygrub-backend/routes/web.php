@@ -23,7 +23,7 @@ Route::get('/orders/{order}/invoice', [\App\Http\Controllers\OrderController::cl
 
 // Customer Review routes
 Route::get('/review/{token}', function ($token) {
-    return redirect("http://localhost:3000/review/{$token}");
+    return redirect("https://www.vanygroup.id/review/{$token}");
 })->name('review.form');
 
 // QR Batch Routes
