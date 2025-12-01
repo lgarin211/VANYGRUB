@@ -9,6 +9,7 @@ use App\Http\Controllers\Api\HeroSectionController;
 use App\Http\Controllers\Api\ProductGridController;
 use App\Http\Controllers\Api\MediaController;
 use App\Http\Controllers\Api\SessionDebugController;
+use App\Http\Controllers\Api\HomepageController;
 
 /*
 |--------------------------------------------------------------------------
@@ -30,6 +31,12 @@ Route::prefix('vny')->group(function () {
     // Data endpoints for Next.js constants
     Route::get('data', [DataController::class, 'getAllData']);
     Route::get('home-data', [DataController::class, 'getHomeData']);
+
+    // Homepage constants API
+    Route::get('homepage/constants', [HomepageController::class, 'getConstants']);
+    Route::get('homepage/gallery/{id}', [HomepageController::class, 'getGalleryItem']);
+    Route::get('homepage/category/{category}', [HomepageController::class, 'getGalleryByCategory']);
+    Route::get('homepage/site-config', [HomepageController::class, 'getSiteConfig']);
 
     // Categories API
     Route::apiResource('categories', CategoryController::class);

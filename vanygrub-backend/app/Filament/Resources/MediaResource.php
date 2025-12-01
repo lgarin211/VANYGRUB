@@ -13,9 +13,13 @@ use Filament\Tables\Table;
 use Filament\Tables\Columns\ImageColumn;
 use Filament\Tables\Columns\TextColumn;
 use Filament\Tables\Filters\SelectFilter;
+use Filament\Forms\Components\FileUpload;
+use Filament\Forms\Components\Section;
+use Filament\Forms\Components\Grid;
 use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Database\Eloquent\SoftDeletingScope;
 use Illuminate\Support\Facades\Storage;
+use Illuminate\Support\Str;
 
 class MediaResource extends Resource
 {
@@ -31,26 +35,134 @@ class MediaResource extends Resource
     {
         return $form
             ->schema([
-                Forms\Components\TextInput::make('filename')
-                    ->required()
-                    ->maxLength(255),
-                Forms\Components\TextInput::make('original_name')
-                    ->required()
-                    ->maxLength(255),
-                Forms\Components\TextInput::make('alt_text')
-                    ->maxLength(255),
-                Forms\Components\Textarea::make('caption')
-                    ->rows(3),
-                Forms\Components\Select::make('type')
-                    ->options([
-                        'image' => 'Image',
-                        'video' => 'Video',
-                        'document' => 'Document',
-                    ])
-                    ->required(),
-                Forms\Components\TextInput::make('folder')
-                    ->required()
-                    ->maxLength(255),
+                Section::make('Upload Media')
+                    ->description('Upload your media files and fill in the details')
+                    ->schema([
+                        FileUpload::make('file')
+                            ->label('📁 Select File to Upload')
+                            ->required()
+                            ->directory('media/temp')
+                            ->disk('public')
+                            ->maxSize(10240) // 10MB
+                            ->acceptedFileTypes([
+                                'image/jpeg',
+                                'image/png',
+                                'image/gif',
+                                'image/webp',
+                                'video/mp4',
+                                'video/webm',
+                                'video/quicktime',
+                                'application/pdf',
+                                'application/msword',
+                                'application/vnd.openxmlformats-officedocument.wordprocessingml.document',
+                                'text/plain'
+                            ])
+                            ->image()
+                            ->imageEditor()
+                            ->imageEditorAspectRatios([
+                                null,
+                                '16:9',
+                                '4:3',
+                                '1:1',
+                            ])
+                            ->imageResizeMode('cover')
+                            ->imageResizeTargetWidth('1920')
+                            ->imageResizeTargetHeight('1080')
+                            ->helperText('Max 10MB. Supported: Images (JPEG, PNG, GIF, WebP), Videos (MP4, WebM, MOV), Documents (PDF, DOC, DOCX, TXT)')
+                            ->reactive()
+                            ->afterStateUpdated(function ($state, callable $set) {
+                                if ($state) {
+                                    // Auto-detect type based on mime type
+                                    $mimeType = Storage::disk('public')->mimeType($state);
+                                    if (str_starts_with($mimeType, 'image/')) {
+                                        $set('type', 'image');
+                                    } elseif (str_starts_with($mimeType, 'video/')) {
+                                        $set('type', 'video');
+                                    } else {
+                                        $set('type', 'document');
+                                    }
+
+                                    // Auto-fill original name
+                                    $originalName = pathinfo($state, PATHINFO_BASENAME);
+                                    $set('original_name', $originalName);
+
+                                    // Generate filename
+                                    $filename = pathinfo($originalName, PATHINFO_FILENAME);
+                                    $extension = pathinfo($originalName, PATHINFO_EXTENSION);
+                                    $sluggedName = Str::slug($filename) . '-' . time() . '.' . $extension;
+                                    $set('filename', $sluggedName);
+                                }
+                            }),
+
+                        Grid::make(2)
+                            ->schema([
+                                Forms\Components\Select::make('type')
+                                    ->label('📂 Media Type')
+                                    ->options([
+                                        'image' => '🖼️ Image',
+                                        'video' => '🎥 Video',
+                                        'document' => '📄 Document',
+                                    ])
+                                    ->required()
+                                    ->reactive()
+                                    ->disabled()
+                                    ->dehydrated(),
+                                Forms\Components\Select::make('folder')
+                                    ->label('📁 Folder')
+                                    ->required()
+                                    ->default('general')
+                                    ->options([
+                                        'general' => '📁 General',
+                                        'gallery' => '🖼️ Gallery',
+                                        'products' => '🛍️ Products',
+                                        'heroes' => '🎭 Heroes',
+                                        'banners' => '📢 Banners',
+                                        'documents' => '📄 Documents',
+                                        'videos' => '🎥 Videos'
+                                    ])
+                                    ->searchable()
+                                    ->createOptionForm([
+                                        Forms\Components\TextInput::make('name')
+                                            ->label('Folder Name')
+                                            ->required()
+                                            ->maxLength(50)
+                                            ->alpha()
+                                    ]),
+                            ]),
+                    ]),
+
+                Section::make('📝 File Details & Metadata')
+                    ->description('File information will be auto-generated, you can add optional metadata')
+                    ->schema([
+                        Grid::make(2)
+                            ->schema([
+                                Forms\Components\TextInput::make('filename')
+                                    ->label('🏷️ Generated Filename')
+                                    ->maxLength(255)
+                                    ->helperText('Auto-generated unique filename')
+                                    ->disabled()
+                                    ->dehydrated(),
+
+                                Forms\Components\TextInput::make('original_name')
+                                    ->label('📄 Original Filename')
+                                    ->maxLength(255)
+                                    ->helperText('Your original file name')
+                                    ->disabled()
+                                    ->dehydrated(),
+                            ]),
+
+                        Forms\Components\TextInput::make('alt_text')
+                            ->label('🏷️ Alt Text (SEO)')
+                            ->maxLength(255)
+                            ->helperText('Alternative text for images - important for SEO & accessibility')
+                            ->placeholder('Describe what\'s in the image...'),
+
+                        Forms\Components\Textarea::make('caption')
+                            ->label('💬 Caption/Description')
+                            ->rows(3)
+                            ->helperText('Optional caption or description for your media')
+                            ->placeholder('Add a caption or description...'),
+                    ]),
             ]);
     }
 
