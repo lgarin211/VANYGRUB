@@ -17,6 +17,7 @@ Route::get('/', function () {
     return view('welcome');
 });
 
+// ubah dikit
 // Order invoice route
 Route::get('/orders/{order}/invoice', [\App\Http\Controllers\OrderController::class, 'invoice'])
     ->name('orders.invoice');
