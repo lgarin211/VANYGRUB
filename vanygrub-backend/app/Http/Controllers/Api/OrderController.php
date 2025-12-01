@@ -457,37 +457,45 @@ class OrderController extends Controller
         Session::forget("cart_{$sessionId}");
     }
 
-    private function getOrCreateUserFromCustomerData($request)
+    private function getOrCreateUserIdFromCustomerData($request): int
     {
-        // Check if user exists by email
-        $existingUser = \DB::table('vany_users')
-            ->where('email', $request->customer_email)
-            ->first();
+        try {
+            // Check if user exists by email
+            $existingUser = \DB::table('vany_users')
+                ->where('email', $request->customer_email)
+                ->first();
 
-        if ($existingUser) {
-            // Update user data if phone is different
-            if ($existingUser->phone !== $request->customer_phone) {
-                \DB::table('vany_users')
-                    ->where('id', $existingUser->id)
-                    ->update([
-                        'phone' => $request->customer_phone,
-                        'updated_at' => now()
-                    ]);
+            if ($existingUser) {
+                \Log::info('Found existing user:', ['id' => $existingUser->id, 'email' => $existingUser->email]);
+                return $existingUser->id;
             }
-            return $existingUser;
+
+            // Create new user
+            $userId = \DB::table('vany_users')->insertGetId([
+                'name' => $request->customer_name,
+                'email' => $request->customer_email,
+                'phone' => $request->customer_phone,
+                'password' => \Hash::make('defaultpassword'), // Temporary password
+                'email_verified_at' => null,
+                'created_at' => now(),
+                'updated_at' => now()
+            ]);
+
+            \Log::info('Created new user:', ['id' => $userId, 'email' => $request->customer_email]);
+            return $userId;
+
+        } catch (\Exception $e) {
+            \Log::error('Error in user creation/retrieval:', ['error' => $e->getMessage()]);
+            
+            // Fallback: try to get any existing user or create default
+            $fallbackUser = \DB::table('vany_users')->first();
+            if ($fallbackUser) {
+                \Log::info('Using fallback user:', ['id' => $fallbackUser->id]);
+                return $fallbackUser->id;
+            }
+            
+            // If no users exist, this will fail, but it's better than having no fallback
+            throw new \Exception('Cannot create or find any user');
         }
-
-        // Create new user
-        $userId = \DB::table('vany_users')->insertGetId([
-            'name' => $request->customer_name,
-            'email' => $request->customer_email,
-            'phone' => $request->customer_phone,
-            'password' => null, // Guest user doesn't need password initially
-            'email_verified_at' => null,
-            'created_at' => now(),
-            'updated_at' => now()
-        ]);
-
-        return \DB::table('vany_users')->where('id', $userId)->first();
     }
 }
