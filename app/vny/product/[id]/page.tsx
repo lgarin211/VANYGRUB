@@ -1,6 +1,6 @@
 'use client';
 
-import React, { useState, useEffect } from 'react';
+import React, { useState, useEffect, useCallback } from 'react';
 import Image from 'next/image';
 import Link from 'next/link';
 import { showSuccess, showError, showCart } from '../../../../utils/sweetAlert';
@@ -111,6 +111,22 @@ const ProductDetail: React.FC = () => {
     }
   }, [product, productId]);
 
+  // Image navigation handler
+  const handleImageNavigation = useCallback((direction: 'prev' | 'next') => {
+    if (!product || !product.gallery || product.gallery.length <= 1) return;
+    
+    if (direction === 'prev') {
+      const newIndex = activeImageIndex === 0 ? product.gallery.length - 1 : activeImageIndex - 1;
+      setActiveImageIndex(newIndex);
+    } else {
+      const newIndex = activeImageIndex === product.gallery.length - 1 ? 0 : activeImageIndex + 1;
+      setActiveImageIndex(newIndex);
+    }
+    
+    // Ensure we're in image view when navigating
+    setActiveView('images');
+  }, [product, activeImageIndex]);
+
   // Keyboard navigation
   useEffect(() => {
     const handleKeyDown = (event: KeyboardEvent) => {
@@ -127,7 +143,7 @@ const ProductDetail: React.FC = () => {
 
     window.addEventListener('keydown', handleKeyDown);
     return () => window.removeEventListener('keydown', handleKeyDown);
-  }, [activeView, activeImageIndex, product]);
+  }, [activeView, activeImageIndex, product, handleImageNavigation]);
 
   // Cart handlers
   const handleAddToCart = async () => {
@@ -236,20 +252,7 @@ const ProductDetail: React.FC = () => {
     );
   }
 
-  const handleImageNavigation = (direction: 'prev' | 'next') => {
-    if (!product || !product.gallery || product.gallery.length <= 1) return;
-    
-    if (direction === 'prev') {
-      const newIndex = activeImageIndex === 0 ? product.gallery.length - 1 : activeImageIndex - 1;
-      setActiveImageIndex(newIndex);
-    } else {
-      const newIndex = activeImageIndex === product.gallery.length - 1 ? 0 : activeImageIndex + 1;
-      setActiveImageIndex(newIndex);
-    }
-    
-    // Ensure we're in image view when navigating
-    setActiveView('images');
-  };
+
 
   // Get current image to display
   const getCurrentImage = () => {

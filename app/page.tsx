@@ -1,6 +1,7 @@
 'use client'
 
-import { useEffect, useState, useCallback } from 'react'
+import { useEffect, useState, useCallback, useMemo } from 'react'
+import Image from 'next/image'
 import { useHomepageConstants } from '../hooks/useHomepageApi'
 import { type GalleryItem } from '../lib/homepageApi'
 import ApiLoading from '../components/ApiLoading'
@@ -14,7 +15,7 @@ export default function Home() {
   const [currentIndex, setCurrentIndex] = useState(0);
 
   // Extract data with fallback
-  const GALLERY_ITEMS = constants?.GALLERY_ITEMS || [];
+  const GALLERY_ITEMS = useMemo(() => constants?.GALLERY_ITEMS || [], [constants?.GALLERY_ITEMS]);
   const ANIMATION = constants?.ANIMATION || { CAROUSEL_INTERVAL: 5000, TRANSITION_DURATION: 300 };
   const showApiError = error && GALLERY_ITEMS.length === 0;
 
@@ -500,7 +501,7 @@ export default function Home() {
         <div className="slider-track" id="sliderTrack">
           {GALLERY_ITEMS.map((item) => (
             <div key={item.id} className="card" data-title={item.title} data-desc={item.description}>
-              <img src={item.image} alt={item.title} />
+              <Image src={item.image} alt={item.title} width={400} height={300} className="w-full h-full object-cover" />
               <div className="hover-overlay"><span>Click to see more</span></div>
             </div>
           ))}
@@ -536,7 +537,7 @@ export default function Home() {
               </button>
               
               <div className="gallery2-modal-image">
-                <img src={selectedItem.image} alt={selectedItem.title} />
+                <Image src={selectedItem.image} alt={selectedItem.title} width={800} height={600} className="w-full h-full object-contain" />
               </div>
               
               <button className="gallery2-modal-nav gallery2-modal-next" onClick={handleNext}>

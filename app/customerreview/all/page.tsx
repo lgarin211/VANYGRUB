@@ -1,6 +1,7 @@
 'use client';
 
-import { useState, useEffect } from 'react';
+import { useState, useEffect, useCallback } from 'react';
+import Image from 'next/image';
 import CustomerReviewCards from '@/components/CustomerReviewCards';
 import Link from 'next/link';
 
@@ -28,11 +29,7 @@ export default function AllCustomerReviewsPage() {
     oneStar: 0
   });
 
-  useEffect(() => {
-    fetchAllReviews();
-  }, []);
-
-  const fetchAllReviews = async () => {
+  const fetchAllReviews = useCallback(async () => {
     try {
       const response = await fetch('http://localhost:8000/api/vny/reviews/approved');
       const data = await response.json();
@@ -46,7 +43,11 @@ export default function AllCustomerReviewsPage() {
     } finally {
       setLoading(false);
     }
-  };
+  }, []);
+
+  useEffect(() => {
+    fetchAllReviews();
+  }, [fetchAllReviews]);
 
   const calculateStats = (reviews: CustomerReview[]) => {
     const total = reviews.length;
@@ -175,9 +176,11 @@ export default function AllCustomerReviewsPage() {
                   {/* Review Image */}
                   <div className="h-64 bg-gray-200 relative">
                     {review.photo_url ? (
-                      <img 
+                      <Image 
                         src={review.photo_url} 
                         alt={`Review by ${review.customer_name}`}
+                        width={400}
+                        height={256}
                         className="w-full h-full object-cover"
                       />
                     ) : (

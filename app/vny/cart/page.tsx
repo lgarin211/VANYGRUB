@@ -1,6 +1,6 @@
 'use client';
 
-import React, { useState, useEffect } from 'react';
+import React, { useState, useEffect, useMemo } from 'react';
 import Image from 'next/image';
 import Link from 'next/link';
 import { showSuccess, showError, showWarning, showOrderSuccess } from '../../../utils/sweetAlert';
@@ -48,12 +48,12 @@ const CartPage: React.FC = () => {
   });
 
   // Get cart items from API
-  const cartItems = cart?.items || [];
+  const cartItems = useMemo(() => cart?.items || [], [cart?.items]);
 
   // Load cart on component mount
   useEffect(() => {
     refreshCart();
-  }, []);
+  }, [refreshCart]);
 
   // Demo fallback data if cart is empty
   useEffect(() => {

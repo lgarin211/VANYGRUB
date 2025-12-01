@@ -1,6 +1,6 @@
 'use client';
 
-import { useEffect, useState } from 'react';
+import { useEffect, useState, useCallback } from 'react';
 import Image from 'next/image';
 import './customer-review-cards.css';
 
@@ -26,11 +26,7 @@ export default function CustomerReviewCards({ featured = false, limit, className
   const [reviews, setReviews] = useState<CustomerReview[]>([]);
   const [loading, setLoading] = useState(true);
 
-  useEffect(() => {
-    fetchReviews();
-  }, [featured, limit]);
-
-  const fetchReviews = async () => {
+  const fetchReviews = useCallback(async () => {
     try {
       const endpoint = featured ? 'featured' : 'approved';
       const params = limit ? `?limit=${limit}` : '';
@@ -46,7 +42,11 @@ export default function CustomerReviewCards({ featured = false, limit, className
     } finally {
       setLoading(false);
     }
-  };
+  }, [featured, limit]);
+
+  useEffect(() => {
+    fetchReviews();
+  }, [fetchReviews]);
 
   const truncateText = (text: string, maxLength: number = 150) => {
     if (text.length <= maxLength) return text;

@@ -1,7 +1,8 @@
 'use client';
 
-import React, { useState } from 'react';
+import React, { useState, useCallback, useMemo } from 'react';
 import Link from 'next/link';
+import Image from 'next/image';
 import Header from '../../components/Header';
 import '../../styles/gallery.css';
 
@@ -9,7 +10,7 @@ const Gallery: React.FC = () => {
   const [selectedItem, setSelectedItem] = useState<any>(null);
   const [currentIndex, setCurrentIndex] = useState(0);
 
-  const galleryItems = [
+  const galleryItems = useMemo(() => [
     {
       id: 1,
       title: 'Vany Songket',
@@ -58,24 +59,24 @@ const Gallery: React.FC = () => {
       price: 'Mulai Rp 850.000',
       category: 'Fashion Retail'
     }
-  ];
+  ], []);
 
   const handleItemClick = (item: any, index: number) => {
     setSelectedItem(item);
     setCurrentIndex(index);
   };
 
-  const handleNext = () => {
+  const handleNext = useCallback(() => {
     const nextIndex = (currentIndex + 1) % galleryItems.length;
     setSelectedItem(galleryItems[nextIndex]);
     setCurrentIndex(nextIndex);
-  };
+  }, [currentIndex, galleryItems]);
 
-  const handlePrev = () => {
+  const handlePrev = useCallback(() => {
     const prevIndex = (currentIndex - 1 + galleryItems.length) % galleryItems.length;
     setSelectedItem(galleryItems[prevIndex]);
     setCurrentIndex(prevIndex);
-  };
+  }, [currentIndex, galleryItems]);
 
   const closeModal = () => {
     setSelectedItem(null);
@@ -97,7 +98,7 @@ const Gallery: React.FC = () => {
 
     document.addEventListener('keydown', handleKeyDown);
     return () => document.removeEventListener('keydown', handleKeyDown);
-  }, [selectedItem, currentIndex]);
+  }, [selectedItem, currentIndex, handleNext, handlePrev]);
 
   return (
     <div className="gallery-container">
@@ -117,7 +118,7 @@ const Gallery: React.FC = () => {
             {galleryItems.slice(0, 3).map((item, index) => (
               <li key={item.id} className="gallery-item" style={{'--delay': `${index * 0.2}s`} as React.CSSProperties}>
                 <figure className="image" onClick={() => handleItemClick(item, index)}>
-                  <img src={item.image} alt={item.title} />
+                  <Image src={item.image} alt={item.title} width={400} height={300} className="w-full h-full object-cover" />
                   <figcaption>{item.title}</figcaption>
                 </figure>
               </li>
@@ -129,7 +130,7 @@ const Gallery: React.FC = () => {
             {galleryItems.slice(3, 5).map((item, index) => (
               <li key={item.id} className="gallery-item" style={{'--delay': `${(index + 3) * 0.2}s`} as React.CSSProperties}>
                 <figure className="image" onClick={() => handleItemClick(item, index + 3)}>
-                  <img src={item.image} alt={item.title} />
+                  <Image src={item.image} alt={item.title} width={400} height={300} className="w-full h-full object-cover" />
                   <figcaption>{item.title}</figcaption>
                 </figure>
               </li>
@@ -140,7 +141,7 @@ const Gallery: React.FC = () => {
           <ul className="third">
             <li className="gallery-item" style={{'--delay': '1.0s'} as React.CSSProperties}>
               <figure className="image" onClick={() => handleItemClick(galleryItems[5], 5)}>
-                <img src={galleryItems[5].image} alt={galleryItems[5].title} />
+                <Image src={galleryItems[5].image} alt={galleryItems[5].title} width={400} height={300} className="w-full h-full object-cover" />
                 <figcaption>{galleryItems[5].title}</figcaption>
               </figure>
             </li>
@@ -166,7 +167,7 @@ const Gallery: React.FC = () => {
               </button>
               
               <div className="gallery-modal-image">
-                <img src={selectedItem.image} alt={selectedItem.title} />
+                <Image src={selectedItem.image} alt={selectedItem.title} width={800} height={600} className="w-full h-full object-contain" />
               </div>
               
               <button className="gallery-modal-nav gallery-modal-next" onClick={handleNext}>

@@ -2,6 +2,7 @@
 
 import React from 'react';
 import Link from 'next/link';
+import Image from 'next/image';
 import { useCategories, type Category } from '../hooks/useCategories';
 
 const FeaturedCategories: React.FC = () => {
@@ -82,9 +83,11 @@ const FeaturedCategories: React.FC = () => {
               className="overflow-hidden transition-shadow bg-white shadow-lg rounded-xl md:rounded-2xl hover:shadow-xl group"
             >
               <div className="relative h-48 overflow-hidden md:h-64">
-                <img 
+                <Image 
                   src={category.image} 
                   alt={`${category.name} Collection`} 
+                  width={400}
+                  height={256}
                   className="object-cover w-full h-full transition-transform duration-500 group-hover:scale-110"
                   onError={(e) => {
                     // Fallback to placeholder if image fails to load

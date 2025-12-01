@@ -75,9 +75,11 @@ const AboutPage: React.FC = () => {
               
               <div className="relative">
                 <div className="p-8 bg-red-50 rounded-2xl">
-                  <img 
+                  <Image 
                     src="/temp/nike-just-do-it(6).jpg" 
                     alt="VNY Toba Shoes History" 
+                    width={400}
+                    height={256}
                     className="object-cover w-full h-64 shadow-lg rounded-xl"
                   />
                 </div>
@@ -148,14 +150,18 @@ const AboutPage: React.FC = () => {
             <div className="grid items-center grid-cols-1 gap-12 lg:grid-cols-2">
               <div className="relative">
                 <div className="grid grid-cols-2 gap-4">
-                  <img 
+                  <Image 
                     src="/temp/nike-just-do-it(7).jpg" 
                     alt="Craftsmanship 1" 
+                    width={300}
+                    height={192}
                     className="object-cover w-full h-48 shadow-lg rounded-xl"
                   />
-                  <img 
+                  <Image 
                     src="/temp/nike-just-do-it(8).jpg" 
-                    alt="Craftsmanship 2" 
+                    alt="Craftsmanship 2"
+                    width={300}
+                    height={192} 
                     className="object-cover w-full h-48 mt-8 shadow-lg rounded-xl"
                   />
                 </div>
