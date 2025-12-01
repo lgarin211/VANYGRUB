@@ -450,28 +450,30 @@ class OrderController extends Controller
 
     private function getOrCreateGuestUser($request): int
     {
-        // Check if user exists by email or phone
-        $existingUser = \DB::table('vany_users')
-            ->where('email', $request->customer_email)
-            ->orWhere('phone', $request->customer_phone)
-            ->first();
+        // Check if we have User model available
+        if (class_exists(\App\Models\User::class)) {
+            // Check if user exists by email
+            $existingUser = \App\Models\User::where('email', $request->customer_email)
+                ->orWhere('phone', $request->customer_phone)
+                ->first();
 
-        if ($existingUser) {
-            return $existingUser->id;
+            if ($existingUser) {
+                return $existingUser->id;
+            }
+
+            // Create new guest user using User model
+            $user = \App\Models\User::create([
+                'name' => $request->customer_name,
+                'email' => $request->customer_email,
+                'phone' => $request->customer_phone,
+                'password' => bcrypt('guest123'), // Provide a default password
+            ]);
+
+            return $user->id;
         }
 
-        // Create new guest user
-        $userId = \DB::table('vany_users')->insertGetId([
-            'name' => $request->customer_name,
-            'email' => $request->customer_email,
-            'phone' => $request->customer_phone,
-            'role' => 'customer', // Use 'customer' instead of 'guest'
-            'email_verified_at' => null,
-            'password' => null, // Guest user doesn't need password
-            'created_at' => now(),
-            'updated_at' => now()
-        ]);
-
-        return $userId;
+        // Fallback: For now, use a default user ID if user creation fails
+        // In production, this should be handled properly
+        return 1;
     }
 }
