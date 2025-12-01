@@ -465,7 +465,7 @@ class OrderController extends Controller
             'name' => $request->customer_name,
             'email' => $request->customer_email,
             'phone' => $request->customer_phone,
-            'role' => 'guest',
+            'role' => 'customer', // Use 'customer' instead of 'guest'
             'email_verified_at' => null,
             'password' => null, // Guest user doesn't need password
             'created_at' => now(),
