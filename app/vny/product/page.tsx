@@ -1,10 +1,29 @@
 'use client';
 
-import React from 'react';
+import React, { useEffect } from 'react';
 import Header from '../../../components/Header';
 import ProductList from '../../../components/ProductList';
+import { preloadImages } from '../../../lib/cache';
 
 const ProductPage: React.FC = () => {
+  useEffect(() => {
+    // Preload product images for better UX
+    const productImages = [
+      '/temp/nike-just-do-it(1).jpg',
+      '/temp/nike-just-do-it(2).jpg',
+      '/temp/nike-just-do-it(3).jpg',
+      '/temp/nike-just-do-it(4).jpg',
+      '/temp/nike-just-do-it(5).jpg',
+      '/temp/nike-just-do-it(6).jpg',
+      '/temp/nike-just-do-it(7).jpg',
+      '/temp/nike-just-do-it(8).jpg'
+    ];
+
+    preloadImages(productImages).then(() => {
+      console.log('Product page: Images preloaded');
+    });
+  }, []);
+
   return (
     <main className="min-h-screen bg-gray-50">
       <Header />

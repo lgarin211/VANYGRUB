@@ -3,6 +3,7 @@
 
 import { useState, useEffect } from 'react';
 import { apiClient, transformApiData, withErrorHandling } from '../lib/api';
+import { withCache } from '../lib/cache';
 
 // Hook for fetching all data (replacement for dataHome.json)
 export const useHomeData = () => {
@@ -14,7 +15,12 @@ export const useHomeData = () => {
     const fetchData = async () => {
       try {
         setLoading(true);
-        const response: any = await withErrorHandling(() => apiClient.getAllData());
+        const staticCacheTTL = parseInt(process.env.NEXT_PUBLIC_STATIC_CACHE_TTL || '1440') * 60 * 1000;
+        const response: any = await withCache(
+          'home-data',
+          () => withErrorHandling(() => apiClient.getAllData()) as Promise<any>,
+          staticCacheTTL
+        );
         
         if (response) {
           // Transform API data to match the expected format
@@ -93,7 +99,14 @@ export const useProducts = (params?: {
     const fetchProducts = async () => {
       try {
         setLoading(true);
-        const response: any = await withErrorHandling(() => apiClient.getProducts(params));
+        const productsCacheTTL = parseInt(process.env.NEXT_PUBLIC_PRODUCTS_CACHE_TTL || '60') * 60 * 1000;
+        const cacheKey = `products-${JSON.stringify(params || {})}`;
+        
+        const response: any = await withCache(
+          cacheKey,
+          () => withErrorHandling(() => apiClient.getProducts(params)) as Promise<any>,
+          productsCacheTTL
+        );
         
         if (response && response.data) {
           const transformedProducts = response.data.map(transformApiData.product);
@@ -133,7 +146,14 @@ export const useProduct = (id: number) => {
     const fetchProduct = async () => {
       try {
         setLoading(true);
-        const response: any = await withErrorHandling(() => apiClient.getProduct(id));
+        const productsCacheTTL = parseInt(process.env.NEXT_PUBLIC_PRODUCTS_CACHE_TTL || '60') * 60 * 1000;
+        const cacheKey = `product-${id}`;
+        
+        const response: any = await withCache(
+          cacheKey,
+          () => withErrorHandling(() => apiClient.getProduct(id)) as Promise<any>,
+          productsCacheTTL
+        );
         
         if (response && response.data) {
           const transformedProduct = transformApiData.product(response.data);
@@ -682,4 +702,64 @@ export const useOrderTracking = (orderCode: string) => {
   }, [orderCode]);
 
   return { orderData, loading, error, refetch: fetchOrderData };
+};
+
+// Hook for transactions page
+export const useTransactions = (sessionId?: string) => {
+  const [transactions, setTransactions] = useState<any[]>([]);
+  const [loading, setLoading] = useState(true);
+  const [error, setError] = useState<string | null>(null);
+
+  const fetchTransactions = async () => {
+    try {
+      setLoading(true);
+      setError(null);
+      
+      // Try to fetch from API first
+      const response = await withErrorHandling(() => 
+        apiClient.getOrders(sessionId)
+      ) as any;
+      
+      if (response && response.data) {
+        // Transform API data to match frontend transaction format
+        const transformedTransactions = response.data.map((order: any) => ({
+          id: order.order_code || order.id,
+          date: order.created_at ? new Date(order.created_at).toISOString().split('T')[0] : new Date().toISOString().split('T')[0],
+          status: order.status || 'pending',
+          items: order.items ? (typeof order.items === 'string' ? JSON.parse(order.items) : order.items) : [],
+          total: parseFloat(order.total_amount || '0'),
+          shippingAddress: order.shipping_address || '',
+          paymentMethod: order.payment_method || 'Pending',
+          trackingNumber: order.tracking_number || undefined,
+          customerInfo: {
+            name: order.customer_name || '',
+            phone: order.customer_phone || '',
+            email: order.customer_email || '',
+            address: order.shipping_address || ''
+          }
+        }));
+        
+        setTransactions(transformedTransactions);
+      } else {
+        // Fallback to demo data if API fails
+        setTransactions([]);
+      }
+    } catch (err) {
+      setError('Failed to fetch transactions');
+      console.error('Transactions fetch error:', err);
+      
+      // Fallback to demo data
+      setTransactions([]);
+    } finally {
+      setLoading(false);
+    }
+  };
+
+  useEffect(() => {
+    fetchTransactions();
+  }, [sessionId]);
+
+  const refreshTransactions = () => fetchTransactions();
+
+  return { transactions, loading, error, refreshTransactions };
 };

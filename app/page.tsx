@@ -5,6 +5,7 @@ import { useHomepageConstants } from '../hooks/useHomepageApi'
 import { type GalleryItem } from '../lib/homepageApi'
 import ApiLoading from '../components/ApiLoading'
 import DynamicMetadata from '../components/DynamicMetadata'
+import { preloadImages } from '../lib/cache'
 import './home.css'
 
 export default function Home() {
@@ -427,6 +428,12 @@ export default function Home() {
   useEffect(() => {
     // Only initialize GSAP slider when we have gallery items and component is not loading
     if (loading || GALLERY_ITEMS.length === 0) return;
+
+    // Preload gallery images for better performance
+    const galleryImages = GALLERY_ITEMS.map(item => item.image);
+    preloadImages(galleryImages).then(() => {
+      console.log('Home page: Gallery images preloaded');
+    });
 
     // Check if GSAP is already loaded
     if (typeof window !== 'undefined' && window.gsap) {

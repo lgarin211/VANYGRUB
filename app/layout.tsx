@@ -3,6 +3,7 @@ import 'sweetalert2/dist/sweetalert2.min.css'
 import type { Metadata } from 'next'
 import { Inter } from 'next/font/google'
 import AOSProvider from '@/components/AOSProvider'
+import CacheProvider from '@/components/CacheProvider'
 
 const inter = Inter({ subsets: ['latin'] })
 
@@ -20,7 +21,9 @@ export default function RootLayout({
     <html lang="en">
       <body className={inter.className}>
         <AOSProvider>
-          {children}
+          <CacheProvider>
+            {children}
+          </CacheProvider>
         </AOSProvider>
       </body>
     </html>

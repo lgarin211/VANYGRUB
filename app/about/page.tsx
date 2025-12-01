@@ -1,11 +1,25 @@
 'use client';
 
-import React from 'react';
+import React, { useEffect } from 'react';
 import Link from 'next/link';
 import Image from 'next/image';
 import Header from '../../components/Header';
+import { preloadImages } from '../../lib/cache';
 
 const AboutPage: React.FC = () => {
+  useEffect(() => {
+    // Preload images used in about page
+    const aboutImages = [
+      '/temp/nike-just-do-it(1).jpg',
+      '/temp/nike-just-do-it(2).jpg',
+      '/temp/nike-just-do-it(3).jpg'
+    ];
+
+    preloadImages(aboutImages).then(() => {
+      console.log('About page: Images preloaded');
+    });
+  }, []);
+
   return (
     <div className="min-h-screen bg-white">
       <Header />

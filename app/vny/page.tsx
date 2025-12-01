@@ -1,8 +1,9 @@
 'use client';
 
-import React from 'react';
+import React, { useEffect } from 'react';
 import Link from 'next/link';
 import Header from '../../components/Header';
+import { preloadImages } from '../../lib/cache';
 import HeroSection from '../../components/HeroSection';
 import FeaturedCategories from '../../components/FeaturedCategories';
 import ProductGrid from '../../components/ProductGrid';
@@ -11,6 +12,21 @@ import SpecialOffer from '../../components/SpecialOffer';
 import Footer from '../../components/Footer';
 
 const VNYHomePage: React.FC = () => {
+  useEffect(() => {
+    // Preload critical images for better performance
+    const criticalImages = [
+      '/temp/nike-just-do-it(6).jpg',
+      '/temp/nike-just-do-it(7).jpg',
+      '/temp/nike-just-do-it(8).jpg',
+      '/temp/nike-just-do-it(9).jpg',
+      '/temp/nike-just-do-it(10).jpg'
+    ];
+
+    preloadImages(criticalImages).then(() => {
+      console.log('VNY page: Critical images preloaded');
+    });
+  }, []);
+
   return (
     <div className="min-h-screen bg-white">
       {/* Header */}
