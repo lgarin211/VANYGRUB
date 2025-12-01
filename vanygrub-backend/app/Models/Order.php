@@ -15,6 +15,7 @@ class Order extends Model
         'user_id',
         'order_number',
         'customer_name',
+        'customer_email',
         'status',
         'subtotal',
         'discount_amount',

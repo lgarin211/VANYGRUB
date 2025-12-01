@@ -125,6 +125,7 @@ class OrderController extends Controller
                 'user_id' => 1, // Default user ID for guest orders
                 'order_number' => $orderCode,
                 'customer_name' => $request->customer_name,
+                'customer_email' => $request->customer_email,
                 'status' => 'pending',
                 'subtotal' => $request->total_amount, // Assuming no discount for now
                 'discount_amount' => 0,
