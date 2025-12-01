@@ -22,11 +22,24 @@ interface Order {
   created_at?: string;
 }
 
+interface SubmittedReview {
+  id: number;
+  customer_name: string;
+  photo_url: string;
+  review_text: string;
+  rating: number;
+  order_number?: string;
+  created_at: string;
+  formatted_date?: string;
+}
+
 interface ReviewData {
   review_token: string;
   order?: Order;
   customer_name?: string;
   order_items?: OrderItem[];
+  message?: string;
+  review?: SubmittedReview;
 }
 
 export default function ReviewForm() {
@@ -37,6 +50,8 @@ export default function ReviewForm() {
   const [submitting, setSubmitting] = useState(false);
   const [error, setError] = useState('');
   const [success, setSuccess] = useState(false);
+  const [isReviewSubmitted, setIsReviewSubmitted] = useState(false);
+  const [submittedReview, setSubmittedReview] = useState<SubmittedReview | null>(null);
 
   // Form states
   const [photo, setPhoto] = useState<File | null>(null);
@@ -56,7 +71,13 @@ export default function ReviewForm() {
       const data = await response.json();
       
       if (response.ok) {
-        setReviewData(data);
+        // Check if review already submitted
+        if (data.message === 'Review sudah pernah disubmit' && data.review) {
+          setIsReviewSubmitted(true);
+          setSubmittedReview(data.review);
+        } else {
+          setReviewData(data);
+        }
       } else {
         setError(data.error || 'Review token tidak valid');
       }
@@ -157,6 +178,117 @@ export default function ReviewForm() {
           >
             Kembali ke Beranda
           </button>
+        </div>
+      </div>
+    );
+  }
+
+  // Display submitted review
+  if (isReviewSubmitted && submittedReview) {
+    const reviewDate = new Date(submittedReview.created_at);
+    const renderStars = (rating: number) => {
+      return Array.from({ length: 5 }, (_, i) => (
+        <span key={i} className={`text-2xl ${i < rating ? 'text-yellow-400' : 'text-gray-300'}`}>⭐</span>
+      ));
+    };
+
+    return (
+      <div className="min-h-screen bg-gradient-to-br from-blue-50 to-blue-100 py-12">
+        <div className="container mx-auto px-4 max-w-4xl">
+          {/* Header */}
+          <div className="text-center mb-12">
+            <h1 className="text-4xl font-bold text-red-600 mb-4">VNY STORE</h1>
+            <h2 className="text-2xl font-semibold text-gray-800 mb-2">Review Anda</h2>
+            <p className="text-gray-600">Terima kasih telah memberikan review untuk pesanan Anda!</p>
+          </div>
+
+          {/* Submitted Review Card */}
+          <div className="bg-white rounded-lg shadow-lg overflow-hidden">
+            <div className="bg-gradient-to-r from-red-600 to-red-700 text-white p-6">
+              <div className="flex items-center justify-between">
+                <div>
+                  <h3 className="text-xl font-semibold">{submittedReview.customer_name}</h3>
+                  <p className="opacity-90">Order #{submittedReview.order_number || 'N/A'}</p>
+                </div>
+                <div className="text-right">
+                  <div className="text-sm opacity-90">Tanggal Review</div>
+                  <div className="font-semibold">
+                    {reviewDate.toLocaleDateString('id-ID', { 
+                      day: 'numeric', 
+                      month: 'long', 
+                      year: 'numeric' 
+                    })}
+                  </div>
+                </div>
+              </div>
+            </div>
+
+            <div className="p-6">
+              <div className="grid md:grid-cols-2 gap-8">
+                {/* Photo Section */}
+                <div>
+                  <h4 className="text-lg font-semibold mb-4 text-gray-800">Foto Review</h4>
+                  <div className="relative w-full h-64 bg-gray-100 rounded-lg overflow-hidden">
+                    {submittedReview.photo_url ? (
+                      <Image 
+                        src={`https://vanyadmin.progesio.my.id/storage/${submittedReview.photo_url}`}
+                        alt={`Review by ${submittedReview.customer_name}`}
+                        fill
+                        className="object-cover"
+                      />
+                    ) : (
+                      <div className="flex items-center justify-center h-full text-gray-500">
+                        <div className="text-center">
+                          <div className="text-4xl mb-2">📷</div>
+                          <p>Tidak ada foto</p>
+                        </div>
+                      </div>
+                    )}
+                  </div>
+                </div>
+
+                {/* Review Content */}
+                <div>
+                  <div className="mb-6">
+                    <h4 className="text-lg font-semibold mb-3 text-gray-800">Rating</h4>
+                    <div className="flex items-center gap-2">
+                      {renderStars(submittedReview.rating)}
+                      <span className="text-lg font-semibold text-gray-700 ml-2">
+                        {submittedReview.rating}/5
+                      </span>
+                    </div>
+                  </div>
+
+                  <div>
+                    <h4 className="text-lg font-semibold mb-3 text-gray-800">Review</h4>
+                    <div className="bg-gray-50 p-4 rounded-lg">
+                      <p className="text-gray-700 leading-relaxed">
+                        {submittedReview.review_text}
+                      </p>
+                    </div>
+                  </div>
+                </div>
+              </div>
+
+              {/* Status Badge */}
+              <div className="mt-8 text-center">
+                <div className="inline-flex items-center px-4 py-2 bg-blue-100 text-blue-800 rounded-full">
+                  <div className="w-2 h-2 bg-blue-600 rounded-full mr-2"></div>
+                  <span className="font-medium">Review telah diterima dan sedang dalam proses persetujuan</span>
+                </div>
+              </div>
+
+              {/* Action Button */}
+              <div className="mt-8 text-center">
+                <button 
+                  onClick={() => router.push('/')}
+                  className="bg-red-600 text-white px-8 py-3 rounded-lg hover:bg-red-700 transition-colors font-semibold"
+                >
+                  Kembali ke Beranda
+                </button>
+              </div>
+            </div>
+          </div>
         </div>
       </div>
     );
