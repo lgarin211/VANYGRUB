@@ -29,9 +29,9 @@ class SiteConfig extends Model
     public static function getValue(string $group, string $key, $default = null)
     {
         $config = self::where('group', $group)
-                      ->where('key', $key)
-                      ->where('is_active', true)
-                      ->first();
+            ->where('key', $key)
+            ->where('is_active', true)
+            ->first();
 
         return $config ? $config->value : $default;
     }
@@ -58,9 +58,9 @@ class SiteConfig extends Model
     public static function getByGroup(string $group)
     {
         return self::where('group', $group)
-                   ->where('is_active', true)
-                   ->get()
-                   ->pluck('value', 'key');
+            ->where('is_active', true)
+            ->get()
+            ->pluck('value', 'key');
     }
 
     /**

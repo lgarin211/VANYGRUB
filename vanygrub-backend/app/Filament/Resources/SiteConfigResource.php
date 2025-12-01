@@ -49,7 +49,8 @@ class SiteConfigResource extends Resource
                                     ->required()
                                     ->searchable()
                                     ->reactive()
-                                    ->afterStateUpdated(fn ($state, callable $set) => 
+                                    ->afterStateUpdated(
+                                        fn($state, callable $set) =>
                                         $set('key', null)
                                     ),
 
@@ -120,45 +121,45 @@ class SiteConfigResource extends Resource
                         // Dynamic value field based on type
                         Forms\Components\TextInput::make('value_text')
                             ->label('Value')
-                            ->visible(fn (callable $get) => in_array($get('type'), ['text', 'url', 'email']))
-                            ->required(fn (callable $get) => in_array($get('type'), ['text', 'url', 'email']))
-                            ->email(fn (callable $get) => $get('type') === 'email')
-                            ->url(fn (callable $get) => $get('type') === 'url')
-                            ->dehydrateStateUsing(fn ($state) => $state),
+                            ->visible(fn(callable $get) => in_array($get('type'), ['text', 'url', 'email']))
+                            ->required(fn(callable $get) => in_array($get('type'), ['text', 'url', 'email']))
+                            ->email(fn(callable $get) => $get('type') === 'email')
+                            ->url(fn(callable $get) => $get('type') === 'url')
+                            ->dehydrateStateUsing(fn($state) => $state),
 
                         Forms\Components\Textarea::make('value_textarea')
                             ->label('Value')
-                            ->visible(fn (callable $get) => $get('type') === 'textarea')
-                            ->required(fn (callable $get) => $get('type') === 'textarea')
+                            ->visible(fn(callable $get) => $get('type') === 'textarea')
+                            ->required(fn(callable $get) => $get('type') === 'textarea')
                             ->rows(4)
-                            ->dehydrateStateUsing(fn ($state) => $state),
+                            ->dehydrateStateUsing(fn($state) => $state),
 
                         Forms\Components\ColorPicker::make('value_color')
                             ->label('Color Value')
-                            ->visible(fn (callable $get) => $get('type') === 'color')
-                            ->required(fn (callable $get) => $get('type') === 'color')
-                            ->dehydrateStateUsing(fn ($state) => $state),
+                            ->visible(fn(callable $get) => $get('type') === 'color')
+                            ->required(fn(callable $get) => $get('type') === 'color')
+                            ->dehydrateStateUsing(fn($state) => $state),
 
                         Forms\Components\TextInput::make('value_number')
                             ->label('Number Value')
-                            ->visible(fn (callable $get) => $get('type') === 'number')
-                            ->required(fn (callable $get) => $get('type') === 'number')
+                            ->visible(fn(callable $get) => $get('type') === 'number')
+                            ->required(fn(callable $get) => $get('type') === 'number')
                             ->numeric()
-                            ->dehydrateStateUsing(fn ($state) => (int)$state),
+                            ->dehydrateStateUsing(fn($state) => (int) $state),
 
                         Forms\Components\TagsInput::make('value_array')
                             ->label('Array Values')
-                            ->visible(fn (callable $get) => $get('type') === 'array')
-                            ->required(fn (callable $get) => $get('type') === 'array')
-                            ->dehydrateStateUsing(fn ($state) => $state),
+                            ->visible(fn(callable $get) => $get('type') === 'array')
+                            ->required(fn(callable $get) => $get('type') === 'array')
+                            ->dehydrateStateUsing(fn($state) => $state),
 
                         Forms\Components\Textarea::make('value_json')
                             ->label('JSON Value')
-                            ->visible(fn (callable $get) => $get('type') === 'json')
-                            ->required(fn (callable $get) => $get('type') === 'json')
+                            ->visible(fn(callable $get) => $get('type') === 'json')
+                            ->required(fn(callable $get) => $get('type') === 'json')
                             ->rows(6)
                             ->helperText('Enter valid JSON format')
-                            ->dehydrateStateUsing(fn ($state) => json_decode($state, true)),
+                            ->dehydrateStateUsing(fn($state) => json_decode($state, true)),
 
                         Forms\Components\Textarea::make('description')
                             ->label('Description')
@@ -180,7 +181,7 @@ class SiteConfigResource extends Resource
                 Tables\Columns\TextColumn::make('group')
                     ->label('Group')
                     ->badge()
-                    ->color(fn (string $state): string => match ($state) {
+                    ->color(fn(string $state): string => match ($state) {
                         'meta' => 'primary',
                         'hero_section' => 'success',
                         'colors' => 'warning',
@@ -294,20 +295,26 @@ class SiteConfigResource extends Resource
     private function processValueField(array $data): array
     {
         $type = $data['type'] ?? 'text';
-        
+
         $data['value'] = match ($type) {
             'text', 'url', 'email' => $data['value_text'] ?? '',
             'textarea' => $data['value_textarea'] ?? '',
             'color' => $data['value_color'] ?? '',
-            'number' => (int)($data['value_number'] ?? 0),
+            'number' => (int) ($data['value_number'] ?? 0),
             'array' => $data['value_array'] ?? [],
             'json' => $data['value_json'] ?? null,
             default => $data['value_text'] ?? ''
         };
 
         // Remove temporary fields
-        unset($data['value_text'], $data['value_textarea'], $data['value_color'], 
-              $data['value_number'], $data['value_array'], $data['value_json']);
+        unset(
+            $data['value_text'],
+            $data['value_textarea'],
+            $data['value_color'],
+            $data['value_number'],
+            $data['value_array'],
+            $data['value_json']
+        );
 
         return $data;
     }

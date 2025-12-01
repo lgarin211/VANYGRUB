@@ -126,7 +126,7 @@ class HomepageGalleryItemResource extends Resource
                 Tables\Columns\TextColumn::make('category')
                     ->label('Category')
                     ->badge()
-                    ->color(fn (string $state): string => match ($state) {
+                    ->color(fn(string $state): string => match ($state) {
                         'Traditional Fashion' => 'warning',
                         'Footwear' => 'info',
                         'Hospitality' => 'success',
@@ -152,7 +152,7 @@ class HomepageGalleryItemResource extends Resource
                     ->label('Link')
                     ->limit(30)
                     ->copyable()
-                    ->copyableState(fn ($record) => $record->target)
+                    ->copyableState(fn($record) => $record->target)
                     ->tooltip('Click to copy'),
 
                 Tables\Columns\TextColumn::make('sort_order')
@@ -197,9 +197,9 @@ class HomepageGalleryItemResource extends Resource
                 Tables\Actions\Action::make('preview')
                     ->label('Preview')
                     ->icon('heroicon-o-eye')
-                    ->url(fn ($record) => $record->target)
+                    ->url(fn($record) => $record->target)
                     ->openUrlInNewTab()
-                    ->visible(fn ($record) => $record->target !== '/'),
+                    ->visible(fn($record) => $record->target !== '/'),
             ])
             ->bulkActions([
                 Tables\Actions\BulkActionGroup::make([
@@ -207,13 +207,13 @@ class HomepageGalleryItemResource extends Resource
                     Tables\Actions\BulkAction::make('activate')
                         ->label('Activate Selected')
                         ->icon('heroicon-o-check-circle')
-                        ->action(fn ($records) => $records->each(fn ($record) => $record->update(['is_active' => true])))
+                        ->action(fn($records) => $records->each(fn($record) => $record->update(['is_active' => true])))
                         ->color('success')
                         ->requiresConfirmation(),
                     Tables\Actions\BulkAction::make('deactivate')
                         ->label('Deactivate Selected')
                         ->icon('heroicon-o-x-circle')
-                        ->action(fn ($records) => $records->each(fn ($record) => $record->update(['is_active' => false])))
+                        ->action(fn($records) => $records->each(fn($record) => $record->update(['is_active' => false])))
                         ->color('danger')
                         ->requiresConfirmation(),
                 ]),

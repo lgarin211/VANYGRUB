@@ -18,9 +18,9 @@ class EditHomepageGalleryItem extends EditRecord
             Actions\Action::make('preview')
                 ->label('Preview Item')
                 ->icon('heroicon-o-eye')
-                ->url(fn () => $this->record->target)
+                ->url(fn() => $this->record->target)
                 ->openUrlInNewTab()
-                ->visible(fn () => $this->record->target !== '/'),
+                ->visible(fn() => $this->record->target !== '/'),
         ];
     }
 
