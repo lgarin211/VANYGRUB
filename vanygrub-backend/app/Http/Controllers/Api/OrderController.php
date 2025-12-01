@@ -106,11 +106,15 @@ class OrderController extends Controller
             // Create order in database
             // For guest orders, use a default user ID
             // In production, you should handle user authentication properly
-            // Log data before creating order
-            \Log::info('Creating order with data:', [
-                'user_id' => 1,
+            // Get or create user based on customer data
+            $userId = $this->getOrCreateUserIdFromCustomerData($request);
+
+            // Prepare order data
+            $orderData = [
+                'user_id' => $userId,
                 'order_number' => $orderCode,
                 'customer_name' => $request->customer_name,
+                'customer_email' => $request->customer_email,
                 'status' => 'pending',
                 'subtotal' => $request->total_amount,
                 'discount_amount' => 0,
@@ -119,22 +123,11 @@ class OrderController extends Controller
                 'phone' => $request->customer_phone,
                 'notes' => $request->notes,
                 'promo_code_id' => null
-            ]);
+            ];
 
-            $order = Order::create([
-                'user_id' => 1, // Default user ID for guest orders
-                'order_number' => $orderCode,
-                'customer_name' => $request->customer_name,
-                'customer_email' => $request->customer_email,
-                'status' => 'pending',
-                'subtotal' => $request->total_amount, // Assuming no discount for now
-                'discount_amount' => 0,
-                'total_amount' => $request->total_amount,
-                'shipping_address' => $request->shipping_address . ', ' . $request->shipping_city . ' ' . $request->shipping_postal_code,
-                'phone' => $request->customer_phone,
-                'notes' => $request->notes,
-                'promo_code_id' => null
-            ]);
+            \Log::info('Creating order with user_id:', $userId);
+
+            $order = Order::create($orderData);
 
             // Create order items
             foreach ($request->items as $item) {
@@ -464,5 +457,37 @@ class OrderController extends Controller
         Session::forget("cart_{$sessionId}");
     }
 
+    private function getOrCreateUserFromCustomerData($request)
+    {
+        // Check if user exists by email
+        $existingUser = \DB::table('vany_users')
+            ->where('email', $request->customer_email)
+            ->first();
 
+        if ($existingUser) {
+            // Update user data if phone is different
+            if ($existingUser->phone !== $request->customer_phone) {
+                \DB::table('vany_users')
+                    ->where('id', $existingUser->id)
+                    ->update([
+                        'phone' => $request->customer_phone,
+                        'updated_at' => now()
+                    ]);
+            }
+            return $existingUser;
+        }
+
+        // Create new user
+        $userId = \DB::table('vany_users')->insertGetId([
+            'name' => $request->customer_name,
+            'email' => $request->customer_email,
+            'phone' => $request->customer_phone,
+            'password' => null, // Guest user doesn't need password initially
+            'email_verified_at' => null,
+            'created_at' => now(),
+            'updated_at' => now()
+        ]);
+
+        return \DB::table('vany_users')->where('id', $userId)->first();
+    }
 }
