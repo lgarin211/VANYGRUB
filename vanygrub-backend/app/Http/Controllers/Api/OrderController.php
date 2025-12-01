@@ -106,15 +106,30 @@ class OrderController extends Controller
             // Create order in database
             // For guest orders, use a default user ID
             // In production, you should handle user authentication properly
+            // Log data before creating order
+            \Log::info('Creating order with data:', [
+                'user_id' => 1,
+                'order_number' => $orderCode,
+                'customer_name' => $request->customer_name,
+                'status' => 'pending',
+                'subtotal' => $request->total_amount,
+                'discount_amount' => 0,
+                'total_amount' => $request->total_amount,
+                'shipping_address' => $request->shipping_address . ', ' . $request->shipping_city . ' ' . $request->shipping_postal_code,
+                'phone' => $request->customer_phone,
+                'notes' => $request->notes,
+                'promo_code_id' => null
+            ]);
+
+            // Try to create order without customer_name first to test database
             $order = Order::create([
                 'user_id' => 1, // Default user ID for guest orders
                 'order_number' => $orderCode,
-                'customer_name' => $request->customer_name,
                 'status' => 'pending',
                 'subtotal' => $request->total_amount, // Assuming no discount for now
                 'discount_amount' => 0,
                 'total_amount' => $request->total_amount,
-                'shipping_address' => $request->shipping_address . ', ' . $request->shipping_city . ' ' . $request->shipping_postal_code,
+                'shipping_address' => $request->customer_name . ' - ' . $request->shipping_address . ', ' . $request->shipping_city . ' ' . $request->shipping_postal_code,
                 'phone' => $request->customer_phone,
                 'notes' => $request->notes,
                 'promo_code_id' => null
