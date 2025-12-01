@@ -121,15 +121,15 @@ class OrderController extends Controller
                 'promo_code_id' => null
             ]);
 
-            // Try to create order without customer_name first to test database
             $order = Order::create([
                 'user_id' => 1, // Default user ID for guest orders
                 'order_number' => $orderCode,
+                'customer_name' => $request->customer_name,
                 'status' => 'pending',
                 'subtotal' => $request->total_amount, // Assuming no discount for now
                 'discount_amount' => 0,
                 'total_amount' => $request->total_amount,
-                'shipping_address' => $request->customer_name . ' - ' . $request->shipping_address . ', ' . $request->shipping_city . ' ' . $request->shipping_postal_code,
+                'shipping_address' => $request->shipping_address . ', ' . $request->shipping_city . ' ' . $request->shipping_postal_code,
                 'phone' => $request->customer_phone,
                 'notes' => $request->notes,
                 'promo_code_id' => null

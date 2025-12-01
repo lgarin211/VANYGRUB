@@ -236,55 +236,137 @@ const CartPage: React.FC = () => {
       return;
     }
 
-    // Generate unique order code
-    const orderCode = generateUniqueCode();
-    
-    // Store order data in localStorage for receipt page
-    const orderData = {
-      orderCode,
-      customerInfo,
-      items: cartItems,
-      pricing: {
-        subtotal,
-        itemDiscount,
-        promoDiscount,
-        appliedPromo,
-        tax,
-        shipping,
-        total
-      },
-      orderDate: new Date().toISOString(),
-      status: 'pending'
-    };
-    
-    localStorage.setItem(`order_${orderCode}`, JSON.stringify(orderData));
+    try {
+      // First, create order via API with customer registration
+      const orderPayload = {
+        customer_name: customerInfo.name,
+        customer_email: customerInfo.email,
+        customer_phone: customerInfo.phone,
+        shipping_address: customerInfo.address,
+        shipping_city: customerInfo.city,
+        shipping_postal_code: customerInfo.postalCode,
+        total_amount: total,
+        notes: customerInfo.notes,
+        session_id: getSessionId(),
+        items: cartItems.map(item => ({
+          product_id: item.id,
+          quantity: item.quantity,
+          price: item.originalPrice || parseInt(item.price.replace(/\D/g, ''))
+        }))
+      };
 
-    const whatsappNumber = '6282111424592';
-    const message = generateWhatsAppMessage(orderCode);
-    const whatsappUrl = `https://wa.me/${whatsappNumber}?text=${message}`;
-    
-    // Open WhatsApp with the message
-    window.open(whatsappUrl, '_blank');
-    
-    // Show success message with order code
-    showOrderSuccess(orderCode);
-    
-    // Close checkout modal and clear cart
-    setShowCheckoutModal(false);
-    await clearCart(); // Clear cart from API
-    await refreshCart(); // Refresh to get updated cart state
-    clearSession(); // Clear local session
-    
-    // Reset customer info
-    setCustomerInfo({
-      name: '',
-      phone: '',
-      email: '',
-      address: '',
-      city: '',
-      postalCode: '',
-      notes: ''
-    });
+      const response = await fetch('https://vanyadmin.progesio.my.id/api/vny/orders', {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+          'Accept': 'application/json'
+        },
+        body: JSON.stringify(orderPayload)
+      });
+
+      const result = await response.json();
+      
+      if (!response.ok) {
+        throw new Error(result.message || 'Gagal membuat pesanan');
+      }
+
+      const orderCode = result.data?.order_number || generateUniqueCode();
+      
+      // Store order data in localStorage for receipt page
+      const orderData = {
+        orderCode,
+        customerInfo,
+        items: cartItems,
+        pricing: {
+          subtotal,
+          itemDiscount,
+          promoDiscount,
+          appliedPromo,
+          tax,
+          shipping,
+          total
+        },
+        orderDate: new Date().toISOString(),
+        status: 'pending'
+      };
+      
+      localStorage.setItem(`order_${orderCode}`, JSON.stringify(orderData));
+
+      const whatsappNumber = '6282111424592';
+      const message = generateWhatsAppMessage(orderCode);
+      const whatsappUrl = `https://wa.me/${whatsappNumber}?text=${message}`;
+      
+      // Open WhatsApp with the message
+      window.open(whatsappUrl, '_blank');
+      
+      // Show success message with order code
+      showOrderSuccess(orderCode, 'Pesanan berhasil dibuat dan data pelanggan telah tersimpan!');
+      
+      // Close checkout modal and clear cart
+      setShowCheckoutModal(false);
+      await clearCart(); // Clear cart from API
+      await refreshCart(); // Refresh to get updated cart state
+      clearSession(); // Clear local session
+      
+      // Reset customer info
+      setCustomerInfo({
+        name: '',
+        phone: '',
+        email: '',
+        address: '',
+        city: '',
+        postalCode: '',
+        notes: ''
+      });
+      
+    } catch (error) {
+      console.error('Checkout error:', error);
+      showWarning('Gagal Membuat Pesanan', `Terjadi kesalahan: ${error.message}. Pesanan akan dibuat secara offline.`);
+      
+      // Fallback to original flow if API fails
+      const orderCode = generateUniqueCode();
+      
+      const orderData = {
+        orderCode,
+        customerInfo,
+        items: cartItems,
+        pricing: {
+          subtotal,
+          itemDiscount,
+          promoDiscount,
+          appliedPromo,
+          tax,
+          shipping,
+          total
+        },
+        orderDate: new Date().toISOString(),
+        status: 'pending'
+      };
+      
+      localStorage.setItem(`order_${orderCode}`, JSON.stringify(orderData));
+
+      const whatsappNumber = '6282111424592';
+      const message = generateWhatsAppMessage(orderCode);
+      const whatsappUrl = `https://wa.me/${whatsappNumber}?text=${message}`;
+      
+      window.open(whatsappUrl, '_blank');
+      showOrderSuccess(orderCode, 'Pesanan dibuat secara offline');
+      
+      setShowCheckoutModal(false);
+      await clearCart();
+      await refreshCart();
+      clearSession();
+      
+      setCustomerInfo({
+        name: '',
+        phone: '',
+        email: '',
+        address: '',
+        city: '',
+        postalCode: '',
+        notes: ''
+      });
+    }
   };
 
   const isFormValid = () => {

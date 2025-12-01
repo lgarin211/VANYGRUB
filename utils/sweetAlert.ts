@@ -83,14 +83,17 @@ export const showCart = (title: string, text: string) => {
   });
 };
 
-export const showOrderSuccess = (orderCode: string, whatsappLink?: string) => {
+export const showOrderSuccess = (orderCode: string, customMessage?: string, whatsappLink?: string) => {
+  const defaultMessage = 'Silakan cek WhatsApp dan gunakan link untuk melacak pesanan Anda.';
+  const message = customMessage || defaultMessage;
+  
   return Swal.fire({
     icon: 'success',
     title: 'Pesanan Berhasil Dibuat!',
     html: `
       <div class="text-left space-y-3">
         <p><strong>Kode Pesanan:</strong> ${orderCode}</p>
-        <p class="text-sm text-gray-600">Silakan cek WhatsApp dan gunakan link untuk melacak pesanan Anda.</p>
+        <p class="text-sm text-gray-600">${message}</p>
         ${whatsappLink ? `<a href="${whatsappLink}" class="inline-block bg-green-500 text-white px-4 py-2 rounded-lg mt-3 hover:bg-green-600 transition-colors">Buka WhatsApp</a>` : ''}
       </div>
     `,

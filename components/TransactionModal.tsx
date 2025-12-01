@@ -90,14 +90,14 @@ const TransactionModal: React.FC<TransactionModalProps> = ({
     });
   };
 
-  const filteredTransactions = transactions.filter(transaction => {
+  const filteredTransactions = Array.isArray(transactions) ? transactions.filter(transaction => {
     if (selectedTab === 'pending') {
       return ['pending', 'processing', 'shipped'].includes(transaction.status);
     } else if (selectedTab === 'completed') {
       return ['delivered', 'cancelled'].includes(transaction.status);
     }
     return true;
-  });
+  }) : [];
 
   if (!isVisible) return null;
 
@@ -123,7 +123,7 @@ const TransactionModal: React.FC<TransactionModalProps> = ({
             </div>
             <div>
               <h2 className="text-xl font-bold">Riwayat Transaksi</h2>
-              <p className="text-white/70 text-sm">{transactions.length} transaksi</p>
+              <p className="text-white/70 text-sm">{Array.isArray(transactions) ? transactions.length : 0} transaksi</p>
             </div>
           </div>
           <button
@@ -139,9 +139,9 @@ const TransactionModal: React.FC<TransactionModalProps> = ({
         {/* Tabs */}
         <div className="flex border-b border-gray-200">
           {[
-            { key: 'all', label: 'Semua', count: transactions.length },
-            { key: 'pending', label: 'Berlangsung', count: transactions.filter(t => ['pending', 'processing', 'shipped'].includes(t.status)).length },
-            { key: 'completed', label: 'Selesai', count: transactions.filter(t => ['delivered', 'cancelled'].includes(t.status)).length }
+            { key: 'all', label: 'Semua', count: Array.isArray(transactions) ? transactions.length : 0 },
+            { key: 'pending', label: 'Berlangsung', count: Array.isArray(transactions) ? transactions.filter(t => ['pending', 'processing', 'shipped'].includes(t.status)).length : 0 },
+            { key: 'completed', label: 'Selesai', count: Array.isArray(transactions) ? transactions.filter(t => ['delivered', 'cancelled'].includes(t.status)).length : 0 }
           ].map(tab => (
             <button
               key={tab.key}
