@@ -106,11 +106,17 @@ class OrderController extends Controller
             // Create order in database
             // For guest orders, use a default user ID
             // In production, you should handle user authentication properly
-            // Ensure default user exists
-            \DB::statement("INSERT IGNORE INTO vany_users (id, name, email, phone, password, created_at, updated_at) VALUES (1, 'Guest User', 'guest@vnystore.com', '000000000000', ?, NOW(), NOW())", [\Hash::make('guestpassword')]);
-
-            // Try to create/get customer user
+            // Create or get user based on customer data
             $userId = 1; // Default fallback
+
+            // Try to create guest user if doesn't exist
+            try {
+                \DB::statement("INSERT IGNORE INTO vany_users (id, name, email, phone, password, created_at, updated_at) VALUES (1, 'Guest User', 'guest@vnystore.com', '000000000000', ?, NOW(), NOW())", [\Hash::make('guestpassword')]);
+            } catch (\Exception $e) {
+                // Ignore if user already exists
+            }
+
+            // Try to create customer-specific user
             try {
                 $existingUser = \DB::table('vany_users')->where('email', $request->customer_email)->first();
                 if ($existingUser) {
@@ -126,11 +132,9 @@ class OrderController extends Controller
                     ]);
                 }
             } catch (\Exception $e) {
-                \Log::error('User creation failed, using default:', ['error' => $e->getMessage()]);
-                $userId = 1; // Use default guest user
-            }
-
-            // Prepare order data
+                // Use default guest user if customer user creation fails
+                $userId = 1;
+            }            // Prepare order data
             $orderData = [
                 'user_id' => $userId,
                 'order_number' => $orderCode,
