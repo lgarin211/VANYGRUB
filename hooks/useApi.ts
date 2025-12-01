@@ -347,38 +347,6 @@ export const useCart = (sessionId?: string) => {
   };
 };
 
-export const useCheckout = () => {
-  const [loading, setLoading] = useState(false);
-  const [error, setError] = useState<string | null>(null);
-
-  const createOrder = async (data: {
-    customer_name: string;
-    customer_email: string;
-    customer_phone: string;
-    shipping_address: string;
-    shipping_city: string;
-    shipping_postal_code: string;
-    payment_method: string;
-    notes?: string;
-    session_id?: string;
-  }) => {
-    try {
-      setLoading(true);
-      setError(null);
-      const response = await withErrorHandling(() => apiClient.createOrder(data));
-      return response;
-    } catch (err) {
-      setError('Failed to create order');
-      console.error('Checkout error:', err);
-      throw err;
-    } finally {
-      setLoading(false);
-    }
-  };
-
-  return { createOrder, loading, error };
-};
-
 // Hook for fetching orders
 export const useOrders = () => {
   const [orders, setOrders] = useState<any[]>([]);
@@ -404,4 +372,191 @@ export const useOrders = () => {
   }, []);
 
   return { orders, loading, error, refreshOrders: fetchOrders };
+};
+
+// Hook for creating orders
+export const useCreateOrder = () => {
+  const [creating, setCreating] = useState(false);
+  const [error, setError] = useState<string | null>(null);
+
+  const createOrder = async (orderData: {
+    customer_name: string;
+    customer_email: string;
+    customer_phone: string;
+    shipping_address: string;
+    shipping_city: string;
+    shipping_postal_code: string;
+    total_amount: number;
+    notes?: string;
+    session_id: string;
+    items: Array<{
+      product_id: number;
+      quantity: number;
+      price: number;
+    }>;
+  }) => {
+    try {
+      setCreating(true);
+      setError(null);
+
+      const API_BASE_URL = process.env.NEXT_PUBLIC_API_URL || 'http://localhost:8000/api/vny';
+      
+      const response = await fetch(`${API_BASE_URL}/orders`, {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+          'Accept': 'application/json'
+        },
+        body: JSON.stringify(orderData)
+      });
+
+      const result = await response.json();
+      
+      if (!response.ok) {
+        throw new Error(result.message || 'Gagal membuat pesanan');
+      }
+
+      return {
+        success: true,
+        data: result.data,
+        order_code: result.data?.order_number || result.data?.order_code
+      };
+
+    } catch (err: any) {
+      setError(err.message);
+      throw err;
+    } finally {
+      setCreating(false);
+    }
+  };
+
+  return { createOrder, creating, error };
+};
+
+// Hook for checkout process
+export const useCheckout = () => {
+  const { createOrder, creating, error } = useCreateOrder();
+  
+  const generateUniqueCode = () => {
+    const timestamp = Date.now().toString().slice(-8);
+    const random = Math.random().toString(36).substring(2, 6).toUpperCase();
+    return `VNY${timestamp}${random}`;
+  };
+
+  const generateWhatsAppMessage = (orderCode: string, customerInfo: any, cartItems: any[], total: number) => {
+    const baseUrl = typeof window !== 'undefined' ? window.location.origin : '';
+    const trackingUrl = `${baseUrl}/checkout/${orderCode}`;
+    
+    let message = `🛒 *PESANAN BARU VNY STORE*\n\n`;
+    message += `📋 *Kode Pesanan:* ${orderCode}\n\n`;
+    message += `🔗 *LINK CEK PESANAN (KLIK DI SINI):*\n`;
+    message += `${trackingUrl}\n\n`;
+    message += `👤 *Data Pembeli:*\n`;
+    message += `Nama: ${customerInfo.name}\n`;
+    message += `Phone: ${customerInfo.phone}\n`;
+    message += `Email: ${customerInfo.email}\n`;
+    message += `Alamat: ${customerInfo.address}\n`;
+    message += `Kota: ${customerInfo.city}\n`;
+    message += `Kode Pos: ${customerInfo.postalCode}\n`;
+    if (customerInfo.notes) {
+      message += `Catatan: ${customerInfo.notes}\n`;
+    }
+    message += `\n📦 *Detail Pesanan:*\n`;
+    
+    cartItems.forEach((item: any, index: number) => {
+      message += `${index + 1}. ${item.name}\n`;
+      message += `   Warna: ${item.color}\n`;
+      message += `   Ukuran: ${item.size}\n`;
+      message += `   Qty: ${item.quantity}x\n`;
+      message += `   Harga: ${item.price}\n\n`;
+    });
+    
+    message += `💰 *Total: Rp ${total.toLocaleString('id-ID')}*\n\n`;
+    message += `Terima kasih telah berbelanja di VNY Store! 🙏`;
+    
+    return encodeURIComponent(message);
+  };
+
+  const processCheckout = async (customerInfo: any, cartItems: any[], pricingInfo: any, sessionId: string) => {
+    try {
+      const orderPayload = {
+        customer_name: customerInfo.name,
+        customer_email: customerInfo.email,
+        customer_phone: customerInfo.phone,
+        shipping_address: customerInfo.address,
+        shipping_city: customerInfo.city,
+        shipping_postal_code: customerInfo.postalCode,
+        total_amount: pricingInfo.total,
+        notes: customerInfo.notes,
+        session_id: sessionId,
+        items: cartItems.map(item => ({
+          product_id: item.id,
+          quantity: item.quantity,
+          price: item.originalPrice || parseInt(item.price.replace(/\D/g, ''))
+        }))
+      };
+
+      const result = await createOrder(orderPayload);
+      const orderCode = result.order_code || generateUniqueCode();
+      
+      // Store order data in localStorage for receipt page
+      const orderData = {
+        orderCode,
+        customerInfo,
+        items: cartItems,
+        pricing: pricingInfo,
+        orderDate: new Date().toISOString(),
+        status: 'pending'
+      };
+      
+      localStorage.setItem(`order_${orderCode}`, JSON.stringify(orderData));
+
+      // Generate WhatsApp message
+      const whatsappNumber = '6282111424592';
+      const message = generateWhatsAppMessage(orderCode, customerInfo, cartItems, pricingInfo.total);
+      const whatsappUrl = `https://wa.me/${whatsappNumber}?text=${message}`;
+      
+      return {
+        success: true,
+        orderCode,
+        whatsappUrl,
+        orderData: result.data
+      };
+
+    } catch (err: any) {
+      // Fallback to offline mode
+      const orderCode = generateUniqueCode();
+      
+      const orderData = {
+        orderCode,
+        customerInfo,
+        items: cartItems,
+        pricing: pricingInfo,
+        orderDate: new Date().toISOString(),
+        status: 'pending'
+      };
+      
+      localStorage.setItem(`order_${orderCode}`, JSON.stringify(orderData));
+
+      const whatsappNumber = '6282111424592';
+      const message = generateWhatsAppMessage(orderCode, customerInfo, cartItems, pricingInfo.total);
+      const whatsappUrl = `https://wa.me/${whatsappNumber}?text=${message}`;
+      
+      return {
+        success: false,
+        orderCode,
+        whatsappUrl,
+        error: err.message,
+        fallback: true
+      };
+    }
+  };
+
+  return { 
+    processCheckout, 
+    creating, 
+    error,
+    generateWhatsAppMessage,
+    generateUniqueCode
+  };
 };
