@@ -4,8 +4,7 @@ use Illuminate\Database\Migrations\Migration;
 use Illuminate\Database\Schema\Blueprint;
 use Illuminate\Support\Facades\Schema;
 
-return new class extends Migration
-{
+return new class extends Migration {
     /**
      * Run the migrations.
      */
@@ -34,7 +33,7 @@ return new class extends Migration
             $table->index(['type', 'category']);
             $table->index(['is_featured', 'sort_order']);
             $table->index('created_at');
-            
+
             $table->foreign('uploaded_by')->references('id')->on('users')->onDelete('set null');
         });
     }

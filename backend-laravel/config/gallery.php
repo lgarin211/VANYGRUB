@@ -9,7 +9,7 @@ return [
     */
 
     'max_file_size' => env('GALLERY_MAX_FILE_SIZE', 52428800), // 50MB in bytes
-    
+
     'allowed_types' => [
         'image' => [
             'mimes' => ['image/jpeg', 'image/jpg', 'image/png', 'image/gif', 'image/webp', 'image/svg+xml'],
@@ -49,7 +49,7 @@ return [
 
     'categories' => [
         'products',
-        'banners', 
+        'banners',
         'logos',
         'documents',
         'media',
