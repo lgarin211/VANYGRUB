@@ -7,6 +7,7 @@ use App\Http\Controllers\Api\CategoryController;
 use App\Http\Controllers\Api\ProductController;
 use App\Http\Controllers\Api\HeroSectionController;
 use App\Http\Controllers\Api\ProductGridController;
+use App\Http\Controllers\Api\MediaController;
 
 /*
 |--------------------------------------------------------------------------
@@ -43,4 +44,12 @@ Route::prefix('vny')->group(function () {
     // Product Grid API
     Route::apiResource('product-grids', ProductGridController::class);
     Route::get('product-grid-data', [ProductGridController::class, 'getGridData']);
+
+    // Media/Gallery Upload API
+    Route::prefix('media')->group(function () {
+        Route::post('upload', [MediaController::class, 'uploadSingle']);
+        Route::post('upload-multiple', [MediaController::class, 'uploadMultiple']);
+        Route::delete('delete', [MediaController::class, 'deleteMedia']);
+        Route::get('list', [MediaController::class, 'getMedia']);
+    });
 });
