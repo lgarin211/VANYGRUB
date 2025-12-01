@@ -1,6 +1,6 @@
 'use client';
 
-import { useState, useEffect } from 'react';
+import { useState, useEffect, useMemo } from 'react';
 import Link from 'next/link';
 
 export default function ComingSoonPage() {
@@ -15,8 +15,11 @@ export default function ComingSoonPage() {
   const [isSubscribed, setIsSubscribed] = useState(false);
 
   // Set target date (30 days from now)
-  const targetDate = new Date();
-  targetDate.setDate(targetDate.getDate() + 30);
+  const targetDate = useMemo(() => {
+    const date = new Date();
+    date.setDate(date.getDate() + 30);
+    return date;
+  }, []);
 
   useEffect(() => {
     const timer = setInterval(() => {
@@ -68,7 +71,7 @@ export default function ComingSoonPage() {
             Coming Soon
           </h1>
           <p className="text-xl md:text-2xl text-red-100 mb-8 max-w-2xl mx-auto">
-            Something amazing is on the way. We're working hard to bring you an incredible experience.
+            Something amazing is on the way. We&apos;re working hard to bring you an incredible experience.
           </p>
         </div>
 
@@ -119,7 +122,7 @@ export default function ComingSoonPage() {
           ) : (
             <div className="bg-green-600 bg-opacity-20 border border-green-400 rounded-lg p-4 max-w-md mx-auto">
               <p className="text-green-200">
-                ✅ Thank you! We'll notify you when we launch.
+                ✅ Thank you! We&apos;ll notify you when we launch.
               </p>
             </div>
           )}
