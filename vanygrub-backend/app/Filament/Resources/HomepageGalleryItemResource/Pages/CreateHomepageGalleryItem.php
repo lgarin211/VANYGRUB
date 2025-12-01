@@ -5,10 +5,21 @@ namespace App\Filament\Resources\HomepageGalleryItemResource\Pages;
 use App\Filament\Resources\HomepageGalleryItemResource;
 use Filament\Resources\Pages\CreateRecord;
 use Filament\Notifications\Notification;
+use Illuminate\Support\Facades\Storage;
 
 class CreateHomepageGalleryItem extends CreateRecord
 {
     protected static string $resource = HomepageGalleryItemResource::class;
+
+    protected function mutateFormDataBeforeCreate(array $data): array
+    {
+        // Convert relative path to full URL for image field
+        if (isset($data['image']) && $data['image']) {
+            $data['image'] = asset(Storage::url($data['image']));
+        }
+
+        return $data;
+    }
 
     protected function getRedirectUrl(): string
     {
