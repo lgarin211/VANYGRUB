@@ -163,7 +163,30 @@ class ApiClient {
   }
 
   async getOrderByCode(orderCode: string) {
-    return this.request(`/orders/code/${orderCode}`);
+    // List of possible endpoints to try (in order of preference)
+    const endpoints = [
+      `/orders?order_code=${orderCode}`, // This one works based on our test
+      `/orders/track/${orderCode}`,
+      `/orders/find/${orderCode}`,
+      `/orders/code/${orderCode}`,
+      `/orders/${orderCode}`,
+      `/order-tracking/${orderCode}`
+    ];
+    
+    let lastError: any = null;
+    
+    for (const endpoint of endpoints) {
+      try {
+        const result = await this.request(endpoint);
+        return result;
+      } catch (error) {
+        lastError = error;
+        continue;
+      }
+    }
+    
+    // If all endpoints fail, throw the last error
+    throw lastError || new Error('Order not found');
   }
 }
 

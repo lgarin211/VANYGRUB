@@ -497,19 +497,39 @@ export const useCheckout = () => {
       };
 
       const result = await createOrder(orderPayload);
-      const orderCode = result.order_code || generateUniqueCode();
+      const orderCode = result?.data?.order_code || result?.order_code || generateUniqueCode();
       
-      // Store order data in localStorage for receipt page
+      // Store order data in localStorage for receipt page with server data structure
       const orderData = {
         orderCode,
         customerInfo,
         items: cartItems,
         pricing: pricingInfo,
         orderDate: new Date().toISOString(),
-        status: 'pending'
+        status: (result as any)?.data?.status || (result as any)?.status || 'pending',
+        // Store server ID for future reference
+        serverId: (result as any)?.data?.id || (result as any)?.id
       };
       
       localStorage.setItem(`order_${orderCode}`, JSON.stringify(orderData));
+      
+      // Also store with server format for consistency
+      if ((result as any)?.data || (result as any)?.order_code) {
+        const serverData = {
+          ...orderData,
+          id: (result as any)?.data?.id || (result as any)?.id,
+          customer_name: customerInfo.name,
+          customer_email: customerInfo.email,
+          customer_phone: customerInfo.phone,
+          shipping_address: customerInfo.address,
+          shipping_city: customerInfo.city,
+          shipping_postal_code: customerInfo.postalCode,
+          total_amount: pricingInfo.total,
+          notes: customerInfo.notes,
+          created_at: new Date().toISOString()
+        };
+        localStorage.setItem(`server_order_${orderCode}`, JSON.stringify(serverData));
+      }
 
       // Generate WhatsApp message
       const whatsappNumber = '6282111424592';
@@ -579,8 +599,55 @@ export const useOrderTracking = (orderCode: string) => {
         apiClient.getOrderByCode(orderCode)
       ) as any;
       
-      if (response && response.data) {
-        setOrderData(response.data);
+      // Handle different response formats from API
+      let apiOrderData = null;
+      if (response) {
+        // Check different possible response structures
+        if (response.data && Array.isArray(response.data) && response.data.length > 0) {
+          // Find the exact order by order_code
+          apiOrderData = response.data.find((order: any) => order.order_code === orderCode) || response.data[0];
+        } else if (response.data && !Array.isArray(response.data)) {
+          apiOrderData = response.data;
+        } else if (response.order) {
+          apiOrderData = response.order;
+        } else if (Array.isArray(response) && response.length > 0) {
+          apiOrderData = response.find((order: any) => order.order_code === orderCode) || response[0];
+        } else if (response.id || response.order_code) {
+          apiOrderData = response;
+        }
+      }
+      
+      if (apiOrderData) {
+        // Transform API data to match frontend format
+        const subtotal = parseFloat(apiOrderData.subtotal || apiOrderData.total_amount || '0');
+        const discountAmount = parseFloat(apiOrderData.discount_amount || '0');
+        const totalAmount = parseFloat(apiOrderData.total_amount || '0');
+        
+        const transformedData = {
+          orderCode: apiOrderData.order_code || apiOrderData.orderCode || orderCode,
+          customerInfo: {
+            name: apiOrderData.customer_name || 'Customer',
+            phone: apiOrderData.customer_phone || '',
+            email: apiOrderData.customer_email || '',
+            address: apiOrderData.shipping_address || '',
+            city: apiOrderData.shipping_city || '',
+            postalCode: apiOrderData.shipping_postal_code || '',
+            notes: apiOrderData.notes || ''
+          },
+          items: apiOrderData.items ? (typeof apiOrderData.items === 'string' ? JSON.parse(apiOrderData.items || '[]') : apiOrderData.items) : [],
+          pricing: {
+            subtotal: subtotal,
+            itemDiscount: discountAmount,
+            promoDiscount: 0,
+            appliedPromo: null,
+            tax: Math.round(totalAmount * 0.1),
+            shipping: 0,
+            total: totalAmount
+          },
+          orderDate: apiOrderData.created_at || apiOrderData.orderDate || new Date().toISOString(),
+          status: apiOrderData.status || 'pending'
+        };
+        setOrderData(transformedData);
       } else {
         // Fallback to localStorage
         const storedData = localStorage.getItem(`order_${orderCode}`);
@@ -592,6 +659,7 @@ export const useOrderTracking = (orderCode: string) => {
         }
       }
     } catch (err) {
+      console.error('Error fetching order data:', err);
       // Fallback to localStorage on API error
       try {
         const storedData = localStorage.getItem(`order_${orderCode}`);
