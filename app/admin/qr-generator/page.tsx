@@ -1,10 +1,15 @@
 'use client';
 
-import { useState } from 'react';
-import { jsPDF } from 'jspdf';
-import QRCode from 'qrcode';
+import { useState, useEffect } from 'react';
+import dynamic from 'next/dynamic';
 
-export default function QRBatchGenerator() {
+// Dynamic imports to avoid SSR issues
+const QRBatchGeneratorClient = dynamic(() => Promise.resolve(QRBatchGeneratorComponent), {
+  ssr: false,
+  loading: () => <div className="flex justify-center items-center min-h-screen">Loading...</div>
+});
+
+function QRBatchGeneratorComponent() {
   const [quantity, setQuantity] = useState<number>(10);
   const [generating, setGenerating] = useState(false);
   const [progress, setProgress] = useState(0);
@@ -19,6 +24,10 @@ export default function QRBatchGenerator() {
     setProgress(0);
 
     try {
+      // Dynamic imports to avoid SSR issues
+      const { jsPDF } = await import('jspdf');
+      const QRCode = await import('qrcode');
+      
       // Create PDF document (A4 size: 210 x 297 mm)
       const pdf = new jsPDF('portrait', 'mm', 'a4');
       const pageWidth = 210;
@@ -40,10 +49,10 @@ export default function QRBatchGenerator() {
       for (let i = 0; i < quantity; i++) {
         // Generate unique token for each QR
         const token = `VNY-${Date.now()}-${Math.random().toString(36).substr(2, 9).toUpperCase()}`;
-        const reviewUrl = `${window.location.origin}/review/${token}`;
+        const reviewUrl = `${typeof window !== 'undefined' ? window.location.origin : 'http://localhost:3000'}/review/${token}`;
 
         // Generate QR code as data URL
-        const qrDataUrl = await QRCode.toDataURL(reviewUrl, {
+        const qrDataUrl = await QRCode.default.toDataURL(reviewUrl, {
           width: 300,
           margin: 1,
           color: {
@@ -233,4 +242,8 @@ export default function QRBatchGenerator() {
       </div>
     </div>
   );
+}
+
+export default function QRBatchGenerator() {
+  return <QRBatchGeneratorClient />;
 }
