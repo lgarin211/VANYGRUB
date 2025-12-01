@@ -222,7 +222,8 @@ const CartPage: React.FC = () => {
 
   const isFormValid = () => {
     return customerInfo.name && customerInfo.phone && customerInfo.email && 
-           customerInfo.address && customerInfo.city && customerInfo.postalCode;
+           customerInfo.address && customerInfo.city && customerInfo.postalCode &&
+           customerInfo.notes.trim().length > 0;
   };
 
   return (
@@ -636,14 +637,17 @@ const CartPage: React.FC = () => {
 
                   <div>
                     <label className="block text-sm font-medium text-gray-700 mb-2">
-                      Catatan Tambahan
+                      Catatan Tambahan <span className="text-red-500">*</span>
                     </label>
                     <textarea
                       value={customerInfo.notes}
                       onChange={(e) => handleCustomerInfoChange('notes', e.target.value)}
                       rows={2}
-                      className="w-full px-3 py-2 border border-gray-300 rounded-lg focus:outline-none focus:border-red-500"
-                      placeholder="Catatan khusus untuk pesanan (opsional)"
+                      className={`w-full px-3 py-2 border rounded-lg focus:outline-none focus:border-red-500 text-gray-900 ${
+                        customerInfo.notes.trim().length === 0 ? 'border-red-300 bg-red-50 placeholder-red-400' : 'border-gray-300 bg-white'
+                      }`}
+                      placeholder="Masukkan catatan untuk pesanan (wajib diisi)"
+                      required
                     />
                   </div>
                 </div>
