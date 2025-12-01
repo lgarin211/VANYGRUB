@@ -41,7 +41,7 @@ class CustomerReviewController extends Controller
             'review_token' => $token,
             'order' => $review->order,
             'customer_name' => $review->customer_name,
-            'order_items' => $review->order->items
+            'order_items' => $review->order ? $review->order->items : []
         ]);
     }
 
@@ -93,7 +93,7 @@ class CustomerReviewController extends Controller
                     'photo_url' => $review->photo_url ? asset('storage/' . $review->photo_url) : null,
                     'review_text' => $review->review_text,
                     'rating' => $review->rating,
-                    'order_number' => $review->order->order_number,
+                    'order_number' => $review->order ? $review->order->order_number : 'N/A',
                     'created_at' => $review->created_at,
                     'formatted_date' => $review->created_at->format('d M Y')
                 ];
@@ -116,7 +116,7 @@ class CustomerReviewController extends Controller
                     'photo_url' => $review->photo_url ? asset('storage/' . $review->photo_url) : null,
                     'review_text' => $review->review_text,
                     'rating' => $review->rating,
-                    'order_number' => $review->order->order_number,
+                    'order_number' => $review->order ? $review->order->order_number : 'N/A',
                     'created_at' => $review->created_at,
                     'formatted_date' => $review->created_at->format('d M Y'),
                     'is_featured' => true
