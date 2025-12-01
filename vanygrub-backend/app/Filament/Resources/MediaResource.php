@@ -102,6 +102,24 @@ class MediaResource extends Resource
                                     // Get file extension for type detection
                                     $extension = strtolower(pathinfo($originalName, PATHINFO_EXTENSION));
 
+                                    // If no extension, try to detect from temp file or set default
+                                    if (empty($extension)) {
+                                        try {
+                                            $mimeType = Storage::disk('public')->mimeType($filePath);
+                                            
+                                            // Simple MIME to extension mapping
+                                            $mimeToExt = [
+                                                'image/jpeg' => 'jpg', 'image/png' => 'png', 'image/gif' => 'gif',
+                                                'image/webp' => 'webp', 'video/mp4' => 'mp4', 'video/avi' => 'avi',
+                                                'application/pdf' => 'pdf', 'text/plain' => 'txt'
+                                            ];
+                                            
+                                            $extension = $mimeToExt[$mimeType] ?? 'bin';
+                                        } catch (\Exception $e) {
+                                            $extension = 'bin'; // fallback
+                                        }
+                                    }
+
                                     // Define file types by extension (PRIORITY METHOD)
                                     $imageExtensions = ['jpg', 'jpeg', 'png', 'gif', 'webp', 'svg', 'bmp', 'tiff', 'ico'];
                                     $videoExtensions = ['mp4', 'avi', 'mov', 'wmv', 'flv', 'webm', 'mkv', 'ogv', 'mp3', 'wav'];
@@ -121,10 +139,13 @@ class MediaResource extends Resource
                                     // IMMEDIATELY set the detected type
                                     $set('type', $detectedType);
 
-                                    // Generate filename
+                                    // Generate filename - ALWAYS ensure extension is included
                                     $filename = pathinfo($originalName, PATHINFO_FILENAME);
-                                    $sluggedName = Str::slug($filename) . '-' . time() . '.' . $extension;
-                                    $set('filename', $sluggedName);
+                                    $sluggedName = Str::slug($filename) . '-' . time();
+                                    
+                                    // CRITICAL: Always append the extension
+                                    $finalFilename = $sluggedName . '.' . $extension;
+                                    $set('filename', $finalFilename);
 
                                     // Auto-set folder based on current date
                                     $set('folder', now()->format('Y-m-d'));

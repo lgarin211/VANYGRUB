@@ -23,13 +23,32 @@ class CreateMedia extends CreateRecord
 
             // Get original file info to preserve format
             $originalName = $data['original_name'] ?? pathinfo($tempFile, PATHINFO_BASENAME);
+            
+            // Try to get extension from multiple sources
             $originalExtension = strtolower(pathinfo($originalName, PATHINFO_EXTENSION));
-
-            // Ensure filename keeps original extension to preserve file format
+            
+            // If no extension found from original name, try to detect from MIME type
+            if (empty($originalExtension)) {
+                try {
+                    $mimeType = Storage::disk('public')->mimeType($tempFile);
+                    $originalExtension = $this->getExtensionFromMimeType($mimeType);
+                } catch (\Exception $e) {
+                    // Default extension based on type
+                    $originalExtension = $type === 'image' ? 'png' : ($type === 'video' ? 'mp4' : 'pdf');
+                }
+            }
+            
+            // Ensure we have an extension
+            if (empty($originalExtension)) {
+                $originalExtension = $type === 'image' ? 'png' : ($type === 'video' ? 'mp4' : 'pdf');
+            }
+            
+            // Generate filename with guaranteed extension
             $baseFilename = $data['filename'] ?? (Str::slug(pathinfo($originalName, PATHINFO_FILENAME)) . '-' . time());
-            $filename = $baseFilename . '.' . $originalExtension; // Force original extension
-
-            // Move file from temp to proper location
+            
+            // Remove extension from baseFilename if it already has one, then add the correct one
+            $baseFilename = pathinfo($baseFilename, PATHINFO_FILENAME);
+            $filename = $baseFilename . '.' . $originalExtension;            // Move file from temp to proper location
             $finalPath = "media/{$type}/{$folder}/{$filename}";
 
             // Ensure directory exists
@@ -114,6 +133,48 @@ class CreateMedia extends CreateRecord
         }
 
         return $data;
+    }
+
+    /**
+     * Get file extension from MIME type
+     */
+    private function getExtensionFromMimeType(string $mimeType): string
+    {
+        $mimeToExtension = [
+            // Images
+            'image/jpeg' => 'jpg',
+            'image/jpg' => 'jpg', 
+            'image/png' => 'png',
+            'image/gif' => 'gif',
+            'image/webp' => 'webp',
+            'image/svg+xml' => 'svg',
+            'image/bmp' => 'bmp',
+            'image/tiff' => 'tiff',
+            'image/x-icon' => 'ico',
+            
+            // Videos
+            'video/mp4' => 'mp4',
+            'video/avi' => 'avi',
+            'video/quicktime' => 'mov',
+            'video/x-ms-wmv' => 'wmv',
+            'video/x-flv' => 'flv',
+            'video/webm' => 'webm',
+            'video/x-msvideo' => 'avi',
+            'video/ogg' => 'ogv',
+            
+            // Documents
+            'application/pdf' => 'pdf',
+            'application/msword' => 'doc',
+            'application/vnd.openxmlformats-officedocument.wordprocessingml.document' => 'docx',
+            'application/vnd.ms-excel' => 'xls',
+            'application/vnd.openxmlformats-officedocument.spreadsheetml.sheet' => 'xlsx',
+            'application/vnd.ms-powerpoint' => 'ppt',
+            'application/vnd.openxmlformats-officedocument.presentationml.presentation' => 'pptx',
+            'text/plain' => 'txt',
+            'application/rtf' => 'rtf',
+        ];
+
+        return $mimeToExtension[$mimeType] ?? 'bin';
     }
 
     protected function getRedirectUrl(): string
