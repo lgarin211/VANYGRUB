@@ -42,8 +42,14 @@ export default function Home() {
 
   // Initialize GSAP slider
   const initSlider = useCallback(() => {
-    if (!window.gsap) return;
+    if (!window.gsap) {
+      console.warn('GSAP not loaded yet');
+      return;
+    }
 
+    console.log('Initializing GSAP slider with', GALLERY_ITEMS.length, 'items');
+
+    // Position array matching reference implementation
     const positions = [
       {
         height: 620,
@@ -158,6 +164,12 @@ export default function Home() {
         this.closeBtn = document.getElementById("closeBtn");
         this.cardClone = null;
 
+        console.log('CircularSlider initialized:', {
+          container: this.container,
+          track: this.track,
+          cardsFound: this.cards.length
+        });
+
         this.init();
       }
 
@@ -166,120 +178,196 @@ export default function Home() {
         this.addEventListeners();
       }
 
-      setInitialPositions() {
-        this.cards.forEach((card, index) => {
-          const position = positions[index % positions.length];
-          const htmlCard = card as HTMLElement;
-          
-          window.gsap.set(htmlCard, {
-            height: position.height,
-            z: position.z,
-            rotateY: position.rotateY,
-            y: position.y,
-            clipPath: position.clip,
-          });
-        });
-      }
-
       addEventListeners() {
-        if (this.container) {
-          this.container.addEventListener("mousedown", this.startDrag.bind(this));
-          this.container.addEventListener("touchstart", this.startDrag.bind(this), { passive: false });
-          this.container.addEventListener("mousemove", this.drag.bind(this));
-          this.container.addEventListener("touchmove", this.drag.bind(this), { passive: false });
-          this.container.addEventListener("mouseup", this.endDrag.bind(this));
-          this.container.addEventListener("touchend", this.endDrag.bind(this));
-          this.container.addEventListener("mouseleave", this.endDrag.bind(this));
-        }
-
-        this.cards.forEach(card => {
+        this.cards.forEach((card) => {
           card.addEventListener("click", (e) => {
-            e.preventDefault();
-            if (!this.isDragging) {
+            if (!this.isDragging && !this.expandedCard) {
               this.expandCard(card);
             }
           });
         });
 
         if (this.closeBtn) {
-          this.closeBtn.addEventListener("click", this.closeCard.bind(this));
+          this.closeBtn.addEventListener("click", () => this.closeCard());
+        }
+
+        if (this.container) {
+          this.container.addEventListener("mousedown", (e) => this.handleDragStart(e));
+          this.container.addEventListener("touchstart", (e) => this.handleDragStart(e), { passive: false });
+        }
+
+        document.addEventListener("mousemove", (e) => this.handleDragMove(e));
+        document.addEventListener("touchmove", (e) => this.handleDragMove(e), { passive: false });
+        document.addEventListener("mouseup", () => this.handleDragEnd());
+        document.addEventListener("touchend", () => this.handleDragEnd());
+
+        document.addEventListener("keydown", (e) => {
+          if (e.key === "Escape" && this.expandedCard) {
+            this.closeCard();
+          } else if (e.key === "ArrowLeft" && !this.expandedCard) {
+            this.rotate("prev");
+          } else if (e.key === "ArrowRight" && !this.expandedCard) {
+            this.rotate("next");
+          }
+        });
+      }
+
+      handleDragStart(e: MouseEvent | TouchEvent) {
+        if (this.expandedCard) return;
+
+        this.isDragging = true;
+        if (this.container) this.container.classList.add("dragging");
+        this.startX = e.type.includes("mouse") ? (e as MouseEvent).clientX : (e as TouchEvent).touches[0].clientX;
+        this.dragDistance = 0;
+        this.processedSteps = 0;
+      }
+
+      handleDragMove(e: MouseEvent | TouchEvent) {
+        if (!this.isDragging) return;
+
+        e.preventDefault();
+        const currentX = e.type.includes("mouse") ? (e as MouseEvent).clientX : (e as TouchEvent).touches[0].clientX;
+        this.dragDistance = currentX - this.startX;
+
+        const steps = Math.floor(Math.abs(this.dragDistance) / this.threshold);
+
+        if (steps > this.processedSteps) {
+          const direction = this.dragDistance > 0 ? "prev" : "next";
+          this.rotate(direction);
+          this.processedSteps = steps;
         }
       }
 
-      startDrag(e: MouseEvent | TouchEvent) {
-        this.isDragging = true;
-        const clientX = e instanceof MouseEvent ? e.clientX : e.touches[0].clientX;
-        this.startX = clientX;
-        if (this.container) this.container.style.cursor = "grabbing";
-      }
-
-      drag(e: MouseEvent | TouchEvent) {
-        if (!this.isDragging) return;
-        
-        e.preventDefault();
-        const clientX = e instanceof MouseEvent ? e.clientX : e.touches[0].clientX;
-        this.dragDistance = clientX - this.startX;
-      }
-
-      endDrag() {
+      handleDragEnd() {
         if (!this.isDragging) return;
 
         this.isDragging = false;
-        if (this.container) this.container.style.cursor = "grab";
-
-        if (Math.abs(this.dragDistance) > this.threshold) {
-          const direction = this.dragDistance > 0 ? -1 : 1;
-          this.rotateSlider(direction);
-        }
-
-        this.dragDistance = 0;
+        if (this.container) this.container.classList.remove("dragging");
       }
 
-      rotateSlider(direction: number) {
-        const steps = Math.abs(direction);
-        for (let i = 0; i < steps; i++) {
-          if (direction > 0) {
-            this.rotateForward();
+      setInitialPositions() {
+        this.cards.forEach((card, index) => {
+          const pos = positions[index % positions.length];
+          const htmlCard = card as HTMLElement;
+          
+          window.gsap.set(htmlCard, {
+            height: pos.height,
+            clipPath: pos.clip,
+            transform: `translateZ(${pos.z}px) rotateY(${pos.rotateY}deg) translateY(${pos.y}px)`
+          });
+        });
+      }
+
+      addEventListeners() {
+        this.cards.forEach((card) => {
+          card.addEventListener("click", (e) => {
+            if (!this.isDragging && !this.expandedCard) {
+              this.expandCard(card);
+            }
+          });
+        });
+
+        if (this.closeBtn) {
+          this.closeBtn.addEventListener("click", () => this.closeCard());
+        }
+
+        if (this.container) {
+          this.container.addEventListener("mousedown", (e) => this.handleDragStart(e));
+          this.container.addEventListener("touchstart", (e) => this.handleDragStart(e), { passive: false });
+        }
+
+        document.addEventListener("mousemove", (e) => this.handleDragMove(e));
+        document.addEventListener("touchmove", (e) => this.handleDragMove(e), { passive: false });
+        document.addEventListener("mouseup", () => this.handleDragEnd());
+        document.addEventListener("touchend", () => this.handleDragEnd());
+
+        document.addEventListener("keydown", (e) => {
+          if (e.key === "Escape" && this.expandedCard) {
+            this.closeCard();
+          } else if (e.key === "ArrowLeft" && !this.expandedCard) {
+            this.rotate("prev");
+          } else if (e.key === "ArrowRight" && !this.expandedCard) {
+            this.rotate("next");
+          }
+        });
+      }
+
+      handleDragStart(e: MouseEvent | TouchEvent) {
+        if (this.expandedCard) return;
+
+        this.isDragging = true;
+        if (this.container) this.container.classList.add("dragging");
+        this.startX = e.type.includes("mouse") ? (e as MouseEvent).clientX : (e as TouchEvent).touches[0].clientX;
+        this.dragDistance = 0;
+        this.processedSteps = 0;
+      }
+
+      handleDragMove(e: MouseEvent | TouchEvent) {
+        if (!this.isDragging) return;
+
+        e.preventDefault();
+        const currentX = e.type.includes("mouse") ? (e as MouseEvent).clientX : (e as TouchEvent).touches[0].clientX;
+        this.dragDistance = currentX - this.startX;
+
+        const steps = Math.floor(Math.abs(this.dragDistance) / this.threshold);
+
+        if (steps > this.processedSteps) {
+          const direction = this.dragDistance > 0 ? "prev" : "next";
+          this.rotate(direction);
+          this.processedSteps = steps;
+        }
+      }
+
+      handleDragEnd() {
+        if (!this.isDragging) return;
+
+        this.isDragging = false;
+        if (this.container) this.container.classList.remove("dragging");
+      }
+
+      rotate(direction: string) {
+        if (this.expandedCard) return;
+
+        this.cards.forEach((card, index) => {
+          let newIndex;
+          if (direction === "next") {
+            newIndex = (index - 1 + this.totalCards) % this.totalCards;
           } else {
-            this.rotateBackward();
+            newIndex = (index + 1) % this.totalCards;
+          }
+
+          const pos = positions[newIndex % positions.length];
+          const htmlCard = card as HTMLElement;
+
+          window.gsap.set(htmlCard, { clipPath: pos.clip });
+
+          window.gsap.to(htmlCard, {
+            height: pos.height,
+            duration: 0.5,
+            ease: "power2.out"
+          });
+
+          window.gsap.to(htmlCard, {
+            transform: `translateZ(${pos.z}px) rotateY(${pos.rotateY}deg) translateY(${pos.y}px)`,
+            duration: 0.5,
+            ease: "power2.out"
+          });
+        });
+
+        // Reorder DOM elements
+        if (direction === "next") {
+          const firstCard = this.cards.shift();
+          if (firstCard) {
+            this.cards.push(firstCard);
+            if (this.track) this.track.appendChild(firstCard);
+          }
+        } else {
+          const lastCard = this.cards.pop();
+          if (lastCard) {
+            this.cards.unshift(lastCard);
+            if (this.track) this.track.prepend(lastCard);
           }
         }
-      }
-
-      rotateForward() {
-        this.cards.forEach((card, index) => {
-          const nextIndex = (index + 1) % positions.length;
-          const position = positions[nextIndex];
-          const htmlCard = card as HTMLElement;
-
-          window.gsap.to(htmlCard, {
-            duration: 0.6,
-            height: position.height,
-            z: position.z,
-            rotateY: position.rotateY,
-            y: position.y,
-            clipPath: position.clip,
-            ease: "power2.out"
-          });
-        });
-      }
-
-      rotateBackward() {
-        this.cards.forEach((card, index) => {
-          const prevIndex = (index - 1 + positions.length) % positions.length;
-          const position = positions[prevIndex];
-          const htmlCard = card as HTMLElement;
-
-          window.gsap.to(htmlCard, {
-            duration: 0.6,
-            height: position.height,
-            z: position.z,
-            rotateY: position.rotateY,
-            y: position.y,
-            clipPath: position.clip,
-            ease: "power2.out"
-          });
-        });
       }
 
       expandCard(card: Element) {
@@ -287,7 +375,7 @@ export default function Home() {
 
         const htmlCard = card as HTMLElement;
         
-        // Find the corresponding gallery item
+        // Find the corresponding gallery item first
         const title = htmlCard.dataset.title;
         const galleryItem = GALLERY_ITEMS.find(item => item.title === title);
         const index = GALLERY_ITEMS.findIndex(item => item.title === title);
@@ -297,6 +385,7 @@ export default function Home() {
           return;
         }
 
+        // Fallback to original expand logic
         this.expandedCard = card;
         const desc = htmlCard.dataset.desc;
 
@@ -304,67 +393,79 @@ export default function Home() {
         if (this.cardDesc) this.cardDesc.textContent = desc || '';
 
         const rect = htmlCard.getBoundingClientRect();
-        this.cardClone = htmlCard.cloneNode(true) as HTMLElement;
-        this.cardClone.style.position = "fixed";
-        this.cardClone.style.top = rect.top + "px";
-        this.cardClone.style.left = rect.left + "px";
-        this.cardClone.style.width = rect.width + "px";
-        this.cardClone.style.height = rect.height + "px";
-        this.cardClone.style.zIndex = "1000";
-        this.cardClone.style.pointerEvents = "none";
+        const clone = htmlCard.cloneNode(true) as HTMLElement;
+        const overlay = clone.querySelector(".hover-overlay");
+        if (overlay) overlay.remove();
 
-        document.body.appendChild(this.cardClone);
+        clone.style.position = "fixed";
+        clone.style.left = rect.left + "px";
+        clone.style.top = rect.top + "px";
+        clone.style.width = rect.width + "px";
+        clone.style.height = rect.height + "px";
+        clone.style.margin = "0";
+        clone.style.zIndex = "1000";
+        clone.classList.add("clone");
 
-        window.gsap.to(this.cardClone, {
+        document.body.appendChild(clone);
+        this.cardClone = clone;
+
+        window.gsap.set(htmlCard, { opacity: 0 });
+        if (this.track) this.track.classList.add("blurred");
+
+        const maxHeight = window.innerHeight * 0.8;
+        const finalWidth = 500;
+        const finalHeight = Math.min(650, maxHeight);
+        const centerX = window.innerWidth / 2;
+        const centerY = window.innerHeight / 2;
+
+        window.gsap.to(clone, {
+          width: finalWidth,
+          height: finalHeight,
+          left: centerX - finalWidth / 2,
+          top: centerY - finalHeight / 2,
+          clipPath: "polygon(0 0, 100% 0, 100% 100%, 0 100%)",
+          transform: "translateZ(0) rotateY(0deg)",
           duration: 0.8,
-          top: "50%",
-          left: "50%",
-          xPercent: -50,
-          yPercent: -50,
-          width: "80vw",
-          height: "80vh",
-          ease: "power2.out"
+          ease: "power2.out",
+          onComplete: () => {
+            if (this.cardInfo) this.cardInfo.classList.add("visible");
+            if (this.closeBtn) this.closeBtn.classList.add("visible");
+          }
         });
-
-        if (this.cardInfo) {
-          window.gsap.to(this.cardInfo, {
-            duration: 0.3,
-            opacity: 1,
-            display: "block",
-            delay: 0.5
-          });
-        }
       }
 
       closeCard() {
         if (!this.expandedCard) return;
 
-        if (this.cardInfo) {
-          window.gsap.to(this.cardInfo, {
-            duration: 0.3,
-            opacity: 0,
-            onComplete: () => {
-              if (this.cardInfo) this.cardInfo.style.display = "none";
-            }
-          });
-        }
+        if (this.cardInfo) this.cardInfo.classList.remove("visible");
+        if (this.closeBtn) this.closeBtn.classList.remove("visible");
 
-        if (this.cardClone) {
-          window.gsap.to(this.cardClone, {
-            duration: 0.6,
-            scale: 0,
-            opacity: 0,
-            ease: "power2.in",
-            onComplete: () => {
-              if (this.cardClone) {
-                document.body.removeChild(this.cardClone);
-                this.cardClone = null;
-              }
-            }
-          });
-        }
+        const card = this.expandedCard;
+        const clone = this.cardClone;
+        
+        if (!card || !clone) return;
+        
+        const htmlCard = card as HTMLElement;
+        const rect = htmlCard.getBoundingClientRect();
+        const index = this.cards.indexOf(card);
+        const pos = positions[index % positions.length];
 
-        this.expandedCard = null;
+        window.gsap.to(clone, {
+          width: rect.width,
+          height: rect.height,
+          left: rect.left,
+          top: rect.top,
+          clipPath: pos.clip,
+          duration: 0.8,
+          ease: "power2.out",
+          onComplete: () => {
+            if (clone) clone.remove();
+            window.gsap.set(card, { opacity: 1 });
+            if (this.track) this.track.classList.remove("blurred");
+            this.expandedCard = null;
+            this.cardClone = null;
+          }
+        });
       }
     }
 
@@ -426,14 +527,6 @@ export default function Home() {
     };
   }, [loading, GALLERY_ITEMS, initSlider]);
 
-
-    document.head.appendChild(script);
-
-    return () => {
-      document.head.removeChild(script);
-    };
-  }, []);
-
   // Loading state - after all hooks are called
   if (loading) {
     return <ApiLoading message="Loading VANYGRUB..." color="border-red-500" />;
@@ -450,7 +543,7 @@ export default function Home() {
       
       {/* API Error Notification */}
       {showApiError && (
-        <div className="fixed top-4 right-4 z-50 bg-red-600 text-white px-4 py-2 rounded-lg shadow-lg">
+        <div className="fixed z-50 px-4 py-2 text-white bg-red-600 rounded-lg shadow-lg top-4 right-4">
           <div className="flex items-center space-x-2">
             <span>⚠️</span>
             <span className="text-sm">API offline - Using cached data</span>

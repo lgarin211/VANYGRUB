@@ -1,88 +1,75 @@
 'use client';
 
-import React, { useState } from 'react';
+import { useState } from 'react';
 import Link from 'next/link';
 import { useSiteConfig } from '../hooks/useHomepageApi';
 
-const Header: React.FC = () => {
-  const [isSearchOpen, setIsSearchOpen] = useState(false);
-  const { config } = useSiteConfig();
+export default function Header() {
+  const [searchQuery, setSearchQuery] = useState('');
+  
+  const { data: siteConfig } = useSiteConfig();
 
-  const siteName = config?.site_name || 'VNY';
-  const mainMenu = config?.navigation?.main_menu || [
-    { label: 'Home', url: '/', active: true },
-    { label: 'VNY Products', url: '/vny', active: false },
-    { label: 'Gallery', url: '/gallery', active: false },
-    { label: 'About', url: '/about', active: false },
-    { label: 'Transactions', url: '/transactions', active: false }
+  const navItems = [
+    { name: 'HOME', href: '/vny' },
+    { name: 'PRODUCT', href: '/vny/product' },
+    { name: 'ABOUT VNY', href: '/about' },
+    { name: 'GALLERY', href: '/' }
   ];
 
   return (
-    <header className="bg-red-800 text-white">
-      <div className="container mx-auto px-4">
-        {/* Top bar */}
-        <div className="flex items-center justify-between py-4">
-          {/* Search */}
-          <div className="flex items-center space-x-4">
-            <button 
-              onClick={() => setIsSearchOpen(!isSearchOpen)}
-              className="flex items-center space-x-2 border-b border-white/30 pb-1"
-            >
-              <span className="text-sm">🔍 Search</span>
-            </button>
+    <header className="text-white bg-red-800">
+      {/* Top bar with search, logo, and actions */}
+      <div className="container px-4 mx-auto">
+        <div className="flex items-center justify-between py-3">
+          {/* Search bar on left */}
+          <div className="flex items-center">
+            <div className="relative">
+              <span className="absolute transform -translate-y-1/2 left-3 top-1/2">
+                🔍
+              </span>
+              <input
+                type="text"
+                placeholder="Search"
+                value={searchQuery}
+                onChange={(e) => setSearchQuery(e.target.value)}
+                className="py-1 pl-8 pr-4 text-white placeholder-white bg-transparent border-b border-white focus:outline-none focus:border-red-300"
+              />
+            </div>
           </div>
 
-          {/* Logo */}
-          <div className="text-4xl font-bold tracking-widest">
-            {siteName}
+          {/* VNY Logo in center */}
+          <div className="flex justify-center flex-1">
+            <Link href="/vny" className="text-3xl font-bold tracking-wider">
+              VNY
+            </Link>
           </div>
 
-          {/* Right menu */}
+          {/* Cart and Transaction on right */}
           <div className="flex items-center space-x-6">
-            <Link href="/vny/cart" className="hover:text-red-200 transition-colors">
+            <Link href="/vny/cart" className="transition-colors hover:text-red-300">
               CART
             </Link>
-            <Link href="/transaction" className="hover:text-red-200 transition-colors">
+            <Link href="/transactions" className="transition-colors hover:text-red-300">
               TRANSACTION
             </Link>
           </div>
         </div>
 
-        {/* Navigation */}
-        <nav className="border-t border-white/20">
-          <div className="flex items-center justify-center space-x-12 py-4">
-            {mainMenu.map((menuItem) => (
-              <Link 
-                key={menuItem.url}
-                href={menuItem.url} 
-                className={`pb-1 transition-colors ${
-                  menuItem.active 
-                    ? 'text-white border-b-2 border-white hover:text-red-200' 
-                    : 'text-white/80 hover:text-white'
-                }`}
+        {/* Navigation menu below */}
+        <div className="border-t border-red-700">
+          <nav className="flex justify-center py-3 space-x-8">
+            {navItems.map((item) => (
+              <Link
+                key={item.name}
+                href={item.href}
+                className="font-medium transition-colors hover:text-red-300"
               >
-                {menuItem.label.toUpperCase()}
+                {item.name}
               </Link>
             ))}
-            </Link>
-          </div>
-        </nav>
-      </div>
-
-      {/* Search Dropdown */}
-      {isSearchOpen && (
-        <div className="bg-red-700 border-t border-red-600">
-          <div className="container mx-auto px-4 py-4">
-            <input
-              type="text"
-              placeholder="Search products..."
-              className="w-full max-w-md px-4 py-2 bg-white/10 border border-white/20 rounded text-white placeholder-white/60 focus:outline-none focus:border-white/40"
-            />
-          </div>
+          </nav>
         </div>
-      )}
+      </div>
     </header>
   );
-};
-
-export default Header;
+}

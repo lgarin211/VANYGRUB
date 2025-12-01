@@ -5,6 +5,7 @@ namespace App\Http\Controllers\Api;
 use App\Http\Controllers\Controller;
 use Illuminate\Http\Request;
 use App\Models\HomepageGalleryItem;
+use App\Models\SiteConfig;
 
 class HomepageController extends Controller
 {
@@ -32,33 +33,53 @@ class HomepageController extends Controller
             $galleryItems = $this->getFallbackGalleryItems();
         }
 
+        // Get configurations from database with fallback to config files
         $constants = [
             'META' => [
-                'TITLE' => config('homepage.meta.title'),
-                'DESCRIPTION' => config('homepage.meta.description'),
-                'KEYWORDS' => config('homepage.meta.keywords')
+                'TITLE' => SiteConfig::getValue('meta', 'title', config('homepage.meta.title')),
+                'DESCRIPTION' => SiteConfig::getValue('meta', 'description', config('homepage.meta.description')),
+                'KEYWORDS' => SiteConfig::getValue('meta', 'keywords', config('homepage.meta.keywords'))
             ],
 
             'HERO_SECTION' => [
-                'TITLE' => config('homepage.hero_section.title'),
-                'SUBTITLE' => config('homepage.hero_section.subtitle'),
-                'DESCRIPTION' => config('homepage.hero_section.description')
+                'TITLE' => SiteConfig::getValue('hero_section', 'title', config('homepage.hero_section.title')),
+                'SUBTITLE' => SiteConfig::getValue('hero_section', 'subtitle', config('homepage.hero_section.subtitle')),
+                'DESCRIPTION' => SiteConfig::getValue('hero_section', 'description', config('homepage.hero_section.description'))
             ],
 
             'GALLERY_ITEMS' => $galleryItems,
 
-            'CATEGORIES' => config('homepage.categories'),
+            'CATEGORIES' => SiteConfig::getValue('site_config', 'categories', config('homepage.categories')),
 
             'COLORS' => [
-                'PRIMARY' => config('homepage.colors.primary'),
-                'SECONDARY' => config('homepage.colors.secondary'),
-                'ACCENT' => config('homepage.colors.accent'),
-                'GRADIENT' => config('homepage.colors.gradient')
+                'PRIMARY' => SiteConfig::getValue('colors', 'primary', config('homepage.colors.primary')),
+                'SECONDARY' => SiteConfig::getValue('colors', 'secondary', config('homepage.colors.secondary')),
+                'ACCENT' => SiteConfig::getValue('colors', 'accent', config('homepage.colors.accent')),
+                'GRADIENT' => SiteConfig::getValue('colors', 'gradient', config('homepage.colors.gradient'))
             ],
 
             'ANIMATION' => [
-                'CAROUSEL_INTERVAL' => config('homepage.animation.carousel_interval'),
-                'TRANSITION_DURATION' => config('homepage.animation.transition_duration')
+                'CAROUSEL_INTERVAL' => SiteConfig::getValue('animation', 'carousel_interval', config('homepage.animation.carousel_interval')),
+                'TRANSITION_DURATION' => SiteConfig::getValue('animation', 'transition_duration', config('homepage.animation.transition_duration'))
+            ],
+
+            'SITE_INFO' => [
+                'SITE_NAME' => SiteConfig::getValue('site_config', 'site_name', config('homepage.site_config.site_name')),
+                'TAGLINE' => SiteConfig::getValue('site_config', 'tagline', config('homepage.site_config.tagline')),
+                'DESCRIPTION' => SiteConfig::getValue('site_config', 'description', config('homepage.site_config.description'))
+            ],
+
+            'CONTACT' => [
+                'EMAIL' => SiteConfig::getValue('contact', 'email', config('homepage.site_config.contact.email')),
+                'PHONE' => SiteConfig::getValue('contact', 'phone', config('homepage.site_config.contact.phone')),
+                'ADDRESS' => SiteConfig::getValue('contact', 'address', config('homepage.site_config.contact.address'))
+            ],
+
+            'SOCIAL_MEDIA' => [
+                'FACEBOOK' => SiteConfig::getValue('social_media', 'facebook', config('homepage.site_config.social_media.facebook')),
+                'INSTAGRAM' => SiteConfig::getValue('social_media', 'instagram', config('homepage.site_config.social_media.instagram')),
+                'TWITTER' => SiteConfig::getValue('social_media', 'twitter', config('homepage.site_config.social_media.twitter')),
+                'YOUTUBE' => SiteConfig::getValue('social_media', 'youtube', config('homepage.site_config.social_media.youtube'))
             ]
         ];
 
