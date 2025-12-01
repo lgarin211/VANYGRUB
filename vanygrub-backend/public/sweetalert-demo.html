@@ -1,13 +1,14 @@
 <!DOCTYPE html>
 <html lang="en">
+
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>VanyGrub - SweetAlert Implementation</title>
-    
+
     <!-- SweetAlert2 CSS -->
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/sweetalert2@11/dist/sweetalert2.min.css">
-    
+
     <style>
         body {
             font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
@@ -16,7 +17,7 @@
             margin: 0;
             padding: 20px;
         }
-        
+
         .container {
             max-width: 800px;
             margin: 0 auto;
@@ -25,7 +26,7 @@
             padding: 30px;
             box-shadow: 0 10px 30px rgba(0, 0, 0, 0.3);
         }
-        
+
         .title {
             color: #800000;
             text-align: center;
@@ -33,14 +34,14 @@
             font-size: 2.5rem;
             font-weight: bold;
         }
-        
+
         .button-grid {
             display: grid;
             grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
             gap: 20px;
             margin: 30px 0;
         }
-        
+
         .demo-button {
             padding: 15px 25px;
             border: none;
@@ -51,18 +52,37 @@
             transition: all 0.3s ease;
             box-shadow: 0 4px 15px rgba(0, 0, 0, 0.1);
         }
-        
-        .success { background: #28a745; color: white; }
-        .error { background: #dc3545; color: white; }
-        .warning { background: #ffc107; color: #000; }
-        .info { background: #17a2b8; color: white; }
-        .question { background: #6f42c1; color: white; }
-        
+
+        .success {
+            background: #28a745;
+            color: white;
+        }
+
+        .error {
+            background: #dc3545;
+            color: white;
+        }
+
+        .warning {
+            background: #ffc107;
+            color: #000;
+        }
+
+        .info {
+            background: #17a2b8;
+            color: white;
+        }
+
+        .question {
+            background: #6f42c1;
+            color: white;
+        }
+
         .demo-button:hover {
             transform: translateY(-2px);
             box-shadow: 0 6px 20px rgba(0, 0, 0, 0.2);
         }
-        
+
         .code-section {
             background: #f8f9fa;
             border-radius: 8px;
@@ -70,13 +90,13 @@
             margin: 20px 0;
             border-left: 4px solid #800000;
         }
-        
+
         .code-title {
             color: #800000;
             font-weight: bold;
             margin-bottom: 10px;
         }
-        
+
         pre {
             background: #2d3748;
             color: #e2e8f0;
@@ -87,22 +107,24 @@
         }
     </style>
 </head>
+
 <body>
     <div class="container">
         <h1 class="title">🎉 VanyGrub SweetAlert Demo</h1>
-        
+
         <div class="button-grid">
             <button class="demo-button success" onclick="showSuccess()">✅ Success Alert</button>
             <button class="demo-button error" onclick="showError()">❌ Error Alert</button>
             <button class="demo-button warning" onclick="showWarning()">⚠️ Warning Alert</button>
             <button class="demo-button info" onclick="showInfo()">ℹ️ Info Alert</button>
             <button class="demo-button question" onclick="showConfirm()">❓ Confirm Dialog</button>
-            <button class="demo-button" style="background: #6c757d; color: white;" onclick="showCustom()">🎨 Custom Alert</button>
+            <button class="demo-button" style="background: #6c757d; color: white;" onclick="showCustom()">🎨 Custom
+                Alert</button>
         </div>
-        
+
         <div class="code-section">
             <div class="code-title">📝 Implementation Examples:</div>
-            
+
             <h4>1. Basic Success Alert</h4>
             <pre><code>Swal.fire({
     icon: 'success',
@@ -144,7 +166,7 @@
 
     <!-- SweetAlert2 JS -->
     <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
-    
+
     <script>
         // Set default SweetAlert configuration
         const Toast = Swal.mixin({
@@ -268,7 +290,7 @@
         function showTraditionalAlert() {
             // OLD WAY (don't use):
             // alert('Hello World!');
-            
+
             // NEW WAY with SweetAlert:
             Swal.fire({
                 title: 'Hello World!',
@@ -284,7 +306,7 @@
             // if (confirm('Are you sure?')) {
             //     console.log('User clicked OK');
             // }
-            
+
             // NEW WAY with SweetAlert:
             Swal.fire({
                 title: 'Are you sure?',
@@ -306,7 +328,7 @@
         }
 
         // Auto-show demo on page load
-        window.addEventListener('load', function() {
+        window.addEventListener('load', function () {
             setTimeout(() => {
                 Toast.fire({
                     icon: 'info',
@@ -317,4 +339,5 @@
         });
     </script>
 </body>
+
 </html>

@@ -4,6 +4,8 @@ import React, { useState, useEffect } from 'react';
 import Image from 'next/image';
 import Link from 'next/link';
 import { showSuccess, showError, showWarning, showOrderSuccess } from '../../../utils/sweetAlert';
+import { getSessionId, clearSession } from '../../../utils/session';
+import { useCart } from '../../../hooks/useApi';
 import Header from '../../../components/Header';
 
 interface CartItem {
@@ -29,7 +31,8 @@ interface CustomerInfo {
 }
 
 const CartPage: React.FC = () => {
-  const [cartItems, setCartItems] = useState<CartItem[]>([]);
+  const sessionId = getSessionId();
+  const { cart, loading: cartLoading, addToCart, updateCartItem, removeFromCart, refreshCart, clearCart } = useCart(sessionId);
   const [promoCode, setPromoCode] = useState('');
   const [appliedPromo, setAppliedPromo] = useState<string | null>(null);
   const [showCheckoutModal, setShowCheckoutModal] = useState(false);
@@ -43,9 +46,19 @@ const CartPage: React.FC = () => {
     notes: ''
   });
 
-  // Demo cart data - in real app this would come from context/state management
+  // Get cart items from API
+  const cartItems = cart?.items || [];
+
+  // Load cart on component mount
   useEffect(() => {
-    const demoItems: CartItem[] = [
+    refreshCart();
+  }, []);
+
+  // Demo fallback data if cart is empty
+  useEffect(() => {
+    if (!cartLoading && (!cartItems || cartItems.length === 0)) {
+      // You can remove this demo data section if you don't want fallback
+      const demoItems: CartItem[] = [
       {
         id: 1,
         name: "Air Jordan 1 Retro",
@@ -77,20 +90,34 @@ const CartPage: React.FC = () => {
         size: 41,
         quantity: 1,
         discount: "15%"
-      }
-    ];
-    setCartItems(demoItems);
-  }, []);
+      }];
+      // This is just for demo, remove in production
+      console.log('Cart is empty, you can add demo data here if needed');
+    }
+  }, [cartLoading, cartItems]);
 
-  const handleUpdateQuantity = (id: number, newQuantity: number) => {
+  const handleUpdateQuantity = async (id: number, newQuantity: number) => {
     if (newQuantity < 1) return;
-    setCartItems(prev => 
-      prev.map(item => item.id === id ? { ...item, quantity: newQuantity } : item)
-    );
+    
+    try {
+      await updateCartItem(id, newQuantity);
+      await refreshCart();
+      showSuccess('Berhasil!', 'Quantity berhasil diupdate');
+    } catch (error) {
+      console.error('Error updating quantity:', error);
+      showError('Gagal Update', 'Gagal mengupdate quantity item');
+    }
   };
 
-  const handleRemoveItem = (id: number) => {
-    setCartItems(prev => prev.filter(item => item.id !== id));
+  const handleRemoveItem = async (id: number) => {
+    try {
+      await removeFromCart(id);
+      await refreshCart();
+      showSuccess('Berhasil!', 'Item berhasil dihapus dari keranjang');
+    } catch (error) {
+      console.error('Error removing item:', error);
+      showError('Gagal Hapus', 'Gagal menghapus item dari keranjang');
+    }
   };
 
   const handleApplyPromo = () => {
@@ -111,8 +138,8 @@ const CartPage: React.FC = () => {
   };
 
   // Calculate totals
-  const subtotal = cartItems.reduce((sum, item) => sum + (item.originalPrice * item.quantity), 0);
-  const itemDiscount = cartItems.reduce((sum, item) => {
+  const subtotal = cartItems.reduce((sum: number, item: CartItem) => sum + (item.originalPrice * item.quantity), 0);
+  const itemDiscount = cartItems.reduce((sum: number, item: CartItem) => {
     if (item.discount) {
       const discountPercent = parseInt(item.discount.replace('%', '')) / 100;
       return sum + (item.originalPrice * item.quantity * discountPercent);
@@ -166,7 +193,7 @@ const CartPage: React.FC = () => {
     }
     message += `\n📦 *Detail Pesanan:*\n`;
     
-    cartItems.forEach((item, index) => {
+    cartItems.forEach((item: CartItem, index: number) => {
       message += `${index + 1}. ${item.name}\n`;
       message += `   Warna: ${item.color}\n`;
       message += `   Ukuran: ${item.size}\n`;
@@ -203,7 +230,7 @@ const CartPage: React.FC = () => {
     return encodeURIComponent(message);
   };
 
-  const handleSendToWhatsApp = () => {
+  const handleSendToWhatsApp = async () => {
     if (!customerInfo.name || !customerInfo.phone || !customerInfo.address || !customerInfo.city || !customerInfo.postalCode) {
       showWarning('Data Tidak Lengkap', 'Mohon lengkapi semua data pembeli yang wajib diisi!');
       return;
@@ -244,7 +271,9 @@ const CartPage: React.FC = () => {
     
     // Close checkout modal and clear cart
     setShowCheckoutModal(false);
-    setCartItems([]);
+    await clearCart(); // Clear cart from API
+    await refreshCart(); // Refresh to get updated cart state
+    clearSession(); // Clear local session
     
     // Reset customer info
     setCustomerInfo({
@@ -308,10 +337,14 @@ const CartPage: React.FC = () => {
                 <div className="px-4 md:px-6 py-3 md:py-4 bg-gray-50 border-b border-gray-200">
                   <div className="flex items-center justify-between">
                     <h2 className="text-lg md:text-xl font-semibold text-gray-900">
-                      Item dalam Keranjang ({cartItems.reduce((sum, item) => sum + item.quantity, 0)})
+                      Item dalam Keranjang ({cartItems.reduce((sum: number, item: CartItem) => sum + item.quantity, 0)})
                     </h2>
                     <button 
-                      onClick={() => setCartItems([])}
+                      onClick={async () => {
+                        await clearCart();
+                        await refreshCart();
+                        showSuccess('Berhasil!', 'Semua item telah dihapus dari keranjang');
+                      }}
                       className="text-xs md:text-sm text-red-600 hover:text-red-700 font-medium"
                     >
                       Hapus Semua
@@ -321,7 +354,7 @@ const CartPage: React.FC = () => {
 
                 {/* Items List */}
                 <div className="divide-y divide-gray-200">
-                  {cartItems.map((item) => (
+                  {cartItems.map((item: CartItem) => (
                     <div key={`${item.id}-${item.color}-${item.size}`} className="p-6">
                       <div className="flex items-start space-x-4">
                         {/* Product Image */}
@@ -478,7 +511,7 @@ const CartPage: React.FC = () => {
                   {/* Price Breakdown */}
                   <div className="space-y-3 mb-6">
                     <div className="flex justify-between">
-                      <span className="text-gray-600">Subtotal ({cartItems.reduce((sum, item) => sum + item.quantity, 0)} item)</span>
+                      <span className="text-gray-600">Subtotal ({cartItems.reduce((sum: number, item: CartItem) => sum + item.quantity, 0)} item)</span>
                       <span className="font-medium">{formatPrice(subtotal)}</span>
                     </div>
                     
@@ -676,7 +709,7 @@ const CartPage: React.FC = () => {
                   
                   {/* Cart Items Summary */}
                   <div className="space-y-3 mb-6">
-                    {cartItems.map((item, index) => (
+                    {cartItems.map((item: CartItem, index: number) => (
                       <div key={index} className="flex items-center space-x-3">
                         <div className="w-12 h-12 bg-gray-100 rounded-lg overflow-hidden">
                           <Image

@@ -10,6 +10,7 @@ use App\Http\Controllers\Api\ProductGridController;
 use App\Http\Controllers\Api\MediaController;
 use App\Http\Controllers\Api\SessionDebugController;
 use App\Http\Controllers\Api\HomepageController;
+use App\Http\Controllers\Api\CartController;
 
 /*
 |--------------------------------------------------------------------------
@@ -45,6 +46,13 @@ Route::prefix('vny')->group(function () {
     Route::apiResource('products', ProductController::class);
     Route::get('products/slug/{slug}', [ProductController::class, 'getBySlug']);
     Route::get('featured-products', [ProductController::class, 'getFeatured']);
+
+    // Cart API
+    Route::get('cart', [CartController::class, 'index']);
+    Route::post('cart', [CartController::class, 'store']);
+    Route::put('cart/{id}', [CartController::class, 'update']);
+    Route::delete('cart/{id}', [CartController::class, 'destroy']);
+    Route::post('cart/clear', [CartController::class, 'clear']);
 
     // Hero Sections API
     Route::apiResource('hero-sections', HeroSectionController::class);

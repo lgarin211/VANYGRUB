@@ -281,9 +281,22 @@ class MediaResource extends Resource
                     }),
             ])
             ->actions([
-                Tables\Actions\ViewAction::make(),
-                Tables\Actions\EditAction::make(),
+                Tables\Actions\ViewAction::make()
+                    ->color('info'),
+                Tables\Actions\EditAction::make()
+                    ->color('warning'),
                 Tables\Actions\DeleteAction::make()
+                    ->color('danger')
+                    ->requiresConfirmation()
+                    ->modalHeading('Delete Media File')
+                    ->modalDescription('Are you sure you want to delete this media file? This action cannot be undone and will permanently remove the file from storage.')
+                    ->modalSubmitActionLabel('Yes, delete it')
+                    ->successNotification(
+                        \Filament\Notifications\Notification::make()
+                            ->success()
+                            ->title('Media deleted')
+                            ->body('The media file has been permanently deleted.')
+                    )
                     ->before(function (Media $record) {
                         // Delete file from storage when deleting record
                         if (Storage::disk('public')->exists($record->path)) {
@@ -294,6 +307,17 @@ class MediaResource extends Resource
             ->bulkActions([
                 Tables\Actions\BulkActionGroup::make([
                     Tables\Actions\DeleteBulkAction::make()
+                        ->color('danger')
+                        ->requiresConfirmation()
+                        ->modalHeading('Delete Selected Media Files')
+                        ->modalDescription('Are you sure you want to delete the selected media files? This action cannot be undone and will permanently remove the files from storage.')
+                        ->modalSubmitActionLabel('Yes, delete them')
+                        ->successNotification(
+                            \Filament\Notifications\Notification::make()
+                                ->success()
+                                ->title('Media files deleted')
+                                ->body('The selected media files have been permanently deleted.')
+                        )
                         ->before(function ($records) {
                             // Delete files from storage when bulk deleting
                             foreach ($records as $record) {

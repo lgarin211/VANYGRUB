@@ -1,6 +1,6 @@
 <!DOCTYPE html>
-<html 
-    lang="{{ str_replace('_', '-', app()->getLocale()) }}" 
+<html
+    lang="{{ str_replace('_', '-', app()->getLocale()) }}"
     dir="{{ __('filament-panels::layout.direction') ?? 'ltr' }}"
     @class([
         'fi min-h-screen',
@@ -27,19 +27,19 @@
 
     <!-- SweetAlert2 CSS -->
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/sweetalert2@11/dist/sweetalert2.min.css">
-    
+
     <style>
         /* Custom SweetAlert2 theme for VanyGrub */
         .swal2-popup {
             font-family: inherit !important;
             border-radius: 12px !important;
         }
-        
+
         .swal2-title {
             color: #800000 !important;
             font-weight: 600 !important;
         }
-        
+
         .swal2-confirm {
             background-color: #800000 !important;
             border: none !important;
@@ -47,7 +47,7 @@
             padding: 12px 24px !important;
             font-weight: 600 !important;
         }
-        
+
         .swal2-cancel {
             background-color: #6c757d !important;
             border: none !important;
@@ -55,19 +55,19 @@
             padding: 12px 24px !important;
             font-weight: 600 !important;
         }
-        
+
         .swal2-success .swal2-success-ring {
             border-color: #800000 !important;
         }
-        
+
         .swal2-success .swal2-success-fix {
             background-color: #800000 !important;
         }
-        
+
         .swal2-success .swal2-success-circular-line-right {
             background-color: #800000 !important;
         }
-        
+
         .swal2-success .swal2-success-circular-line-left {
             background-color: #800000 !important;
         }
@@ -89,7 +89,7 @@
 
     <!-- SweetAlert2 JS -->
     <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
-    
+
     <script>
         // Initialize SweetAlert2 with VanyGrub theme
         const VanyAlert = Swal.mixin({
@@ -132,7 +132,7 @@
                     confirmButtonText: 'OK'
                 });
             },
-            
+
             error: (title, text = null) => {
                 return VanyAlert.fire({
                     icon: 'error',
@@ -141,7 +141,7 @@
                     confirmButtonText: 'OK'
                 });
             },
-            
+
             warning: (title, text = null) => {
                 return VanyAlert.fire({
                     icon: 'warning',
@@ -150,7 +150,7 @@
                     confirmButtonText: 'OK'
                 });
             },
-            
+
             info: (title, text = null) => {
                 return VanyAlert.fire({
                     icon: 'info',
@@ -159,7 +159,7 @@
                     confirmButtonText: 'OK'
                 });
             },
-            
+
             confirm: (title, text = null, confirmText = 'Yes', cancelText = 'Cancel') => {
                 return VanyAlert.fire({
                     title: title,
@@ -171,7 +171,7 @@
                     reverseButtons: true
                 });
             },
-            
+
             toast: {
                 success: (title) => {
                     return VanyToast.fire({
@@ -179,21 +179,21 @@
                         title: title
                     });
                 },
-                
+
                 error: (title) => {
                     return VanyToast.fire({
                         icon: 'error',
                         title: title
                     });
                 },
-                
+
                 warning: (title) => {
                     return VanyToast.fire({
                         icon: 'warning',
                         title: title
                     });
                 },
-                
+
                 info: (title) => {
                     return VanyToast.fire({
                         icon: 'info',
@@ -209,7 +209,7 @@
         window.alert = function(message) {
             return vanyAlert.info('Alert', message);
         };
-        
+
         window.confirm = function(message) {
             return vanyAlert.confirm('Confirm', message).then(result => result.isConfirmed);
         };
@@ -272,22 +272,22 @@
                 Livewire.on('success', (data) => {
                     vanyAlert.toast.success(data.message || 'Operation completed successfully!');
                 });
-                
-                // Error notifications  
+
+                // Error notifications
                 Livewire.on('error', (data) => {
                     vanyAlert.toast.error(data.message || 'An error occurred!');
                 });
-                
+
                 // Warning notifications
                 Livewire.on('warning', (data) => {
                     vanyAlert.toast.warning(data.message || 'Warning!');
                 });
-                
+
                 // Info notifications
                 Livewire.on('info', (data) => {
                     vanyAlert.toast.info(data.message || 'Information');
                 });
-                
+
                 // Confirmation dialogs
                 Livewire.on('confirm', (data) => {
                     vanyAlert.confirm(

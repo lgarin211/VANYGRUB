@@ -4,6 +4,7 @@ import React, { useState, useEffect } from 'react';
 import Image from 'next/image';
 import Link from 'next/link';
 import { showSuccess, showError, showCart } from '../../../../utils/sweetAlert';
+import { getSessionId } from '../../../../utils/session';
 import { useParams } from 'next/navigation';
 import { useProduct, useCart, useOrders } from '../../../../hooks/useApi';
 import Header from '../../../../components/Header';
@@ -73,13 +74,15 @@ const ProductDetail: React.FC = () => {
   const [activeView, setActiveView] = useState<'images' | '3d'>('images');
   const [selectedSize, setSelectedSize] = useState<string | number | null>(null);
   const [selectedColor, setSelectedColor] = useState<string>('');
+  const [isAddingToCart, setIsAddingToCart] = useState(false);
   
   // Modal states
   const [showCartModal, setShowCartModal] = useState(false);
   const [showTransactionModal, setShowTransactionModal] = useState(false);
   
   // Cart and transaction data from API
-  const { cart, refreshCart } = useCart();
+  const sessionId = getSessionId();
+  const { cart, refreshCart, addToCart } = useCart(sessionId);
   const { orders } = useOrders();
   const cartItems = cart?.items || [];
   
@@ -88,7 +91,6 @@ const ProductDetail: React.FC = () => {
 
   // Load product from API
   const { product, loading, error } = useProduct(productId);
-  const { addToCart, loading: isAddingToCart } = useCart();
 
   useEffect(() => {
     if (product && product.colors && Array.isArray(product.colors) && product.colors.length > 0) {
@@ -133,6 +135,7 @@ const ProductDetail: React.FC = () => {
       return;
     }
 
+    setIsAddingToCart(true);
     try {
       await addToCart({
         product_id: product.id,
@@ -160,10 +163,12 @@ const ProductDetail: React.FC = () => {
     } catch (error) {
       console.error('Error adding to cart:', error);
       showError('Gagal Menambahkan', 'Gagal menambahkan produk ke keranjang. Silakan coba lagi.');
+    } finally {
+      setIsAddingToCart(false);
     }
   };
 
-  const { updateCartItem, removeFromCart } = useCart();
+  const { updateCartItem, removeFromCart } = useCart(sessionId);
 
   const handleUpdateCartQuantity = async (itemId: number, newQuantity: number) => {
     try {
