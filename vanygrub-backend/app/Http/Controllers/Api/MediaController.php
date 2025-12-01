@@ -34,21 +34,21 @@ class MediaController extends Controller
             $file = $request->file('file');
             $type = $request->input('type', 'image');
             $folder = $request->input('folder', 'general');
-            
+
             // Validate file type based on category
             $this->validateFileType($file, $type);
-            
+
             // Generate unique filename
             $originalName = pathinfo($file->getClientOriginalName(), PATHINFO_FILENAME);
             $extension = $file->getClientOriginalExtension();
             $filename = Str::slug($originalName) . '-' . time() . '.' . $extension;
-            
+
             // Store file
             $path = $file->storeAs("media/{$type}/{$folder}", $filename, 'public');
-            
+
             // Generate URL
             $url = Storage::url($path);
-            
+
             // Save to database
             $media = Media::create([
                 'filename' => $filename,
@@ -60,7 +60,7 @@ class MediaController extends Controller
                 'type' => $type,
                 'folder' => $folder
             ]);
-            
+
             return response()->json([
                 'success' => true,
                 'message' => 'File uploaded successfully',
@@ -77,7 +77,7 @@ class MediaController extends Controller
                     'formatted_size' => $media->formatted_size
                 ]
             ]);
-            
+
         } catch (\Exception $e) {
             return response()->json([
                 'success' => false,
@@ -115,18 +115,18 @@ class MediaController extends Controller
             foreach ($files as $file) {
                 // Validate file type
                 $this->validateFileType($file, $type);
-                
+
                 // Generate unique filename
                 $originalName = pathinfo($file->getClientOriginalName(), PATHINFO_FILENAME);
                 $extension = $file->getClientOriginalExtension();
                 $filename = Str::slug($originalName) . '-' . time() . '-' . Str::random(4) . '.' . $extension;
-                
+
                 // Store file
                 $path = $file->storeAs("media/{$type}/{$folder}", $filename, 'public');
-                
+
                 // Generate URL
                 $url = Storage::url($path);
-                
+
                 // Save to database
                 $media = Media::create([
                     'filename' => $filename,
@@ -138,7 +138,7 @@ class MediaController extends Controller
                     'type' => $type,
                     'folder' => $folder
                 ]);
-                
+
                 $uploadedFiles[] = [
                     'id' => $media->id,
                     'filename' => $filename,
@@ -151,7 +151,7 @@ class MediaController extends Controller
                     'folder' => $folder,
                     'formatted_size' => $media->formatted_size
                 ];
-                
+
                 // Small delay to ensure unique timestamps
                 usleep(1000);
             }
@@ -161,7 +161,7 @@ class MediaController extends Controller
                 'message' => count($uploadedFiles) . ' files uploaded successfully',
                 'data' => $uploadedFiles
             ]);
-            
+
         } catch (\Exception $e) {
             return response()->json([
                 'success' => false,
@@ -189,10 +189,10 @@ class MediaController extends Controller
 
         try {
             $path = $request->input('path');
-            
+
             if (Storage::disk('public')->exists($path)) {
                 Storage::disk('public')->delete($path);
-                
+
                 return response()->json([
                     'success' => true,
                     'message' => 'File deleted successfully'
@@ -203,7 +203,7 @@ class MediaController extends Controller
                     'message' => 'File not found'
                 ], 404);
             }
-            
+
         } catch (\Exception $e) {
             return response()->json([
                 'success' => false,
@@ -221,10 +221,10 @@ class MediaController extends Controller
         $folder = $request->input('folder', 'general');
         $page = (int) $request->input('page', 1);
         $perPage = min((int) $request->input('per_page', 20), 50);
-        
+
         try {
             $directory = "media/{$type}/{$folder}";
-            
+
             if (!Storage::disk('public')->exists($directory)) {
                 return response()->json([
                     'success' => true,
@@ -237,7 +237,7 @@ class MediaController extends Controller
                     ]
                 ]);
             }
-            
+
             $files = collect(Storage::disk('public')->files($directory))
                 ->map(function ($filePath) {
                     $filename = basename($filePath);
@@ -252,13 +252,13 @@ class MediaController extends Controller
                 })
                 ->sortByDesc('last_modified')
                 ->values();
-            
+
             $total = $files->count();
             $totalPages = ceil($total / $perPage);
             $offset = ($page - 1) * $perPage;
-            
+
             $paginatedFiles = $files->slice($offset, $perPage)->values();
-            
+
             return response()->json([
                 'success' => true,
                 'data' => $paginatedFiles,
@@ -269,7 +269,7 @@ class MediaController extends Controller
                     'total_pages' => $totalPages
                 ]
             ]);
-            
+
         } catch (\Exception $e) {
             return response()->json([
                 'success' => false,
@@ -290,7 +290,7 @@ class MediaController extends Controller
         ];
 
         $extension = strtolower($file->getClientOriginalExtension());
-        
+
         if (!in_array($extension, $allowedTypes[$type] ?? [])) {
             throw new \InvalidArgumentException("File type '{$extension}' is not allowed for category '{$type}'");
         }
@@ -300,9 +300,13 @@ class MediaController extends Controller
             'image' => ['image/jpeg', 'image/jpg', 'image/png', 'image/gif', 'image/webp', 'image/svg+xml'],
             'video' => ['video/mp4', 'video/avi', 'video/quicktime', 'video/x-ms-wmv', 'video/x-flv', 'video/webm'],
             'document' => [
-                'application/pdf', 'application/msword', 'application/vnd.openxmlformats-officedocument.wordprocessingml.document',
-                'application/vnd.ms-excel', 'application/vnd.openxmlformats-officedocument.spreadsheetml.sheet',
-                'application/vnd.ms-powerpoint', 'application/vnd.openxmlformats-officedocument.presentationml.presentation',
+                'application/pdf',
+                'application/msword',
+                'application/vnd.openxmlformats-officedocument.wordprocessingml.document',
+                'application/vnd.ms-excel',
+                'application/vnd.openxmlformats-officedocument.spreadsheetml.sheet',
+                'application/vnd.ms-powerpoint',
+                'application/vnd.openxmlformats-officedocument.presentationml.presentation',
                 'text/plain'
             ]
         ];

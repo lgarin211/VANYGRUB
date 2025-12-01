@@ -8,6 +8,7 @@ use App\Http\Controllers\Api\ProductController;
 use App\Http\Controllers\Api\HeroSectionController;
 use App\Http\Controllers\Api\ProductGridController;
 use App\Http\Controllers\Api\MediaController;
+use App\Http\Controllers\Api\SessionDebugController;
 
 /*
 |--------------------------------------------------------------------------
@@ -52,4 +53,8 @@ Route::prefix('vny')->group(function () {
         Route::delete('delete', [MediaController::class, 'deleteMedia']);
         Route::get('list', [MediaController::class, 'getMedia']);
     });
+
+    // Debug routes (remove in production)
+    Route::get('debug/session', [SessionDebugController::class, 'debug']);
+    Route::get('debug/session-test', [SessionDebugController::class, 'testSession']);
 });

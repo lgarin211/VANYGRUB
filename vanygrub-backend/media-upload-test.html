@@ -1,0 +1,278 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>VanyGrub Media Upload Test</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            max-width: 800px;
+            margin: 0 auto;
+            padding: 20px;
+        }
+
+        .upload-area {
+            border: 2px dashed #ddd;
+            padding: 40px;
+            text-align: center;
+            margin: 20px 0;
+            border-radius: 8px;
+            cursor: pointer;
+        }
+
+        .upload-area:hover {
+            background-color: #f9f9f9;
+        }
+
+        .upload-area.dragover {
+            background-color: #e8f5e8;
+            border-color: #28a745;
+        }
+
+        .result {
+            margin: 20px 0;
+            padding: 15px;
+            border-radius: 5px;
+            background-color: #f8f9fa;
+        }
+
+        .success {
+            background-color: #d4edda;
+            border: 1px solid #c3e6cb;
+            color: #155724;
+        }
+
+        .error {
+            background-color: #f8d7da;
+            border: 1px solid #f5c6cb;
+            color: #721c24;
+        }
+
+        .media-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(200px, 1fr));
+            gap: 15px;
+            margin: 20px 0;
+        }
+
+        .media-item {
+            border: 1px solid #ddd;
+            padding: 10px;
+            border-radius: 8px;
+        }
+
+        .media-item img {
+            width: 100%;
+            height: 150px;
+            object-fit: cover;
+            margin-bottom: 10px;
+        }
+
+        .controls {
+            margin: 20px 0;
+        }
+
+        select,
+        button {
+            padding: 8px 12px;
+            margin: 5px;
+        }
+    </style>
+</head>
+
+<body>
+    <h1>VanyGrub Media Upload Test</h1>
+
+    <div class="controls">
+        <label>Type:
+            <select id="mediaType">
+                <option value="image">Image</option>
+                <option value="video">Video</option>
+                <option value="document">Document</option>
+            </select>
+        </label>
+        <label>Folder:
+            <input type="text" id="folder" value="general" placeholder="Folder name">
+        </label>
+        <label>
+            <input type="checkbox" id="multiple"> Multiple Upload
+        </label>
+    </div>
+
+    <div class="upload-area" id="uploadArea">
+        <p>Click to select files or drag and drop here</p>
+        <p><small>Max 10MB per file</small></p>
+        <input type="file" id="fileInput" style="display: none;">
+    </div>
+
+    <div id="result"></div>
+    <div id="mediaGrid" class="media-grid"></div>
+
+    <h2>API Test Buttons</h2>
+    <button onclick="testGetMedia()">Test Get Media List</button>
+    <button onclick="loadExistingMedia()">Load Existing Media</button>
+
+    <script>
+        const API_BASE = 'https://vanyadmin.progesio.my.id/api/vny/media';
+        const uploadArea = document.getElementById('uploadArea');
+        const fileInput = document.getElementById('fileInput');
+        const result = document.getElementById('result');
+        const mediaGrid = document.getElementById('mediaGrid');
+
+        // Drag and drop handlers
+        uploadArea.addEventListener('click', () => {
+            const multiple = document.getElementById('multiple').checked;
+            fileInput.multiple = multiple;
+            fileInput.click();
+        });
+
+        uploadArea.addEventListener('dragover', (e) => {
+            e.preventDefault();
+            uploadArea.classList.add('dragover');
+        });
+
+        uploadArea.addEventListener('dragleave', () => {
+            uploadArea.classList.remove('dragover');
+        });
+
+        uploadArea.addEventListener('drop', (e) => {
+            e.preventDefault();
+            uploadArea.classList.remove('dragover');
+            handleFiles(e.dataTransfer.files);
+        });
+
+        fileInput.addEventListener('change', (e) => {
+            handleFiles(e.target.files);
+        });
+
+        async function handleFiles(files) {
+            const type = document.getElementById('mediaType').value;
+            const folder = document.getElementById('folder').value || 'general';
+            const multiple = document.getElementById('multiple').checked;
+
+            showResult('Uploading...', 'info');
+
+            try {
+                let response;
+                if (multiple && files.length > 1) {
+                    response = await uploadMultiple(files, type, folder);
+                } else {
+                    response = await uploadSingle(files[0], type, folder);
+                }
+
+                if (response.success) {
+                    showResult(`Upload successful: ${response.message}`, 'success');
+                    displayMedia(Array.isArray(response.data) ? response.data : [response.data]);
+                } else {
+                    showResult(`Upload failed: ${response.message}`, 'error');
+                }
+            } catch (error) {
+                showResult(`Error: ${error.message}`, 'error');
+            }
+        }
+
+        async function uploadSingle(file, type, folder) {
+            const formData = new FormData();
+            formData.append('file', file);
+            formData.append('type', type);
+            formData.append('folder', folder);
+
+            const response = await fetch(`${API_BASE}/upload`, {
+                method: 'POST',
+                body: formData
+            });
+
+            return await response.json();
+        }
+
+        async function uploadMultiple(files, type, folder) {
+            const formData = new FormData();
+            Array.from(files).forEach(file => {
+                formData.append('files[]', file);
+            });
+            formData.append('type', type);
+            formData.append('folder', folder);
+
+            const response = await fetch(`${API_BASE}/upload-multiple`, {
+                method: 'POST',
+                body: formData
+            });
+
+            return await response.json();
+        }
+
+        async function testGetMedia() {
+            const type = document.getElementById('mediaType').value;
+            const folder = document.getElementById('folder').value || 'general';
+
+            try {
+                const response = await fetch(`${API_BASE}/list?type=${type}&folder=${folder}&page=1&per_page=20`);
+                const data = await response.json();
+
+                if (data.success) {
+                    showResult(`Found ${data.data.length} media files`, 'success');
+                    displayMediaFromList(data.data);
+                } else {
+                    showResult(`Failed to get media: ${data.message}`, 'error');
+                }
+            } catch (error) {
+                showResult(`Error: ${error.message}`, 'error');
+            }
+        }
+
+        function showResult(message, type) {
+            result.innerHTML = `<div class="result ${type}">${message}</div>`;
+        }
+
+        function displayMedia(mediaArray) {
+            const items = mediaArray.map(media => `
+                <div class="media-item">
+                    ${media.type === 'image' ? `<img src="${media.url}" alt="${media.original_name}">` : ''}
+                    <div><strong>${media.original_name}</strong></div>
+                    <div>Type: ${media.type}</div>
+                    <div>Size: ${media.formatted_size || formatBytes(media.size)}</div>
+                    <div><small>URL: <a href="${media.url}" target="_blank">${media.url}</a></small></div>
+                    <button onclick="copyToClipboard('${media.url}')">Copy URL</button>
+                </div>
+            `).join('');
+
+            mediaGrid.innerHTML = items;
+        }
+
+        function displayMediaFromList(mediaArray) {
+            const items = mediaArray.map(media => `
+                <div class="media-item">
+                    ${media.mime_type && media.mime_type.startsWith('image/') ? `<img src="${media.url}" alt="${media.filename}">` : ''}
+                    <div><strong>${media.filename}</strong></div>
+                    <div>Size: ${formatBytes(media.size)}</div>
+                    <div><small>URL: <a href="${media.url}" target="_blank">${media.url}</a></small></div>
+                    <button onclick="copyToClipboard('${media.url}')">Copy URL</button>
+                </div>
+            `).join('');
+
+            mediaGrid.innerHTML = items;
+        }
+
+        function formatBytes(bytes) {
+            if (bytes === 0) return '0 Bytes';
+            const k = 1024;
+            const sizes = ['Bytes', 'KB', 'MB', 'GB'];
+            const i = Math.floor(Math.log(bytes) / Math.log(k));
+            return parseFloat((bytes / Math.pow(k, i)).toFixed(2)) + ' ' + sizes[i];
+        }
+
+        function copyToClipboard(text) {
+            navigator.clipboard.writeText(text).then(() => {
+                showResult('URL copied to clipboard!', 'success');
+            });
+        }
+
+        function loadExistingMedia() {
+            testGetMedia();
+        }
+    </script>
+</body>
+
+</html>

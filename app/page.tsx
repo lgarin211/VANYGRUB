@@ -1,117 +1,29 @@
 'use client'
 
 import { useEffect, useState } from 'react'
+import { HOMEPAGE_CONSTANTS, type GalleryItem } from '../constants'
 import './home.css'
 
 export default function Home() {
-  const [selectedItem, setSelectedItem] = useState<any>(null);
+  const [selectedItem, setSelectedItem] = useState<GalleryItem | null>(null);
   const [currentIndex, setCurrentIndex] = useState(0);
 
-  const galleryItems = [
-    {
-      id: 1,
-      title: 'Vany Songket',
-      image: 'https://images.unsplash.com/photo-1546548970-71785318a17b?w=600&h=800&fit=crop',
-      description: 'Koleksi songket tradisional dengan desain modern yang memadukan kearifan lokal dengan gaya kontemporer. Dibuat dengan benang emas dan perak berkualitas tinggi.',
-      target:'/',
-      category: 'Traditional Fashion'
-    },
-    {
-      id: 2,
-      title: 'Vny Toba Shoes',
-      image: 'https://vanyadmin.progesio.my.id/storage/temp/01KBA3TQSB8X78WRK1YP7E9JT0.png',
-      description: 'Sepatu berkualitas tinggi dengan desain yang nyaman dan gaya yang elegan untuk aktivitas sehari-hari. Terbuat dari kulit asli premium.',
-      target:'/vny',
-      category: 'Footwear'
-    },
-    {
-      id: 3,
-      title: 'Vany Villa',
-      image: 'https://images.unsplash.com/photo-1559056199-641a0ac8b55e?w=600&h=800&fit=crop',
-      description: 'Villa mewah dengan pemandangan indah dan fasilitas lengkap untuk liburan yang tak terlupakan. Dilengkapi dengan kolam renang pribadi.',
-      target:'/',
-      category: 'Hospitality'
-    },
-    {
-      id: 4,
-      title: 'Vany Apartement',
-      image: 'https://images.unsplash.com/photo-1598440947619-2c35fc9aa908?w=600&h=800&fit=crop',
-      description: 'Apartemen modern dengan lokasi strategis dan fasilitas premium untuk hunian yang nyaman. Dilengkapi dengan gym dan rooftop garden.',
-      target:'/',
-      category: 'Real Estate'
-    },
-    {
-      id: 5,
-      title: 'Vany Shalon',
-      image: 'https://images.unsplash.com/photo-1556228578-8c89e6adf883?w=600&h=800&fit=crop',
-      description: 'Salon kecantikan dengan layanan profesional dan perawatan terbaik untuk penampilan yang memukau. Treatment dengan produk premium.',
-      target:'/',
-      category: 'Beauty & Wellness'
-    },
-    {
-      id: 6,
-      title: 'Vany Butik',
-      image: 'https://images.unsplash.com/photo-1611930022073-b7a4ba5fcccd?w=600&h=800&fit=crop',
-      description: 'Butik fashion dengan koleksi pakaian trendy dan berkualitas untuk gaya hidup modern. Desain eksklusif dari designer ternama.',
-      target:'/',
-      category: 'Fashion Retail'
-    },
-    {
-      id: 7,
-      title: 'Vany Cafe',
-      image: 'https://images.unsplash.com/photo-1505740420928-5e560c06d30e?w=600&h=800&fit=crop',
-      description: 'Cafe dengan suasana cozy dan menu yang lezat untuk tempat berkumpul dan bersantai.',
-      target:'/',
-      category: 'Food & Beverage'
-    },
-    {
-      id: 8,
-      title: 'Vany Store',
-      image: 'https://images.unsplash.com/photo-1523381210434-271e8be1f52b?w=600&h=800&fit=crop',
-      description: 'Toko retail dengan berbagai produk kebutuhan sehari-hari dan barang-barang berkualitas.',
-      target:'/',
-      category: 'Retail Store'
-    },
-    {
-      id: 9,
-      title: 'Vany Tech',
-      image: 'https://images.unsplash.com/photo-1583743814966-8936f5b7be1a?w=600&h=800&fit=crop',
-      description: 'Layanan teknologi dan gadget dengan produk terdepan untuk kebutuhan digital modern.',
-      target:'/',
-      category: 'Technology'
-    },
-    {
-      id: 10,
-      title: 'Vany Wellness',
-      image: 'https://images.unsplash.com/photo-1610701596007-11502861dcfa?w=600&h=800&fit=crop',
-      description: 'Pusat kesehatan dan kebugaran dengan program holistik untuk hidup yang sehat dan seimbang.',
-      target:'/',
-      category: 'Health & Fitness'
-    },
-    {
-      id: 11,
-      title: 'Vany Home Decor',
-      image: 'https://images.unsplash.com/photo-1564584217132-2271feaeb3c5?w=600&h=800&fit=crop',
-      description: 'Dekorasi rumah dengan sentuhan kontemporer dan Skandinavia untuk hunian yang indah.',
-      target:'/',
-      category: 'Home & Living'
-    }
-  ];
+  const { GALLERY_ITEMS, ANIMATION } = HOMEPAGE_CONSTANTS;
 
-  const handleItemClick = (item: any, index: number) => {
+  const handleItemClick = (item: GalleryItem, index: number) => {
     setSelectedItem(item);
     setCurrentIndex(index);
   };
 
   const handleNext = () => {
-    const nextIndex = (currentIndex + 1) % galleryItems.length;
-    setSelectedItem(galleryItems[nextIndex]);
+    const nextIndex = (currentIndex + 1) % GALLERY_ITEMS.length;
+    setSelectedItem(GALLERY_ITEMS[nextIndex]);
     setCurrentIndex(nextIndex);
   };
 
   const handlePrev = () => {
-    const prevIndex = (currentIndex - 1 + galleryItems.length) % galleryItems.length;
-    setSelectedItem(galleryItems[prevIndex]);
+    const prevIndex = (currentIndex - 1 + GALLERY_ITEMS.length) % GALLERY_ITEMS.length;
+    setSelectedItem(GALLERY_ITEMS[prevIndex]);
     setCurrentIndex(prevIndex);
   };
 
@@ -284,8 +196,8 @@ export default function Home() {
             
             // Find the corresponding gallery item
             const title = htmlCard.dataset.title;
-            const galleryItem = galleryItems.find(item => item.title === title);
-            const index = galleryItems.findIndex(item => item.title === title);
+            const galleryItem = GALLERY_ITEMS.find(item => item.title === title);
+            const index = GALLERY_ITEMS.findIndex(item => item.title === title);
             
             if (galleryItem) {
               handleItemClick(galleryItem, index);
@@ -518,7 +430,7 @@ export default function Home() {
 
       <div className="slider-container" id="sliderContainer">
         <div className="slider-track" id="sliderTrack">
-          {galleryItems.map((item) => (
+          {GALLERY_ITEMS.map((item) => (
             <div key={item.id} className="card" data-title={item.title} data-desc={item.description}>
               <img src={item.image} alt={item.title} />
               <div className="hover-overlay"><span>Click to see more</span></div>
@@ -581,7 +493,7 @@ export default function Home() {
                 </button>
               </div>
               <div className="gallery2-modal-counter">
-                {currentIndex + 1} / {galleryItems.length}
+                {currentIndex + 1} / {GALLERY_ITEMS.length}
               </div>
             </div>
           </div>
