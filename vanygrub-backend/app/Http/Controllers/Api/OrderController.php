@@ -106,8 +106,8 @@ class OrderController extends Controller
             // Create order in database
             // For guest orders, use a default user ID
             // In production, you should handle user authentication properly
-            // Get or create user based on customer data
-            $userId = $this->getOrCreateUserIdFromCustomerData($request);
+            // Ensure default user exists or create user based on customer data
+            $userId = $this->ensureUserExists($request);
 
             // Prepare order data
             $orderData = [
@@ -486,14 +486,14 @@ class OrderController extends Controller
 
         } catch (\Exception $e) {
             \Log::error('Error in user creation/retrieval:', ['error' => $e->getMessage()]);
-            
+
             // Fallback: try to get any existing user or create default
             $fallbackUser = \DB::table('vany_users')->first();
             if ($fallbackUser) {
                 \Log::info('Using fallback user:', ['id' => $fallbackUser->id]);
                 return $fallbackUser->id;
             }
-            
+
             // If no users exist, this will fail, but it's better than having no fallback
             throw new \Exception('Cannot create or find any user');
         }
