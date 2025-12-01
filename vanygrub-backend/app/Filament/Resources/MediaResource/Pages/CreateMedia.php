@@ -40,7 +40,7 @@ class CreateMedia extends CreateRecord
             $extension = strtolower(pathinfo($filename, PATHINFO_EXTENSION));
             $imageExtensions = ['jpg', 'jpeg', 'png', 'gif', 'webp', 'svg', 'bmp'];
             $videoExtensions = ['mp4', 'avi', 'mov', 'wmv', 'flv', 'webm', 'mkv', 'ogv'];
-            
+
             // Correct type if needed based on extension (most reliable)
             if (in_array($extension, $imageExtensions)) {
                 $type = 'image';

@@ -47,8 +47,8 @@ class MediaResource extends Resource
                             ->acceptedFileTypes([
                                 // Images
                                 'image/jpeg',
-                                'image/jpg', 
-                                'image/png', 
+                                'image/jpg',
+                                'image/png',
                                 'image/gif',
                                 'image/webp',
                                 'image/svg+xml',
@@ -94,12 +94,12 @@ class MediaResource extends Resource
 
                                     // Get file extension for more reliable type detection
                                     $extension = strtolower(pathinfo($originalName, PATHINFO_EXTENSION));
-                                    
+
                                     // Define file types by extension
                                     $imageExtensions = ['jpg', 'jpeg', 'png', 'gif', 'webp', 'svg', 'bmp'];
                                     $videoExtensions = ['mp4', 'avi', 'mov', 'wmv', 'flv', 'webm', 'mkv', 'ogv'];
                                     $documentExtensions = ['pdf', 'doc', 'docx', 'xls', 'xlsx', 'ppt', 'pptx', 'txt', 'rtf'];
-                                    
+
                                     // Auto-detect type based on extension (more reliable than MIME type)
                                     if (in_array($extension, $imageExtensions)) {
                                         $set('type', 'image');
