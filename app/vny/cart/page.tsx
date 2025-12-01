@@ -676,6 +676,20 @@ const CartPage: React.FC = () => {
                 <div className="space-y-6">
                   <div>
                     <h3 className="text-lg font-semibold text-gray-900 mb-4">Informasi Pembeli</h3>
+                    <div className="mb-6 p-4 bg-blue-50 border border-blue-200 rounded-lg">
+                      <div className="flex items-start space-x-3">
+                        <svg className="w-5 h-5 text-blue-500 mt-0.5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                          <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M13 16h-1v-4h-1m1-4h.01M21 12a9 9 0 11-18 0 9 9 0 0118 0z" />
+                        </svg>
+                        <div>
+                          <h4 className="text-sm font-semibold text-blue-800">Akun Otomatis</h4>
+                          <p className="text-sm text-blue-700">
+                            Data yang Anda isi akan digunakan untuk membuat akun pelanggan secara otomatis. 
+                            Ini memudahkan Anda untuk melacak pesanan dan berbelanja di masa mendatang.
+                          </p>
+                        </div>
+                      </div>
+                    </div>
                     <p className="text-sm text-gray-600 mb-6">
                       Lengkapi data di bawah untuk mengirim pesanan via WhatsApp ke admin VNY Store
                     </p>
