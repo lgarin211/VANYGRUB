@@ -86,6 +86,7 @@ class MediaResource extends Resource
                             ->imageResizeTargetHeight('1080')
                             ->helperText('Max 10MB. Supported: Images (JPEG, PNG, GIF, WebP), Videos (MP4, WebM, MOV), Documents (PDF, DOC, DOCX, TXT)')
                             ->reactive()
+                            ->live()
                             ->afterStateUpdated(function ($state, callable $set) {
                                 if ($state) {
                                     // Auto-fill original name first
@@ -142,7 +143,6 @@ class MediaResource extends Resource
                                     ])
                                     ->required()
                                     ->reactive()
-                                    ->disabled()
                                     ->dehydrated(),
                                 Forms\Components\Select::make('folder')
                                     ->label('📁 Folder')

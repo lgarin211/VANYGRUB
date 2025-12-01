@@ -2,9 +2,20 @@
 
 import React, { useState } from 'react';
 import Link from 'next/link';
+import { useSiteConfig } from '../hooks/useHomepageApi';
 
 const Header: React.FC = () => {
   const [isSearchOpen, setIsSearchOpen] = useState(false);
+  const { config } = useSiteConfig();
+
+  const siteName = config?.site_name || 'VNY';
+  const mainMenu = config?.navigation?.main_menu || [
+    { label: 'Home', url: '/', active: true },
+    { label: 'VNY Products', url: '/vny', active: false },
+    { label: 'Gallery', url: '/gallery', active: false },
+    { label: 'About', url: '/about', active: false },
+    { label: 'Transactions', url: '/transactions', active: false }
+  ];
 
   return (
     <header className="bg-red-800 text-white">
@@ -23,7 +34,7 @@ const Header: React.FC = () => {
 
           {/* Logo */}
           <div className="text-4xl font-bold tracking-widest">
-            VNY
+            {siteName}
           </div>
 
           {/* Right menu */}
@@ -40,29 +51,19 @@ const Header: React.FC = () => {
         {/* Navigation */}
         <nav className="border-t border-white/20">
           <div className="flex items-center justify-center space-x-12 py-4">
-            <Link 
-              href="/" 
-              className="text-white border-b-2 border-white pb-1 hover:text-red-200 transition-colors"
-            >
-              HOME
-            </Link>
-            <Link 
-              href="/vny/product" 
-              className="text-white/80 hover:text-white pb-1 transition-colors"
-            >
-              PRODUCT
-            </Link>
-            <Link 
-              href="/about" 
-              className="text-white/80 hover:text-white pb-1 transition-colors"
-            >
-              ABOUT VNY
-            </Link>
-            <Link 
-              href="/gallery" 
-              className="text-white/80 hover:text-white pb-1 transition-colors"
-            >
-              GALLERY
+            {mainMenu.map((menuItem) => (
+              <Link 
+                key={menuItem.url}
+                href={menuItem.url} 
+                className={`pb-1 transition-colors ${
+                  menuItem.active 
+                    ? 'text-white border-b-2 border-white hover:text-red-200' 
+                    : 'text-white/80 hover:text-white'
+                }`}
+              >
+                {menuItem.label.toUpperCase()}
+              </Link>
+            ))}
             </Link>
           </div>
         </nav>

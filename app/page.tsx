@@ -1,14 +1,31 @@
 'use client'
 
 import { useEffect, useState } from 'react'
-import { HOMEPAGE_CONSTANTS, type GalleryItem } from '../constants'
+import { useHomepageConstants } from '../hooks/useHomepageApi'
+import { type GalleryItem } from '../lib/homepageApi'
+import ApiLoading from '../components/ApiLoading'
 import './home.css'
 
 export default function Home() {
+  const { constants, loading, error } = useHomepageConstants();
   const [selectedItem, setSelectedItem] = useState<GalleryItem | null>(null);
   const [currentIndex, setCurrentIndex] = useState(0);
 
-  const { GALLERY_ITEMS, ANIMATION } = HOMEPAGE_CONSTANTS;
+  // Loading state
+  if (loading) {
+    return <ApiLoading message="Loading VANYGRUB..." color="border-red-500" />;
+  }
+
+  // Error state - fallback to local constants
+  if (error || !constants) {
+    console.warn('Using fallback constants due to API error:', error);
+  }
+
+  const GALLERY_ITEMS = constants?.GALLERY_ITEMS || [];
+  const ANIMATION = constants?.ANIMATION || { CAROUSEL_INTERVAL: 5000, TRANSITION_DURATION: 300 };
+  
+  // Show error notification if API failed but we have fallback data
+  const showApiError = error && GALLERY_ITEMS.length === 0;
 
   const handleItemClick = (item: GalleryItem, index: number) => {
     setSelectedItem(item);
@@ -423,9 +440,19 @@ export default function Home() {
 
   return (
     <div className="gallery2-page">
+      {/* API Error Notification */}
+      {showApiError && (
+        <div className="fixed top-4 right-4 z-50 bg-red-600 text-white px-4 py-2 rounded-lg shadow-lg">
+          <div className="flex items-center space-x-2">
+            <span>⚠️</span>
+            <span className="text-sm">API offline - Using cached data</span>
+          </div>
+        </div>
+      )}
+      
       <div className="header">
-        <p className="subtitle">The power of batak fashion</p>
-        <h1 className="main-title">Vany GROUP</h1>
+        <p className="subtitle">{constants?.HERO_SECTION?.SUBTITLE || 'The power of batak fashion'}</p>
+        <h1 className="main-title">{constants?.HERO_SECTION?.TITLE || 'Vany GROUP'}</h1>
       </div>
 
       <div className="slider-container" id="sliderContainer">
