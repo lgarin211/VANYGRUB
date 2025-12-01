@@ -1,0 +1,24 @@
+/* Mobile responsive utilities for ProductList */
+@media (max-width: 640px) {
+  .line-clamp-1 {
+    overflow: hidden;
+    display: -webkit-box;
+    -webkit-box-orient: vertical;
+    -webkit-line-clamp: 1;
+  }
+
+  .line-clamp-2 {
+    overflow: hidden;
+    display: -webkit-box;
+    -webkit-box-orient: vertical;
+    -webkit-line-clamp: 2;
+  }
+}
+
+/* Touch-friendly button sizes */
+@media (max-width: 768px) {
+  .touch-friendly {
+    min-height: 44px;
+    min-width: 44px;
+  }
+}

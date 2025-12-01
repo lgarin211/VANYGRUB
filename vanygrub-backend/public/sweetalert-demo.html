@@ -1,0 +1,320 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>VanyGrub - SweetAlert Implementation</title>
+    
+    <!-- SweetAlert2 CSS -->
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/sweetalert2@11/dist/sweetalert2.min.css">
+    
+    <style>
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            background: linear-gradient(135deg, #800000 0%, #000000 100%);
+            min-height: 100vh;
+            margin: 0;
+            padding: 20px;
+        }
+        
+        .container {
+            max-width: 800px;
+            margin: 0 auto;
+            background: rgba(255, 255, 255, 0.95);
+            border-radius: 15px;
+            padding: 30px;
+            box-shadow: 0 10px 30px rgba(0, 0, 0, 0.3);
+        }
+        
+        .title {
+            color: #800000;
+            text-align: center;
+            margin-bottom: 30px;
+            font-size: 2.5rem;
+            font-weight: bold;
+        }
+        
+        .button-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+            gap: 20px;
+            margin: 30px 0;
+        }
+        
+        .demo-button {
+            padding: 15px 25px;
+            border: none;
+            border-radius: 8px;
+            font-size: 16px;
+            font-weight: 600;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            box-shadow: 0 4px 15px rgba(0, 0, 0, 0.1);
+        }
+        
+        .success { background: #28a745; color: white; }
+        .error { background: #dc3545; color: white; }
+        .warning { background: #ffc107; color: #000; }
+        .info { background: #17a2b8; color: white; }
+        .question { background: #6f42c1; color: white; }
+        
+        .demo-button:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 6px 20px rgba(0, 0, 0, 0.2);
+        }
+        
+        .code-section {
+            background: #f8f9fa;
+            border-radius: 8px;
+            padding: 20px;
+            margin: 20px 0;
+            border-left: 4px solid #800000;
+        }
+        
+        .code-title {
+            color: #800000;
+            font-weight: bold;
+            margin-bottom: 10px;
+        }
+        
+        pre {
+            background: #2d3748;
+            color: #e2e8f0;
+            padding: 15px;
+            border-radius: 6px;
+            overflow-x: auto;
+            margin: 10px 0;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <h1 class="title">🎉 VanyGrub SweetAlert Demo</h1>
+        
+        <div class="button-grid">
+            <button class="demo-button success" onclick="showSuccess()">✅ Success Alert</button>
+            <button class="demo-button error" onclick="showError()">❌ Error Alert</button>
+            <button class="demo-button warning" onclick="showWarning()">⚠️ Warning Alert</button>
+            <button class="demo-button info" onclick="showInfo()">ℹ️ Info Alert</button>
+            <button class="demo-button question" onclick="showConfirm()">❓ Confirm Dialog</button>
+            <button class="demo-button" style="background: #6c757d; color: white;" onclick="showCustom()">🎨 Custom Alert</button>
+        </div>
+        
+        <div class="code-section">
+            <div class="code-title">📝 Implementation Examples:</div>
+            
+            <h4>1. Basic Success Alert</h4>
+            <pre><code>Swal.fire({
+    icon: 'success',
+    title: 'Success!',
+    text: 'Gallery item saved successfully!',
+    confirmButtonColor: '#800000'
+});</code></pre>
+
+            <h4>2. Confirmation Dialog</h4>
+            <pre><code>Swal.fire({
+    title: 'Are you sure?',
+    text: "You won't be able to revert this!",
+    icon: 'warning',
+    showCancelButton: true,
+    confirmButtonColor: '#800000',
+    cancelButtonColor: '#dc3545',
+    confirmButtonText: 'Yes, delete it!'
+}).then((result) => {
+    if (result.isConfirmed) {
+        // Perform delete action
+        Swal.fire('Deleted!', 'Your item has been deleted.', 'success');
+    }
+});</code></pre>
+
+            <h4>3. Custom Styled Alert</h4>
+            <pre><code>Swal.fire({
+    title: 'VANYGRUB',
+    text: 'Premium Lifestyle Collection',
+    imageUrl: 'https://via.placeholder.com/400x200/800000/FFFFFF?text=VANYGRUB',
+    imageWidth: 400,
+    imageHeight: 200,
+    background: 'linear-gradient(135deg, #800000 0%, #000000 100%)',
+    color: '#fff',
+    confirmButtonColor: '#ffffff',
+    confirmButtonTextColor: '#800000'
+});</code></pre>
+        </div>
+    </div>
+
+    <!-- SweetAlert2 JS -->
+    <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
+    
+    <script>
+        // Set default SweetAlert configuration
+        const Toast = Swal.mixin({
+            toast: true,
+            position: 'top-end',
+            showConfirmButton: false,
+            timer: 3000,
+            timerProgressBar: true,
+            didOpen: (toast) => {
+                toast.addEventListener('mouseenter', Swal.stopTimer)
+                toast.addEventListener('mouseleave', Swal.resumeTimer)
+            }
+        });
+
+        function showSuccess() {
+            Swal.fire({
+                icon: 'success',
+                title: 'Success!',
+                text: 'Gallery item saved successfully!',
+                confirmButtonColor: '#800000',
+                backdrop: `
+                    rgba(128, 0, 0, 0.1)
+                    url("https://sweetalert2.github.io/images/nyan-cat.gif")
+                    left top
+                    no-repeat
+                `
+            });
+        }
+
+        function showError() {
+            Swal.fire({
+                icon: 'error',
+                title: 'Oops...',
+                text: 'Something went wrong!',
+                footer: '<a href="#" style="color: #800000;">Why do I have this issue?</a>',
+                confirmButtonColor: '#800000'
+            });
+        }
+
+        function showWarning() {
+            Swal.fire({
+                icon: 'warning',
+                title: 'File size too large!',
+                text: 'Please upload a file smaller than 10MB',
+                confirmButtonColor: '#800000',
+                showClass: {
+                    popup: 'animate__animated animate__fadeInDown'
+                },
+                hideClass: {
+                    popup: 'animate__animated animate__fadeOutUp'
+                }
+            });
+        }
+
+        function showInfo() {
+            Swal.fire({
+                icon: 'info',
+                title: 'Did you know?',
+                html: '<b>VANYGRUB</b> offers premium lifestyle products!<br><em>From traditional fashion to modern hospitality</em>',
+                confirmButtonColor: '#800000'
+            });
+        }
+
+        function showConfirm() {
+            Swal.fire({
+                title: 'Delete Gallery Item?',
+                text: "You won't be able to revert this action!",
+                icon: 'warning',
+                showCancelButton: true,
+                confirmButtonColor: '#800000',
+                cancelButtonColor: '#dc3545',
+                confirmButtonText: 'Yes, delete it!',
+                cancelButtonText: 'No, keep it'
+            }).then((result) => {
+                if (result.isConfirmed) {
+                    Swal.fire({
+                        title: 'Deleted!',
+                        text: 'Gallery item has been deleted.',
+                        icon: 'success',
+                        confirmButtonColor: '#800000'
+                    });
+                } else if (result.isDismissed) {
+                    Toast.fire({
+                        icon: 'info',
+                        title: 'Deletion cancelled'
+                    });
+                }
+            });
+        }
+
+        function showCustom() {
+            Swal.fire({
+                title: '<strong>VANYGRUB</strong>',
+                html: `
+                    <div style="text-align: left; padding: 20px;">
+                        <h4 style="color: #800000;">🏷️ Premium Collection</h4>
+                        <ul style="list-style: none; padding: 0;">
+                            <li>👗 Traditional Fashion</li>
+                            <li>👠 Premium Footwear</li>
+                            <li>🏨 Hospitality Services</li>
+                            <li>🏠 Real Estate</li>
+                            <li>💄 Beauty & Wellness</li>
+                        </ul>
+                    </div>
+                `,
+                imageUrl: 'https://images.unsplash.com/photo-1546548970-71785318a17b?w=400&h=200&fit=crop',
+                imageWidth: 400,
+                imageHeight: 200,
+                background: 'linear-gradient(135deg, #ffffff 0%, #f8f9fa 100%)',
+                backdrop: `
+                    rgba(128, 0, 0, 0.3)
+                `,
+                confirmButtonColor: '#800000',
+                confirmButtonText: 'Explore Now!',
+                showCloseButton: true,
+                focusConfirm: false
+            });
+        }
+
+        // Example of replacing traditional alerts
+        function showTraditionalAlert() {
+            // OLD WAY (don't use):
+            // alert('Hello World!');
+            
+            // NEW WAY with SweetAlert:
+            Swal.fire({
+                title: 'Hello World!',
+                text: 'This is much better than alert()',
+                icon: 'success',
+                confirmButtonColor: '#800000'
+            });
+        }
+
+        // Example of replacing confirm dialogs
+        function showTraditionalConfirm() {
+            // OLD WAY (don't use):
+            // if (confirm('Are you sure?')) {
+            //     console.log('User clicked OK');
+            // }
+            
+            // NEW WAY with SweetAlert:
+            Swal.fire({
+                title: 'Are you sure?',
+                text: 'This action cannot be undone',
+                icon: 'warning',
+                showCancelButton: true,
+                confirmButtonColor: '#800000',
+                cancelButtonColor: '#6c757d',
+                confirmButtonText: 'Yes, I\'m sure!'
+            }).then((result) => {
+                if (result.isConfirmed) {
+                    console.log('User confirmed');
+                    Toast.fire({
+                        icon: 'success',
+                        title: 'Action completed!'
+                    });
+                }
+            });
+        }
+
+        // Auto-show demo on page load
+        window.addEventListener('load', function() {
+            setTimeout(() => {
+                Toast.fire({
+                    icon: 'info',
+                    title: 'Welcome to VanyGrub SweetAlert Demo!',
+                    text: 'Click the buttons above to see different alert styles'
+                });
+            }, 1000);
+        });
+    </script>
+</body>
+</html>
