@@ -3,6 +3,7 @@
 import React, { useState, useEffect } from 'react';
 import Image from 'next/image';
 import Link from 'next/link';
+import { showSuccess, showError, showCart } from '../../../../utils/sweetAlert';
 import { useParams } from 'next/navigation';
 import { useProduct, useCart, useOrders } from '../../../../hooks/useApi';
 import Header from '../../../../components/Header';
@@ -144,13 +145,21 @@ const ProductDetail: React.FC = () => {
       await refreshCart();
       
       // Show success feedback
-      alert(`✅ ${quantity} ${product.name} (${selectedColor}, Size ${selectedSize}) berhasil ditambahkan ke keranjang!`);
+      const result = await showCart(
+        'Berhasil Ditambahkan!',
+        `${quantity} ${product.name} (${selectedColor}, Size ${selectedSize}) telah ditambahkan ke keranjang`
+      );
+      
+      // Handle user choice
+      if (result.isConfirmed) {
+        window.location.href = '/vny/cart';
+      }
       
       // Reset form
       setQuantity(1);
     } catch (error) {
       console.error('Error adding to cart:', error);
-      alert('Gagal menambahkan produk ke keranjang. Silakan coba lagi.');
+      showError('Gagal Menambahkan', 'Gagal menambahkan produk ke keranjang. Silakan coba lagi.');
     }
   };
 
@@ -161,8 +170,8 @@ const ProductDetail: React.FC = () => {
       await updateCartItem(itemId, newQuantity);
       await refreshCart();
     } catch (error) {
-      console.error('Error updating cart item:', error);
-      alert('Gagal mengupdate item di keranjang.');
+      console.error('Error updating cart:', error);
+      showError('Gagal Update', 'Gagal mengupdate item di keranjang.');
     }
   };
 
@@ -171,8 +180,8 @@ const ProductDetail: React.FC = () => {
       await removeFromCart(itemId);
       await refreshCart();
     } catch (error) {
-      console.error('Error removing cart item:', error);
-      alert('Gagal menghapus item dari keranjang.');
+      console.error('Error removing from cart:', error);
+      showError('Gagal Hapus', 'Gagal menghapus item dari keranjang.');
     }
   };
 

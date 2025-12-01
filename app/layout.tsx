@@ -1,4 +1,5 @@
 import './globals.css'
+import 'sweetalert2/dist/sweetalert2.min.css'
 import type { Metadata } from 'next'
 import { Inter } from 'next/font/google'
 import AOSProvider from '@/components/AOSProvider'

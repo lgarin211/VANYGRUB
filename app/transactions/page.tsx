@@ -1,8 +1,9 @@
 'use client';
 
-import React, { useState, useEffect } from 'react';
+import { useState, useEffect } from 'react';
 import Image from 'next/image';
 import Link from 'next/link';
+import { showWarning } from '../../utils/sweetAlert';
 import Header from '../../components/Header';
 
 interface TransactionItem {
@@ -265,7 +266,7 @@ const TransactionsPage: React.FC = () => {
 
   const handleSendToWhatsApp = () => {
     if (!customerInfo.name || !customerInfo.phone || !customerInfo.address) {
-      alert('Mohon lengkapi data pembeli terlebih dahulu!');
+      showWarning('Data Tidak Lengkap', 'Mohon lengkapi data pembeli terlebih dahulu!');
       return;
     }
 

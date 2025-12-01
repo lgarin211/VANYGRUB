@@ -3,6 +3,7 @@
 namespace App\Filament\Resources\MediaResource\Pages;
 
 use App\Filament\Resources\MediaResource;
+use App\Traits\WithSweetAlert;
 use Filament\Actions;
 use Filament\Resources\Pages\CreateRecord;
 use Filament\Notifications\Notification;
@@ -11,6 +12,8 @@ use Illuminate\Support\Str;
 
 class CreateMedia extends CreateRecord
 {
+    use WithSweetAlert;
+
     protected static string $resource = MediaResource::class;
 
     protected function mutateFormDataBeforeCreate(array $data): array
@@ -184,9 +187,41 @@ class CreateMedia extends CreateRecord
 
     protected function getCreatedNotification(): ?Notification
     {
-        return Notification::make()
-            ->success()
-            ->title('Media uploaded successfully')
-            ->body('Your media file has been uploaded and is ready to use.');
+        return null; // We'll use SweetAlert instead
+    }
+
+    protected function afterCreate(): void
+    {
+        // Show success message with SweetAlert
+        $this->showSuccessToast('Media uploaded successfully! Your file is ready to use.');
+    }
+
+    protected function onValidationError(\Illuminate\Validation\ValidationException $exception): void
+    {
+        $this->showError(
+            'Validation Error',
+            'Please check the form for errors: ' . collect($exception->errors())->flatten()->implode(', ')
+        );
+
+        parent::onValidationError($exception);
+    }
+
+    protected function handleRecordCreation(array $data): \Illuminate\Database\Eloquent\Model
+    {
+        try {
+            return parent::handleRecordCreation($data);
+        } catch (\Exception $e) {
+            $this->showError(
+                'Upload Error',
+                'Failed to save the media file: ' . $e->getMessage()
+            );
+            
+            \Log::error('Media creation error: ' . $e->getMessage(), [
+                'data' => $data,
+                'trace' => $e->getTraceAsString()
+            ]);
+            
+            throw $e;
+        }
     }
 }

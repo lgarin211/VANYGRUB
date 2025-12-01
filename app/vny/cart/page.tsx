@@ -3,6 +3,7 @@
 import React, { useState, useEffect } from 'react';
 import Image from 'next/image';
 import Link from 'next/link';
+import { showSuccess, showError, showWarning, showOrderSuccess } from '../../../utils/sweetAlert';
 import Header from '../../../components/Header';
 
 interface CartItem {
@@ -95,12 +96,12 @@ const CartPage: React.FC = () => {
   const handleApplyPromo = () => {
     if (promoCode.toLowerCase() === 'vny10') {
       setAppliedPromo('VNY10');
-      alert('Promo code applied! 10% extra discount');
+      showSuccess('Promo Berhasil!', 'Diskon 10% tambahan telah diterapkan');
     } else if (promoCode.toLowerCase() === 'newuser') {
       setAppliedPromo('NEWUSER');
-      alert('Welcome! 15% discount for new users');
+      showSuccess('Selamat Datang!', 'Diskon 15% untuk pengguna baru telah diterapkan');
     } else {
-      alert('Invalid promo code');
+      showError('Kode Promo Tidak Valid', 'Silakan periksa kembali kode promo Anda');
     }
   };
 
@@ -204,7 +205,7 @@ const CartPage: React.FC = () => {
 
   const handleSendToWhatsApp = () => {
     if (!customerInfo.name || !customerInfo.phone || !customerInfo.address || !customerInfo.city || !customerInfo.postalCode) {
-      alert('Mohon lengkapi semua data pembeli yang wajib diisi!');
+      showWarning('Data Tidak Lengkap', 'Mohon lengkapi semua data pembeli yang wajib diisi!');
       return;
     }
 
@@ -239,7 +240,7 @@ const CartPage: React.FC = () => {
     window.open(whatsappUrl, '_blank');
     
     // Show success message with order code
-    alert(`✅ Pesanan berhasil dibuat!\n\nKode Pesanan: ${orderCode}\n\nSilakan cek WhatsApp dan gunakan link untuk melacak pesanan Anda.`);
+    showOrderSuccess(orderCode);
     
     // Close checkout modal and clear cart
     setShowCheckoutModal(false);
