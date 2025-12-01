@@ -560,3 +560,58 @@ export const useCheckout = () => {
     generateUniqueCode
   };
 };
+
+// Hook for order tracking
+export const useOrderTracking = (orderCode: string) => {
+  const [orderData, setOrderData] = useState<any>(null);
+  const [loading, setLoading] = useState(true);
+  const [error, setError] = useState<string | null>(null);
+
+  const fetchOrderData = async () => {
+    if (!orderCode) return;
+    
+    try {
+      setLoading(true);
+      setError(null);
+      
+      // Try to fetch from API first
+      const response = await withErrorHandling(() => 
+        apiClient.getOrderByCode(orderCode)
+      ) as any;
+      
+      if (response && response.data) {
+        setOrderData(response.data);
+      } else {
+        // Fallback to localStorage
+        const storedData = localStorage.getItem(`order_${orderCode}`);
+        if (storedData) {
+          const data = JSON.parse(storedData);
+          setOrderData(data);
+        } else {
+          setError('Order not found');
+        }
+      }
+    } catch (err) {
+      // Fallback to localStorage on API error
+      try {
+        const storedData = localStorage.getItem(`order_${orderCode}`);
+        if (storedData) {
+          const data = JSON.parse(storedData);
+          setOrderData(data);
+        } else {
+          setError('Order not found');
+        }
+      } catch (fallbackErr) {
+        setError('Order not found');
+      }
+    } finally {
+      setLoading(false);
+    }
+  };
+
+  useEffect(() => {
+    fetchOrderData();
+  }, [orderCode]);
+
+  return { orderData, loading, error, refetch: fetchOrderData };
+};

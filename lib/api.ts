@@ -161,6 +161,10 @@ class ApiClient {
   async getOrder(id: number) {
     return this.request(`/orders/${id}`);
   }
+
+  async getOrderByCode(orderCode: string) {
+    return this.request(`/orders/code/${orderCode}`);
+  }
 }
 
 // Create API client instance
