@@ -52,7 +52,7 @@ export default function ReviewForm() {
 
   const fetchReviewData = async (token: string) => {
     try {
-      const response = await fetch(`http://localhost:8000/api/vny/reviews/${token}`);
+      const response = await fetch(`https://vanyadmin.progesio.my.id/api/vny/reviews/${token}`);
       const data = await response.json();
       
       if (response.ok) {
@@ -96,7 +96,7 @@ export default function ReviewForm() {
       formData.append('review_text', reviewText);
       formData.append('rating', rating.toString());
 
-      const response = await fetch(`http://localhost:8000/api/vny/reviews/${params.token}/submit`, {
+      const response = await fetch(`https://vanyadmin.progesio.my.id/api/vny/reviews/${params.token}/submit`, {
         method: 'POST',
         body: formData,
       });

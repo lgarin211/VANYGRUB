@@ -31,7 +31,7 @@ export default function CustomerReviewCards({ featured = false, limit, className
       const endpoint = featured ? 'featured' : 'approved';
       const params = limit ? `?limit=${limit}` : '';
       
-      const response = await fetch(`http://localhost:8000/api/vny/reviews/${endpoint}${params}`);
+      const response = await fetch(`https://vanyadmin.progesio.my.id/api/vny/reviews/${endpoint}${params}`);
       const data = await response.json();
       
       if (response.ok) {

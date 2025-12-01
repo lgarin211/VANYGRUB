@@ -31,7 +31,7 @@ export default function AllCustomerReviewsPage() {
 
   const fetchAllReviews = useCallback(async () => {
     try {
-      const response = await fetch('http://localhost:8000/api/vny/reviews/approved');
+      const response = await fetch('https://vanyadmin.progesio.my.id/api/vny/reviews/approved');
       const data = await response.json();
       
       if (response.ok) {
