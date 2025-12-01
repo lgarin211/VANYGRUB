@@ -20,16 +20,16 @@ class OrderController extends Controller
     public function index(Request $request): JsonResponse
     {
         $sessionId = $request->get('session_id');
-        
+
         try {
             // Get orders from database and session fallback
             $orders = [];
-            
+
             // Try to get from database first
             $dbOrders = Order::with(['items.product'])
                 ->orderBy('created_at', 'desc')
                 ->get();
-            
+
             foreach ($dbOrders as $order) {
                 $orders[] = [
                     'id' => $order->id,
@@ -54,12 +54,12 @@ class OrderController extends Controller
                     'updated_at' => $order->updated_at->toISOString(),
                 ];
             }
-            
+
             // Fallback to session if database is empty and session_id provided
             if (empty($orders) && $sessionId) {
                 $orders = $this->getOrdersFromSession($sessionId);
             }
-            
+
             return response()->json([
                 'success' => true,
                 'data' => $orders,
@@ -99,14 +99,14 @@ class OrderController extends Controller
 
         try {
             DB::beginTransaction();
-            
+
             $orderCode = $this->generateOrderCode();
             $sessionId = $request->get('session_id', Session::getId());
-            
+
             // Create order in database
             // Create or get guest user
             $guestUserId = $this->getOrCreateGuestUser($request);
-            
+
             $order = Order::create([
                 'user_id' => $guestUserId,
                 'order_number' => $orderCode,
@@ -179,7 +179,7 @@ class OrderController extends Controller
     {
         try {
             $order = $this->findOrderById($id);
-            
+
             if (!$order) {
                 return response()->json([
                     'success' => false,
@@ -214,7 +214,7 @@ class OrderController extends Controller
 
         try {
             $order = $this->findOrderById($id);
-            
+
             if (!$order) {
                 return response()->json([
                     'success' => false,
@@ -225,11 +225,11 @@ class OrderController extends Controller
             // Update order
             $order['status'] = $request->status;
             $order['updated_at'] = now()->toISOString();
-            
+
             if ($request->has('tracking_number')) {
                 $order['tracking_number'] = $request->tracking_number;
             }
-            
+
             if ($request->has('notes')) {
                 $order['admin_notes'] = $request->notes;
             }
@@ -257,7 +257,7 @@ class OrderController extends Controller
     {
         try {
             $order = $this->findOrderById($id);
-            
+
             if (!$order) {
                 return response()->json([
                     'success' => false,
@@ -287,7 +287,7 @@ class OrderController extends Controller
     {
         try {
             $order = $this->findOrderByCode($orderCode);
-            
+
             if (!$order) {
                 return response()->json([
                     'success' => false,
@@ -316,7 +316,7 @@ class OrderController extends Controller
     {
         try {
             $allOrders = $this->getAllOrdersFromAllSessions();
-            
+
             $stats = [
                 'total_orders' => count($allOrders),
                 'pending_orders' => count(array_filter($allOrders, fn($o) => $o['status'] === 'pending')),
@@ -354,7 +354,7 @@ class OrderController extends Controller
         if (!$sessionId) {
             return [];
         }
-        
+
         return Session::get("orders_{$sessionId}", []);
     }
 
@@ -363,7 +363,7 @@ class OrderController extends Controller
         // In a real implementation, this would query the database
         // For now, we'll simulate with session data
         $allOrders = [];
-        
+
         // This is a simplified version - in production, use database
         $sessionData = Session::all();
         foreach ($sessionData as $key => $value) {
@@ -371,7 +371,7 @@ class OrderController extends Controller
                 $allOrders = array_merge($allOrders, $value);
             }
         }
-        
+
         return $allOrders;
     }
 
@@ -385,33 +385,33 @@ class OrderController extends Controller
     private function findOrderById(string $id): ?array
     {
         $allOrders = $this->getAllOrdersFromAllSessions();
-        
+
         foreach ($allOrders as $order) {
             if ($order['id'] === $id) {
                 return $order;
             }
         }
-        
+
         return null;
     }
 
     private function findOrderByCode(string $orderCode): ?array
     {
         $allOrders = $this->getAllOrdersFromAllSessions();
-        
+
         foreach ($allOrders as $order) {
             if ($order['order_code'] === $orderCode) {
                 return $order;
             }
         }
-        
+
         return null;
     }
 
     private function updateOrderInSession(string $id, array $updatedOrder): void
     {
         $allSessions = Session::all();
-        
+
         foreach ($allSessions as $key => $value) {
             if (strpos($key, 'orders_') === 0 && is_array($value)) {
                 foreach ($value as $index => $order) {
@@ -428,7 +428,7 @@ class OrderController extends Controller
     private function deleteOrderFromSession(string $id): void
     {
         $allSessions = Session::all();
-        
+
         foreach ($allSessions as $key => $value) {
             if (strpos($key, 'orders_') === 0 && is_array($value)) {
                 foreach ($value as $index => $order) {
