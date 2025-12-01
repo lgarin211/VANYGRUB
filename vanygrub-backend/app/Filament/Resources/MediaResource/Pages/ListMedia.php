@@ -39,19 +39,19 @@ class ListMedia extends ListRecords
         try {
             $selectedRecords = $this->getSelectedTableRecords();
             $count = $selectedRecords->count();
-            
+
             foreach ($selectedRecords as $record) {
                 // Delete file from storage
                 if ($record->path && \Illuminate\Support\Facades\Storage::disk('public')->exists($record->path)) {
                     \Illuminate\Support\Facades\Storage::disk('public')->delete($record->path);
                 }
-                
+
                 $record->delete();
             }
-            
+
             $this->showSuccessToast("Successfully deleted {$count} media file(s)");
             $this->resetTableSelection();
-            
+
         } catch (\Exception $e) {
             $this->showError(
                 'Delete Error',
@@ -63,7 +63,7 @@ class ListMedia extends ListRecords
     public function bulkDelete()
     {
         $selectedCount = count($this->getSelectedTableRecords());
-        
+
         if ($selectedCount === 0) {
             $this->showWarning('No Selection', 'Please select media files to delete');
             return;

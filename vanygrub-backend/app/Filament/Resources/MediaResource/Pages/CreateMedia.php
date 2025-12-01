@@ -215,12 +215,12 @@ class CreateMedia extends CreateRecord
                 'Upload Error',
                 'Failed to save the media file: ' . $e->getMessage()
             );
-            
+
             \Log::error('Media creation error: ' . $e->getMessage(), [
                 'data' => $data,
                 'trace' => $e->getTraceAsString()
             ]);
-            
+
             throw $e;
         }
     }
