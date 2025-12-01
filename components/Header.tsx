@@ -22,9 +22,9 @@ export default function Header() {
       <div className="container px-4 mx-auto">
         <div className="flex items-center justify-between py-3">
           {/* Search bar on left */}
-          <div className="flex items-center">
+          <div className="flex items-center flex-shrink-0">
             <div className="relative">
-              <span className="absolute transform -translate-y-1/2 left-3 top-1/2">
+              <span className="absolute transform -translate-y-1/2 left-2 md:left-3 top-1/2 text-sm">
                 🔍
               </span>
               <input
@@ -32,24 +32,24 @@ export default function Header() {
                 placeholder="Search"
                 value={searchQuery}
                 onChange={(e) => setSearchQuery(e.target.value)}
-                className="py-1 pl-8 pr-4 text-white placeholder-white bg-transparent border-b border-white focus:outline-none focus:border-red-300"
+                className="w-16 md:w-32 py-1 pl-6 md:pl-8 pr-2 md:pr-4 text-sm md:text-base text-white placeholder-white bg-transparent border-b border-white focus:outline-none focus:border-red-300"
               />
             </div>
           </div>
 
           {/* VNY Logo in center */}
-          <div className="flex justify-center flex-1">
-            <Link href="/vny" className="text-3xl font-bold tracking-wider">
+          <div className="flex justify-center flex-1 mx-2 md:mx-4">
+            <Link href="/vny" className="text-2xl md:text-3xl font-bold tracking-wider">
               VNY
             </Link>
           </div>
 
           {/* Cart and Transaction on right */}
-          <div className="flex items-center space-x-6">
-            <Link href="/vny/cart" className="transition-colors hover:text-red-300">
+          <div className="flex items-center space-x-2 md:space-x-6 flex-shrink-0">
+            <Link href="/vny/cart" className="text-xs md:text-base transition-colors hover:text-red-300">
               CART
             </Link>
-            <Link href="/transactions" className="transition-colors hover:text-red-300">
+            <Link href="/transactions" className="text-xs md:text-base transition-colors hover:text-red-300">
               TRANSACTION
             </Link>
           </div>

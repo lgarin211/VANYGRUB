@@ -117,7 +117,7 @@ const HeroSection: React.FC = () => {
   // Show loading state
   if (loading) {
     return (
-      <section className="relative flex items-center justify-center h-screen bg-gradient-to-br from-red-600 to-red-800">
+      <section className="relative flex items-center justify-center h-[70vh] md:h-screen bg-gradient-to-br from-red-600 to-red-800">
         <div className="text-center text-white">
           <div className="inline-block w-12 h-12 mb-4 border-b-2 border-white rounded-full animate-spin"></div>
           <p className="text-xl">Loading Hero Content...</p>
@@ -129,7 +129,7 @@ const HeroSection: React.FC = () => {
   // Show fallback if no slides available
   if (!slidesData.length) {
     return (
-      <section className="relative flex items-center justify-center h-screen bg-gradient-to-br from-red-600 to-red-800">
+      <section className="relative flex items-center justify-center h-[70vh] md:h-screen bg-gradient-to-br from-red-600 to-red-800">
         <div className="max-w-4xl px-4 text-center text-white">
           <h1 className="mb-4 text-6xl font-bold">VNY</h1>
           <p className="mb-8 text-2xl">Premium Sneaker Collection</p>
@@ -142,9 +142,9 @@ const HeroSection: React.FC = () => {
   }
 
   return (
-    <section ref={sectionRef} className="relative min-h-screen overflow-hidden">
+    <section ref={sectionRef} className="relative h-[70vh] md:min-h-screen overflow-hidden">
       {/* Carousel container */}
-      <div className="relative w-full h-screen">
+      <div className="relative w-full h-full">
         <div 
           ref={carouselRef}
           className="flex w-full h-full"
@@ -177,26 +177,26 @@ const HeroSection: React.FC = () => {
               <div className="absolute inset-0 bg-gradient-to-r from-black/20 via-transparent to-black/20"></div>
 
               {/* Slide content */}
-              <div className="absolute inset-0 z-20 flex items-center justify-between px-8 md:px-16">
+              <div className="absolute inset-0 z-20 flex flex-col md:flex-row items-center justify-center md:justify-between px-4 md:px-16 py-8">
                 {/* Text content */}
                 <div 
                   ref={index === currentSlide ? textRef : null}
-                  className="relative z-30 flex-1 max-w-2xl"
+                  className="relative z-30 flex-1 max-w-2xl text-center md:text-left mb-8 md:mb-0"
                   style={{ color: slide.textColor }}
                 >
-                  <h1 className="mb-4 font-black tracking-wider text-7xl md:text-9xl drop-shadow-lg">
+                  <h1 className="mb-3 md:mb-4 font-black tracking-wider text-4xl md:text-7xl lg:text-9xl drop-shadow-lg">
                     {slide.title}
                   </h1>
-                  <h2 className="mb-6 text-3xl font-bold md:text-5xl opacity-90">
+                  <h2 className="mb-4 md:mb-6 text-lg md:text-3xl lg:text-5xl font-bold opacity-90">
                     {slide.subtitle}
                   </h2>
-                  <p className="max-w-xl mb-8 text-xl leading-relaxed md:text-2xl opacity-80">
+                  <p className="max-w-xl mb-6 md:mb-8 text-sm md:text-xl lg:text-2xl leading-relaxed opacity-80 mx-auto md:mx-0">
                     {slide.description}
                   </p>
-                  <div className="flex items-center gap-6 mb-8">
-                    <span className="text-4xl font-bold">{slide.price}</span>
+                  <div className="flex flex-col md:flex-row items-center justify-center md:justify-start gap-4 md:gap-6 mb-6 md:mb-8">
+                    <span className="text-2xl md:text-4xl font-bold">{slide.price}</span>
                     <button 
-                      className="px-8 py-4 text-lg font-bold text-gray-800 transition-all duration-300 transform rounded-full shadow-xl bg-white/90 hover:bg-white hover:scale-105 backdrop-blur-sm"
+                      className="px-6 md:px-8 py-3 md:py-4 text-sm md:text-lg font-bold transition-all duration-300 transform rounded-full shadow-xl bg-white/90 hover:bg-white hover:scale-105 backdrop-blur-sm"
                       style={{ 
                         backgroundColor: slide.textColor === '#ffffff' ? 'rgba(255,255,255,0.9)' : 'rgba(0,0,0,0.9)',
                         color: slide.textColor === '#ffffff' ? '#1f2937' : '#ffffff'
@@ -208,10 +208,10 @@ const HeroSection: React.FC = () => {
                 </div>
 
                 {/* Product image */}
-                <div className="relative z-30 flex items-center justify-center flex-1">
-                  <div className="relative w-[300px] h-[300px] md:w-[500px] md:h-[500px]">
+                <div className="relative z-30 flex items-center justify-center flex-1 max-w-sm md:max-w-none">
+                  <div className="relative w-[200px] h-[200px] md:w-[400px] md:h-[400px] lg:w-[500px] lg:h-[500px]">
                     {/* Background blur effect behind image */}
-                    <div className="absolute inset-0 scale-110 -z-10 blur-3xl opacity-30"
+                    <div className="absolute inset-0 scale-110 -z-10 blur-3xl opacity-20 md:opacity-30"
                          style={{ backgroundColor: slide.textColor }}
                     ></div>
                     
@@ -219,9 +219,9 @@ const HeroSection: React.FC = () => {
                       src={slide.image} 
                       alt={slide.title}
                       fill
-                      className="relative z-10 object-contain transition-transform duration-500 transform drop-shadow-2xl hover:scale-105"
+                      className="relative z-10 object-contain transition-transform duration-500 transform drop-shadow-xl md:drop-shadow-2xl hover:scale-105"
                       priority={index === currentSlide}
-                      sizes="(max-width: 768px) 300px, 500px"
+                      sizes="(max-width: 768px) 200px, (max-width: 1024px) 400px, 500px"
                       onError={(e) => {
                         console.log('Image failed to load:', slide.image);
                       }}
@@ -260,24 +260,24 @@ const HeroSection: React.FC = () => {
       </div>
 
       {/* Navigation controls */}
-      <div className="absolute flex items-center gap-4 transform -translate-x-1/2 bottom-8 left-1/2">
+      <div className="absolute flex items-center gap-2 md:gap-4 transform -translate-x-1/2 bottom-6 md:bottom-8 left-1/2">
         {/* Previous button */}
         <button 
           onClick={prevSlide}
-          className="p-3 transition-all duration-300 border rounded-full bg-white/20 backdrop-blur-sm border-white/30 hover:bg-white/30"
+          className="p-2 md:p-3 transition-all duration-300 border rounded-full bg-white/20 backdrop-blur-sm border-white/30 hover:bg-white/30 touch-manipulation"
         >
-          <svg className="w-6 h-6 text-white" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+          <svg className="w-4 h-4 md:w-6 md:h-6 text-white" fill="none" stroke="currentColor" viewBox="0 0 24 24">
             <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M15 19l-7-7 7-7" />
           </svg>
         </button>
 
         {/* Slide indicators */}
-        <div className="flex gap-2">
+        <div className="flex gap-1 md:gap-2">
           {slidesData.map((_, index) => (
             <button
               key={index}
               onClick={() => goToSlide(index)}
-              className={`w-3 h-3 rounded-full transition-all duration-300 ${
+              className={`w-2 h-2 md:w-3 md:h-3 rounded-full transition-all duration-300 touch-manipulation ${
                 index === currentSlide 
                   ? 'bg-white scale-125' 
                   : 'bg-white/50 hover:bg-white/70'
@@ -289,17 +289,17 @@ const HeroSection: React.FC = () => {
         {/* Next button */}
         <button 
           onClick={nextSlide}
-          className="p-3 transition-all duration-300 border rounded-full bg-white/20 backdrop-blur-sm border-white/30 hover:bg-white/30"
+          className="p-2 md:p-3 transition-all duration-300 border rounded-full bg-white/20 backdrop-blur-sm border-white/30 hover:bg-white/30 touch-manipulation"
         >
-          <svg className="w-6 h-6 text-white" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+          <svg className="w-4 h-4 md:w-6 md:h-6 text-white" fill="none" stroke="currentColor" viewBox="0 0 24 24">
             <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M9 5l7 7-7 7" />
           </svg>
         </button>
       </div>
 
       {/* Slide counter */}
-      <div className="absolute px-4 py-2 text-white rounded-full top-8 right-8 bg-black/30 backdrop-blur-sm">
-        <span className="text-lg font-bold">
+      <div className="absolute px-3 md:px-4 py-1 md:py-2 text-white rounded-full top-4 md:top-8 right-4 md:right-8 bg-black/30 backdrop-blur-sm">
+        <span className="text-sm md:text-lg font-bold">
           {String(currentSlide + 1).padStart(2, '0')} / {String(slidesData.length).padStart(2, '0')}
         </span>
       </div>
