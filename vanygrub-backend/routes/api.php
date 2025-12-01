@@ -59,6 +59,7 @@ Route::prefix('vny')->group(function () {
         Route::post('upload-multiple', [MediaController::class, 'uploadMultiple']);
         Route::delete('delete', [MediaController::class, 'deleteMedia']);
         Route::get('list', [MediaController::class, 'getMedia']);
+        Route::get('debug/{id}', [MediaController::class, 'debugFileInfo']);
     });
 
     // Debug routes (remove in production)

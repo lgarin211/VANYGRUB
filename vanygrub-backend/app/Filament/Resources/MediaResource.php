@@ -87,48 +87,47 @@ class MediaResource extends Resource
                             ->helperText('Max 10MB. Supported: Images (JPEG, PNG, GIF, WebP), Videos (MP4, WebM, MOV), Documents (PDF, DOC, DOCX, TXT)')
                             ->reactive()
                             ->live()
-                            ->afterStateUpdated(function ($state, callable $set) {
+                            ->afterStateUpdated(function ($state, callable $set, callable $get) {
                                 if ($state) {
+                                    // Handle both single file and array of files
+                                    $filePath = is_array($state) ? $state[0] : $state;
+
+                                    if (!$filePath)
+                                        return;
+
                                     // Auto-fill original name first
-                                    $originalName = pathinfo($state, PATHINFO_BASENAME);
+                                    $originalName = pathinfo($filePath, PATHINFO_BASENAME);
                                     $set('original_name', $originalName);
 
-                                    // Get file extension for more reliable type detection
+                                    // Get file extension for type detection
                                     $extension = strtolower(pathinfo($originalName, PATHINFO_EXTENSION));
 
-                                    // Define file types by extension
-                                    $imageExtensions = ['jpg', 'jpeg', 'png', 'gif', 'webp', 'svg', 'bmp'];
-                                    $videoExtensions = ['mp4', 'avi', 'mov', 'wmv', 'flv', 'webm', 'mkv', 'ogv'];
+                                    // Define file types by extension (PRIORITY METHOD)
+                                    $imageExtensions = ['jpg', 'jpeg', 'png', 'gif', 'webp', 'svg', 'bmp', 'tiff', 'ico'];
+                                    $videoExtensions = ['mp4', 'avi', 'mov', 'wmv', 'flv', 'webm', 'mkv', 'ogv', 'mp3', 'wav'];
                                     $documentExtensions = ['pdf', 'doc', 'docx', 'xls', 'xlsx', 'ppt', 'pptx', 'txt', 'rtf'];
 
-                                    // Auto-detect type based on extension (more reliable than MIME type)
+                                    // FORCE type detection based on extension - THIS IS THE PRIMARY METHOD
+                                    $detectedType = 'document'; // default fallback
+                    
                                     if (in_array($extension, $imageExtensions)) {
-                                        $set('type', 'image');
+                                        $detectedType = 'image';
                                     } elseif (in_array($extension, $videoExtensions)) {
-                                        $set('type', 'video');
+                                        $detectedType = 'video';
                                     } elseif (in_array($extension, $documentExtensions)) {
-                                        $set('type', 'document');
-                                    } else {
-                                        // Fallback to MIME type detection
-                                        try {
-                                            $mimeType = Storage::disk('public')->mimeType($state);
-                                            if (str_starts_with($mimeType, 'image/')) {
-                                                $set('type', 'image');
-                                            } elseif (str_starts_with($mimeType, 'video/')) {
-                                                $set('type', 'video');
-                                            } else {
-                                                $set('type', 'document');
-                                            }
-                                        } catch (\Exception $e) {
-                                            // Default fallback
-                                            $set('type', 'document');
-                                        }
+                                        $detectedType = 'document';
                                     }
+
+                                    // IMMEDIATELY set the detected type
+                                    $set('type', $detectedType);
 
                                     // Generate filename
                                     $filename = pathinfo($originalName, PATHINFO_FILENAME);
                                     $sluggedName = Str::slug($filename) . '-' . time() . '.' . $extension;
                                     $set('filename', $sluggedName);
+
+                                    // Auto-set folder based on current date
+                                    $set('folder', now()->format('Y-m-d'));
                                 }
                             }),
 

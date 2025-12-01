@@ -19,8 +19,12 @@ export function useHomepageConstants() {
         console.error('Failed to fetch homepage constants:', err);
         
         // Fallback ke konstanta lokal jika API gagal
-        const { HOMEPAGE_CONSTANTS } = await import('../constants');
-        setConstants(HOMEPAGE_CONSTANTS);
+        try {
+          const { HOMEPAGE_CONSTANTS } = await import('../constants');
+          setConstants(HOMEPAGE_CONSTANTS);
+        } catch (fallbackErr) {
+          console.error('Failed to load fallback constants:', fallbackErr);
+        }
       } finally {
         setLoading(false);
       }

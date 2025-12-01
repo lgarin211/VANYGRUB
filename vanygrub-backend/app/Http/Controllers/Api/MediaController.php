@@ -213,6 +213,58 @@ class MediaController extends Controller
     }
 
     /**
+     * Debug file info - check if file format is preserved
+     */
+    public function debugFileInfo(Request $request, $id)
+    {
+        try {
+            $media = Media::findOrFail($id);
+            
+            // Check if file exists
+            $exists = Storage::disk('public')->exists($media->path);
+            
+            // Get file info from storage
+            $storageInfo = [];
+            if ($exists) {
+                $storageInfo = [
+                    'size' => Storage::disk('public')->size($media->path),
+                    'mime_type' => Storage::disk('public')->mimeType($media->path),
+                    'last_modified' => Storage::disk('public')->lastModified($media->path),
+                ];
+            }
+            
+            // Get actual file path for system check
+            $actualPath = storage_path('app/public/' . $media->path);
+            $fileInfo = [];
+            if (file_exists($actualPath)) {
+                $fileInfo = [
+                    'actual_size' => filesize($actualPath),
+                    'actual_mime' => mime_content_type($actualPath),
+                    'is_readable' => is_readable($actualPath),
+                    'file_extension' => pathinfo($actualPath, PATHINFO_EXTENSION),
+                ];
+            }
+            
+            return response()->json([
+                'success' => true,
+                'data' => [
+                    'media_record' => $media,
+                    'file_exists' => $exists,
+                    'storage_info' => $storageInfo,
+                    'actual_file_info' => $fileInfo,
+                    'full_path' => $actualPath
+                ]
+            ]);
+            
+        } catch (\Exception $e) {
+            return response()->json([
+                'success' => false,
+                'message' => 'Debug failed: ' . $e->getMessage()
+            ], 500);
+        }
+    }
+
+    /**
      * Get media files by type and folder
      */
     public function getMedia(Request $request)

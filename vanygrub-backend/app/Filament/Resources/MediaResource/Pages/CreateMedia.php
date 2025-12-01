@@ -21,41 +21,80 @@ class CreateMedia extends CreateRecord
             $type = $data['type'] ?? 'image';
             $folder = $data['folder'] ?? 'general';
 
-            // Get file info
+            // Get original file info to preserve format
             $originalName = $data['original_name'] ?? pathinfo($tempFile, PATHINFO_BASENAME);
-            $filename = $data['filename'] ?? (Str::slug(pathinfo($originalName, PATHINFO_FILENAME)) . '-' . time() . '.' . pathinfo($originalName, PATHINFO_EXTENSION));
+            $originalExtension = strtolower(pathinfo($originalName, PATHINFO_EXTENSION));
+            
+            // Ensure filename keeps original extension to preserve file format
+            $baseFilename = $data['filename'] ?? (Str::slug(pathinfo($originalName, PATHINFO_FILENAME)) . '-' . time());
+            $filename = $baseFilename . '.' . $originalExtension; // Force original extension
 
             // Move file from temp to proper location
             $finalPath = "media/{$type}/{$folder}/{$filename}";
 
-            // Copy file to final location
+            // Ensure directory exists
+            $directory = dirname("storage/app/public/{$finalPath}");
+            if (!file_exists($directory)) {
+                mkdir($directory, 0755, true);
+            }
+
+            // Copy file to final location WITHOUT any format conversion
             Storage::disk('public')->copy($tempFile, $finalPath);
 
-            // Get file details
+            // Verify file was copied successfully
+            if (!Storage::disk('public')->exists($finalPath)) {
+                throw new \Exception("Failed to copy file to final location");
+            }
+
+            // Get file details from the final location
             $size = Storage::disk('public')->size($finalPath);
             $mimeType = Storage::disk('public')->mimeType($finalPath);
             $url = asset(Storage::url($finalPath));
 
-            // Double-check type detection based on actual file MIME type and extension
-            $extension = strtolower(pathinfo($filename, PATHINFO_EXTENSION));
-            $imageExtensions = ['jpg', 'jpeg', 'png', 'gif', 'webp', 'svg', 'bmp'];
-            $videoExtensions = ['mp4', 'avi', 'mov', 'wmv', 'flv', 'webm', 'mkv', 'ogv'];
+            // Log for debugging
+            \Log::info('File upload details', [
+                'original' => $originalName,
+                'extension' => $originalExtension,
+                'final_path' => $finalPath,
+                'mime_type' => $mimeType,
+                'size' => $size
+            ]);
 
-            // Correct type if needed based on extension (most reliable)
-            if (in_array($extension, $imageExtensions)) {
-                $type = 'image';
-            } elseif (in_array($extension, $videoExtensions)) {
-                $type = 'video';
-            } else {
-                $type = 'document';
+            // Verify type detection based on actual file extension
+            $imageExtensions = ['jpg', 'jpeg', 'png', 'gif', 'webp', 'svg', 'bmp', 'tiff', 'ico'];
+            $videoExtensions = ['mp4', 'avi', 'mov', 'wmv', 'flv', 'webm', 'mkv', 'ogv'];
+            $documentExtensions = ['pdf', 'doc', 'docx', 'xls', 'xlsx', 'ppt', 'pptx', 'txt', 'rtf'];
+
+            // Verify type based on extension (most reliable for preserving file format)
+            $verifiedType = $type; // Default to form selection
+            if (in_array($originalExtension, $imageExtensions)) {
+                $verifiedType = 'image';
+            } elseif (in_array($originalExtension, $videoExtensions)) {
+                $verifiedType = 'video';
+            } elseif (in_array($originalExtension, $documentExtensions)) {
+                $verifiedType = 'document';
             }
 
-            // If type changed, move file to correct directory
-            if ($type !== $data['type']) {
-                $correctPath = "media/{$type}/{$folder}/{$filename}";
+            // If type is different from form selection, move to correct directory
+            if ($verifiedType !== $type) {
+                $correctPath = "media/{$verifiedType}/{$folder}/{$filename}";
+                
+                // Ensure correct directory exists
+                $correctDirectory = dirname("storage/app/public/{$correctPath}");
+                if (!file_exists($correctDirectory)) {
+                    mkdir($correctDirectory, 0755, true);
+                }
+                
                 Storage::disk('public')->move($finalPath, $correctPath);
                 $finalPath = $correctPath;
                 $url = asset(Storage::url($finalPath));
+                $type = $verifiedType;
+                
+                \Log::info('File moved to correct type directory', [
+                    'from' => $finalPath,
+                    'to' => $correctPath,
+                    'type' => $type
+                ]);
             }
 
             // Delete temp file
