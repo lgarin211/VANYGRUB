@@ -104,11 +104,10 @@ class OrderController extends Controller
             $sessionId = $request->get('session_id', Session::getId());
 
             // Create order in database
-            // Create or get guest user
-            $guestUserId = $this->getOrCreateGuestUser($request);
-
+            // For guest orders, use a default user ID
+            // In production, you should handle user authentication properly
             $order = Order::create([
-                'user_id' => $guestUserId,
+                'user_id' => 1, // Default user ID for guest orders
                 'order_number' => $orderCode,
                 'status' => 'pending',
                 'subtotal' => $request->total_amount, // Assuming no discount for now
@@ -448,32 +447,5 @@ class OrderController extends Controller
         Session::forget("cart_{$sessionId}");
     }
 
-    private function getOrCreateGuestUser($request): int
-    {
-        // Check if we have User model available
-        if (class_exists(\App\Models\User::class)) {
-            // Check if user exists by email
-            $existingUser = \App\Models\User::where('email', $request->customer_email)
-                ->orWhere('phone', $request->customer_phone)
-                ->first();
 
-            if ($existingUser) {
-                return $existingUser->id;
-            }
-
-            // Create new guest user using User model
-            $user = \App\Models\User::create([
-                'name' => $request->customer_name,
-                'email' => $request->customer_email,
-                'phone' => $request->customer_phone,
-                'password' => bcrypt('guest123'), // Provide a default password
-            ]);
-
-            return $user->id;
-        }
-
-        // Fallback: For now, use a default user ID if user creation fails
-        // In production, this should be handled properly
-        return 1;
-    }
 }
