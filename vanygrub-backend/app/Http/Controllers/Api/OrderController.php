@@ -106,8 +106,29 @@ class OrderController extends Controller
             // Create order in database
             // For guest orders, use a default user ID
             // In production, you should handle user authentication properly
-            // Ensure default user exists or create user based on customer data
-            $userId = $this->ensureUserExists($request);
+            // Ensure default user exists
+            \DB::statement("INSERT IGNORE INTO vany_users (id, name, email, phone, password, created_at, updated_at) VALUES (1, 'Guest User', 'guest@vnystore.com', '000000000000', ?, NOW(), NOW())", [\Hash::make('guestpassword')]);
+
+            // Try to create/get customer user
+            $userId = 1; // Default fallback
+            try {
+                $existingUser = \DB::table('vany_users')->where('email', $request->customer_email)->first();
+                if ($existingUser) {
+                    $userId = $existingUser->id;
+                } else {
+                    $userId = \DB::table('vany_users')->insertGetId([
+                        'name' => $request->customer_name,
+                        'email' => $request->customer_email,
+                        'phone' => $request->customer_phone,
+                        'password' => \Hash::make('defaultpassword'),
+                        'created_at' => now(),
+                        'updated_at' => now()
+                    ]);
+                }
+            } catch (\Exception $e) {
+                \Log::error('User creation failed, using default:', ['error' => $e->getMessage()]);
+                $userId = 1; // Use default guest user
+            }
 
             // Prepare order data
             $orderData = [
@@ -125,7 +146,7 @@ class OrderController extends Controller
                 'promo_code_id' => null
             ];
 
-            \Log::info('Creating order with user_id:', $userId);
+            \Log::info('Creating order with user_id:', ['user_id' => $userId]);
 
             $order = Order::create($orderData);
 
