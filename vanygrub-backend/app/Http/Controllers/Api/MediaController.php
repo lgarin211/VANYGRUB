@@ -219,10 +219,10 @@ class MediaController extends Controller
     {
         try {
             $media = Media::findOrFail($id);
-            
+
             // Check if file exists
             $exists = Storage::disk('public')->exists($media->path);
-            
+
             // Get file info from storage
             $storageInfo = [];
             if ($exists) {
@@ -232,7 +232,7 @@ class MediaController extends Controller
                     'last_modified' => Storage::disk('public')->lastModified($media->path),
                 ];
             }
-            
+
             // Get actual file path for system check
             $actualPath = storage_path('app/public/' . $media->path);
             $fileInfo = [];
@@ -244,7 +244,7 @@ class MediaController extends Controller
                     'file_extension' => pathinfo($actualPath, PATHINFO_EXTENSION),
                 ];
             }
-            
+
             return response()->json([
                 'success' => true,
                 'data' => [
@@ -255,7 +255,7 @@ class MediaController extends Controller
                     'full_path' => $actualPath
                 ]
             ]);
-            
+
         } catch (\Exception $e) {
             return response()->json([
                 'success' => false,

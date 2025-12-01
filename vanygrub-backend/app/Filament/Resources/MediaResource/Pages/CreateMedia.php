@@ -24,7 +24,7 @@ class CreateMedia extends CreateRecord
             // Get original file info to preserve format
             $originalName = $data['original_name'] ?? pathinfo($tempFile, PATHINFO_BASENAME);
             $originalExtension = strtolower(pathinfo($originalName, PATHINFO_EXTENSION));
-            
+
             // Ensure filename keeps original extension to preserve file format
             $baseFilename = $data['filename'] ?? (Str::slug(pathinfo($originalName, PATHINFO_FILENAME)) . '-' . time());
             $filename = $baseFilename . '.' . $originalExtension; // Force original extension
@@ -78,18 +78,18 @@ class CreateMedia extends CreateRecord
             // If type is different from form selection, move to correct directory
             if ($verifiedType !== $type) {
                 $correctPath = "media/{$verifiedType}/{$folder}/{$filename}";
-                
+
                 // Ensure correct directory exists
                 $correctDirectory = dirname("storage/app/public/{$correctPath}");
                 if (!file_exists($correctDirectory)) {
                     mkdir($correctDirectory, 0755, true);
                 }
-                
+
                 Storage::disk('public')->move($finalPath, $correctPath);
                 $finalPath = $correctPath;
                 $url = asset(Storage::url($finalPath));
                 $type = $verifiedType;
-                
+
                 \Log::info('File moved to correct type directory', [
                     'from' => $finalPath,
                     'to' => $correctPath,
