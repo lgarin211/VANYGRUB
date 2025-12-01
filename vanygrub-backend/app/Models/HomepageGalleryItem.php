@@ -11,7 +11,7 @@ class HomepageGalleryItem extends Model
 
     protected $fillable = [
         'title',
-        'image', 
+        'image',
         'description',
         'target',
         'category',

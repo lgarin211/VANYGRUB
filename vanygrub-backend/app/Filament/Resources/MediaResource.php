@@ -45,17 +45,33 @@ class MediaResource extends Resource
                             ->disk('public')
                             ->maxSize(10240) // 10MB
                             ->acceptedFileTypes([
+                                // Images
                                 'image/jpeg',
-                                'image/png',
+                                'image/jpg', 
+                                'image/png', 
                                 'image/gif',
                                 'image/webp',
+                                'image/svg+xml',
+                                'image/bmp',
+                                // Videos
                                 'video/mp4',
-                                'video/webm',
+                                'video/avi',
                                 'video/quicktime',
+                                'video/x-msvideo',
+                                'video/webm',
+                                'video/x-ms-wmv',
+                                'video/x-flv',
+                                'video/ogg',
+                                // Documents
                                 'application/pdf',
                                 'application/msword',
                                 'application/vnd.openxmlformats-officedocument.wordprocessingml.document',
-                                'text/plain'
+                                'application/vnd.ms-excel',
+                                'application/vnd.openxmlformats-officedocument.spreadsheetml.sheet',
+                                'application/vnd.ms-powerpoint',
+                                'application/vnd.openxmlformats-officedocument.presentationml.presentation',
+                                'text/plain',
+                                'application/rtf'
                             ])
                             ->image()
                             ->imageEditor()
@@ -72,23 +88,44 @@ class MediaResource extends Resource
                             ->reactive()
                             ->afterStateUpdated(function ($state, callable $set) {
                                 if ($state) {
-                                    // Auto-detect type based on mime type
-                                    $mimeType = Storage::disk('public')->mimeType($state);
-                                    if (str_starts_with($mimeType, 'image/')) {
-                                        $set('type', 'image');
-                                    } elseif (str_starts_with($mimeType, 'video/')) {
-                                        $set('type', 'video');
-                                    } else {
-                                        $set('type', 'document');
-                                    }
-
-                                    // Auto-fill original name
+                                    // Auto-fill original name first
                                     $originalName = pathinfo($state, PATHINFO_BASENAME);
                                     $set('original_name', $originalName);
 
+                                    // Get file extension for more reliable type detection
+                                    $extension = strtolower(pathinfo($originalName, PATHINFO_EXTENSION));
+                                    
+                                    // Define file types by extension
+                                    $imageExtensions = ['jpg', 'jpeg', 'png', 'gif', 'webp', 'svg', 'bmp'];
+                                    $videoExtensions = ['mp4', 'avi', 'mov', 'wmv', 'flv', 'webm', 'mkv', 'ogv'];
+                                    $documentExtensions = ['pdf', 'doc', 'docx', 'xls', 'xlsx', 'ppt', 'pptx', 'txt', 'rtf'];
+                                    
+                                    // Auto-detect type based on extension (more reliable than MIME type)
+                                    if (in_array($extension, $imageExtensions)) {
+                                        $set('type', 'image');
+                                    } elseif (in_array($extension, $videoExtensions)) {
+                                        $set('type', 'video');
+                                    } elseif (in_array($extension, $documentExtensions)) {
+                                        $set('type', 'document');
+                                    } else {
+                                        // Fallback to MIME type detection
+                                        try {
+                                            $mimeType = Storage::disk('public')->mimeType($state);
+                                            if (str_starts_with($mimeType, 'image/')) {
+                                                $set('type', 'image');
+                                            } elseif (str_starts_with($mimeType, 'video/')) {
+                                                $set('type', 'video');
+                                            } else {
+                                                $set('type', 'document');
+                                            }
+                                        } catch (\Exception $e) {
+                                            // Default fallback
+                                            $set('type', 'document');
+                                        }
+                                    }
+
                                     // Generate filename
                                     $filename = pathinfo($originalName, PATHINFO_FILENAME);
-                                    $extension = pathinfo($originalName, PATHINFO_EXTENSION);
                                     $sluggedName = Str::slug($filename) . '-' . time() . '.' . $extension;
                                     $set('filename', $sluggedName);
                                 }
