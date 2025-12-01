@@ -19,14 +19,14 @@ class ViewOrder extends ViewRecord
     {
         return [
             Actions\EditAction::make(),
-            
+
             Actions\Action::make('printInvoice')
                 ->label('Print Invoice')
                 ->icon('heroicon-o-printer')
                 ->color('secondary')
-                ->url(fn (): string => route('orders.invoice', $this->record))
+                ->url(fn(): string => route('orders.invoice', $this->record))
                 ->openUrlInNewTab(),
-                
+
             Actions\Action::make('updateStatus')
                 ->label('Update Status')
                 ->icon('heroicon-o-arrow-path')
@@ -43,7 +43,7 @@ class ViewOrder extends ViewRecord
                         ])
                         ->required()
                         ->default($this->record->status),
-                        
+
                     \Filament\Forms\Components\Textarea::make('notes')
                         ->label('Catatan Update')
                         ->placeholder('Opsional: Tambahkan catatan untuk update status')
@@ -53,20 +53,20 @@ class ViewOrder extends ViewRecord
                     $this->record->update([
                         'status' => $data['status']
                     ]);
-                    
+
                     // Update notes if provided
                     if (!empty($data['notes'])) {
                         $this->record->update([
                             'notes' => $this->record->notes . "\n\n" . date('d/m/Y H:i') . " - Status diubah dari {$oldStatus} ke {$data['status']}: " . $data['notes']
                         ]);
                     }
-                    
+
                     \Filament\Notifications\Notification::make()
                         ->title('Status berhasil diupdate')
                         ->body("Order {$this->record->order_number} statusnya diubah menjadi {$data['status']}")
                         ->success()
                         ->send();
-                        
+
                     $this->refreshFormData(['status']);
                 }),
         ];
@@ -80,59 +80,59 @@ class ViewOrder extends ViewRecord
                     ->schema([
                         TextEntry::make('order_number')
                             ->label('Nomor Order'),
-                            
+
                         BadgeEntry::make('status')
                             ->label('Status')
                             ->colors([
                                 'warning' => 'pending',
-                                'primary' => 'processing', 
+                                'primary' => 'processing',
                                 'info' => 'shipped',
                                 'success' => 'delivered',
                                 'danger' => 'cancelled',
                             ]),
-                            
+
                         TextEntry::make('created_at')
                             ->label('Tanggal Order')
                             ->dateTime('d M Y, H:i'),
-                            
+
                         TextEntry::make('updated_at')
                             ->label('Terakhir Diupdate')
                             ->dateTime('d M Y, H:i'),
                     ])->columns(2),
-                    
+
                 Section::make('Informasi Customer')
                     ->schema([
                         TextEntry::make('customer_name')
                             ->label('Nama Customer'),
-                            
+
                         TextEntry::make('customer_email')
                             ->label('Email')
                             ->copyable(),
-                            
+
                         TextEntry::make('phone')
                             ->label('Nomor Telepon')
                             ->copyable(),
-                            
+
                         TextEntry::make('shipping_address')
                             ->label('Alamat Pengiriman')
                             ->columnSpanFull(),
-                            
+
                         TextEntry::make('notes')
                             ->label('Catatan')
                             ->columnSpanFull()
                             ->placeholder('Tidak ada catatan'),
                     ])->columns(2),
-                    
+
                 Section::make('Informasi Pembayaran')
                     ->schema([
                         TextEntry::make('subtotal')
                             ->label('Subtotal')
                             ->money('IDR'),
-                            
+
                         TextEntry::make('discount_amount')
                             ->label('Diskon')
                             ->money('IDR'),
-                            
+
                         TextEntry::make('total_amount')
                             ->label('Total')
                             ->money('IDR')

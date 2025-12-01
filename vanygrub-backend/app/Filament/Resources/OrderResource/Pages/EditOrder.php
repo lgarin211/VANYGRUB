@@ -16,7 +16,7 @@ class EditOrder extends EditRecord
         return [
             Actions\ViewAction::make(),
             Actions\DeleteAction::make(),
-            
+
             Actions\Action::make('sendNotification')
                 ->label('Kirim Notifikasi')
                 ->icon('heroicon-o-bell')

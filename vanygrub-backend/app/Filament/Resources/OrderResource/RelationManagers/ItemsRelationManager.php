@@ -16,7 +16,7 @@ class ItemsRelationManager extends RelationManager
     protected static string $relationship = 'items';
 
     protected static ?string $recordTitleAttribute = 'product.name';
-    
+
     protected static ?string $title = 'Item Order';
 
     public function form(Form $form): Form
@@ -36,7 +36,7 @@ class ItemsRelationManager extends RelationManager
                             $set('total', $product->price * 1); // Default quantity 1
                         }
                     }),
-                    
+
                 Forms\Components\TextInput::make('quantity')
                     ->label('Jumlah')
                     ->numeric()
@@ -48,7 +48,7 @@ class ItemsRelationManager extends RelationManager
                         $price = $get('price') ?? 0;
                         $set('total', $price * $state);
                     }),
-                    
+
                 Forms\Components\TextInput::make('price')
                     ->label('Harga Satuan')
                     ->numeric()
@@ -59,7 +59,7 @@ class ItemsRelationManager extends RelationManager
                         $quantity = $get('quantity') ?? 1;
                         $set('total', $state * $quantity);
                     }),
-                    
+
                 Forms\Components\TextInput::make('total')
                     ->label('Total Harga')
                     ->numeric()
@@ -79,21 +79,21 @@ class ItemsRelationManager extends RelationManager
                     ->label('Nama Produk')
                     ->searchable()
                     ->sortable(),
-                    
+
                 Tables\Columns\ImageColumn::make('product.image_url')
                     ->label('Gambar')
                     ->circular()
                     ->defaultImageUrl(url('/images/placeholder.png')),
-                    
+
                 Tables\Columns\TextColumn::make('quantity')
                     ->label('Jumlah')
                     ->alignCenter()
                     ->badge(),
-                    
+
                 Tables\Columns\TextColumn::make('price')
                     ->label('Harga Satuan')
                     ->money('IDR'),
-                    
+
                 Tables\Columns\TextColumn::make('total')
                     ->label('Total')
                     ->money('IDR')

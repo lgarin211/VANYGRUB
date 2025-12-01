@@ -29,11 +29,11 @@ class OrderResource extends Resource
     protected static ?string $model = Order::class;
 
     protected static ?string $navigationIcon = 'heroicon-o-shopping-bag';
-    
+
     protected static ?string $navigationLabel = 'Transaksi';
-    
+
     protected static ?string $modelLabel = 'Transaksi';
-    
+
     protected static ?string $pluralModelLabel = 'Transaksi';
 
     protected static ?string $navigationGroup = 'Manajemen Toko';
@@ -50,8 +50,8 @@ class OrderResource extends Resource
                             ->label('Nomor Order')
                             ->required()
                             ->unique(ignoreRecord: true)
-                            ->default(fn () => 'ORD-' . date('Y') . '-' . str_pad(rand(1, 999999), 6, '0', STR_PAD_LEFT)),
-                            
+                            ->default(fn() => 'ORD-' . date('Y') . '-' . str_pad(rand(1, 999999), 6, '0', STR_PAD_LEFT)),
+
                         Select::make('status')
                             ->label('Status Pesanan')
                             ->options([
@@ -65,36 +65,36 @@ class OrderResource extends Resource
                             ->required()
                             ->searchable(),
                     ])->columns(2),
-                    
+
                 Section::make('Informasi Customer')
                     ->schema([
                         TextInput::make('customer_name')
                             ->label('Nama Customer')
                             ->required()
                             ->maxLength(255),
-                            
+
                         TextInput::make('customer_email')
                             ->label('Email Customer')
                             ->email()
                             ->required()
                             ->maxLength(255),
-                            
+
                         TextInput::make('phone')
                             ->label('Nomor Telepon')
                             ->tel()
                             ->required()
                             ->maxLength(20),
-                            
+
                         Textarea::make('shipping_address')
                             ->label('Alamat Pengiriman')
                             ->required()
                             ->rows(3),
-                            
+
                         Textarea::make('notes')
                             ->label('Catatan')
                             ->rows(2),
                     ])->columns(2),
-                    
+
                 Section::make('Informasi Pembayaran')
                     ->schema([
                         TextInput::make('subtotal')
@@ -102,20 +102,20 @@ class OrderResource extends Resource
                             ->numeric()
                             ->prefix('Rp')
                             ->required(),
-                            
+
                         TextInput::make('discount_amount')
                             ->label('Diskon')
                             ->numeric()
                             ->prefix('Rp')
                             ->default(0),
-                            
+
                         TextInput::make('total_amount')
                             ->label('Total')
                             ->numeric()
                             ->prefix('Rp')
                             ->required(),
                     ])->columns(3),
-                    
+
                 Hidden::make('user_id')->default(1),
             ]);
     }
@@ -128,26 +128,26 @@ class OrderResource extends Resource
                     ->label('Nomor Order')
                     ->searchable()
                     ->sortable(),
-                    
+
                 TextColumn::make('customer_name')
                     ->label('Nama Customer')
                     ->searchable()
                     ->sortable(),
-                    
+
                 TextColumn::make('customer_email')
                     ->label('Email')
                     ->searchable()
                     ->toggleable(isToggledHiddenByDefault: true),
-                    
+
                 TextColumn::make('phone')
                     ->label('Telepon')
                     ->searchable(),
-                    
+
                 BadgeColumn::make('status')
                     ->label('Status')
                     ->colors([
                         'warning' => 'pending',
-                        'primary' => 'processing', 
+                        'primary' => 'processing',
                         'info' => 'shipped',
                         'success' => 'delivered',
                         'danger' => 'cancelled',
@@ -159,17 +159,17 @@ class OrderResource extends Resource
                         'heroicon-o-check-circle' => 'delivered',
                         'heroicon-o-x-circle' => 'cancelled',
                     ]),
-                    
+
                 TextColumn::make('total_amount')
                     ->label('Total')
                     ->money('IDR')
                     ->sortable(),
-                    
+
                 TextColumn::make('items_count')
                     ->label('Jumlah Item')
                     ->counts('items')
                     ->badge(),
-                    
+
                 TextColumn::make('created_at')
                     ->label('Tanggal Order')
                     ->dateTime('d M Y, H:i')
@@ -189,7 +189,7 @@ class OrderResource extends Resource
             ->actions([
                 Tables\Actions\EditAction::make(),
                 Tables\Actions\ViewAction::make(),
-                
+
                 Action::make('updateStatus')
                     ->label('Update Status')
                     ->icon('heroicon-o-arrow-path')
@@ -205,8 +205,8 @@ class OrderResource extends Resource
                                 'cancelled' => 'Dibatalkan'
                             ])
                             ->required()
-                            ->default(fn (Order $record) => $record->status),
-                            
+                            ->default(fn(Order $record) => $record->status),
+
                         Textarea::make('notes')
                             ->label('Catatan Update')
                             ->placeholder('Opsional: Tambahkan catatan untuk update status')
@@ -216,32 +216,32 @@ class OrderResource extends Resource
                         $record->update([
                             'status' => $data['status']
                         ]);
-                        
+
                         // Update notes if provided
                         if (!empty($data['notes'])) {
                             $record->update([
                                 'notes' => $record->notes . "\n\n" . date('d/m/Y H:i') . " - Status diubah dari {$oldStatus} ke {$data['status']}: " . $data['notes']
                             ]);
                         }
-                        
+
                         Notification::make()
                             ->title('Status berhasil diupdate')
                             ->body("Order {$record->order_number} statusnya diubah menjadi {$data['status']}")
                             ->success()
                             ->send();
                     }),
-                    
+
                 Action::make('printInvoice')
                     ->label('Print Invoice')
                     ->icon('heroicon-o-printer')
                     ->color('secondary')
-                    ->url(fn (Order $record): string => route('orders.invoice', $record))
+                    ->url(fn(Order $record): string => route('orders.invoice', $record))
                     ->openUrlInNewTab(),
             ])
             ->bulkActions([
                 Tables\Actions\BulkActionGroup::make([
                     Tables\Actions\DeleteBulkAction::make(),
-                    
+
                     Tables\Actions\BulkAction::make('updateStatus')
                         ->label('Update Status')
                         ->icon('heroicon-o-arrow-path')
@@ -262,7 +262,7 @@ class OrderResource extends Resource
                             $records->each(function (Order $record) use ($data) {
                                 $record->update(['status' => $data['status']]);
                             });
-                            
+
                             Notification::make()
                                 ->title('Status berhasil diupdate')
                                 ->body($records->count() . ' order berhasil diupdate ke status ' . $data['status'])
