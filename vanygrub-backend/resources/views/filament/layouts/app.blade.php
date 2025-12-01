@@ -217,28 +217,25 @@
 
         // Listen for Livewire events and show appropriate alerts
         document.addEventListener('DOMContentLoaded', function() {
-            // Success notifications
-            Livewire.on('success', (data) => {
-                vanyAlert.toast.success(data.message || 'Operation completed successfully!');
+            // Browser event listeners for SweetAlert
+            window.addEventListener('swal:success', event => {
+                vanyAlert.success(event.detail.title, event.detail.text);
             });
-            
-            // Error notifications  
-            Livewire.on('error', (data) => {
-                vanyAlert.toast.error(data.message || 'An error occurred!');
+
+            window.addEventListener('swal:error', event => {
+                vanyAlert.error(event.detail.title, event.detail.text);
             });
-            
-            // Warning notifications
-            Livewire.on('warning', (data) => {
-                vanyAlert.toast.warning(data.message || 'Warning!');
+
+            window.addEventListener('swal:warning', event => {
+                vanyAlert.warning(event.detail.title, event.detail.text);
             });
-            
-            // Info notifications
-            Livewire.on('info', (data) => {
-                vanyAlert.toast.info(data.message || 'Information');
+
+            window.addEventListener('swal:info', event => {
+                vanyAlert.info(event.detail.title, event.detail.text);
             });
-            
-            // Confirmation dialogs
-            Livewire.on('confirm', (data) => {
+
+            window.addEventListener('swal:confirm', event => {
+                const data = event.detail;
                 vanyAlert.confirm(
                     data.title || 'Are you sure?',
                     data.text || 'This action cannot be undone',
@@ -247,10 +244,65 @@
                 ).then((result) => {
                     if (result.isConfirmed) {
                         // Emit event back to Livewire component
-                        Livewire.emit('confirmed', data.action);
+                        Livewire.emit('handleConfirmed', data.action);
                     }
                 });
             });
+
+            // Toast event listeners
+            window.addEventListener('swal:toast-success', event => {
+                vanyAlert.toast.success(event.detail.title);
+            });
+
+            window.addEventListener('swal:toast-error', event => {
+                vanyAlert.toast.error(event.detail.title);
+            });
+
+            window.addEventListener('swal:toast-warning', event => {
+                vanyAlert.toast.warning(event.detail.title);
+            });
+
+            window.addEventListener('swal:toast-info', event => {
+                vanyAlert.toast.info(event.detail.title);
+            });
+
+            // Legacy Livewire event listeners (for backward compatibility)
+            if (typeof Livewire !== 'undefined') {
+                // Success notifications
+                Livewire.on('success', (data) => {
+                    vanyAlert.toast.success(data.message || 'Operation completed successfully!');
+                });
+                
+                // Error notifications  
+                Livewire.on('error', (data) => {
+                    vanyAlert.toast.error(data.message || 'An error occurred!');
+                });
+                
+                // Warning notifications
+                Livewire.on('warning', (data) => {
+                    vanyAlert.toast.warning(data.message || 'Warning!');
+                });
+                
+                // Info notifications
+                Livewire.on('info', (data) => {
+                    vanyAlert.toast.info(data.message || 'Information');
+                });
+                
+                // Confirmation dialogs
+                Livewire.on('confirm', (data) => {
+                    vanyAlert.confirm(
+                        data.title || 'Are you sure?',
+                        data.text || 'This action cannot be undone',
+                        data.confirmText || 'Yes',
+                        data.cancelText || 'Cancel'
+                    ).then((result) => {
+                        if (result.isConfirmed) {
+                            // Emit event back to Livewire component
+                            Livewire.emit('confirmed', data.action);
+                        }
+                    });
+                });
+            }
         });
     </script>
 
