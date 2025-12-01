@@ -17,6 +17,10 @@ Route::get('/', function () {
     return view('welcome');
 });
 
+// Order invoice route
+Route::get('/orders/{order}/invoice', [\App\Http\Controllers\OrderController::class, 'invoice'])
+    ->name('orders.invoice');
+
 // Debug session untuk troubleshooting (hapus di production)
 Route::get('/debug/session', function () {
     return response()->json([
