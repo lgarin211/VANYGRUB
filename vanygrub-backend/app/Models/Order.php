@@ -15,18 +15,19 @@ class Order extends Model
         'user_id',
         'order_number',
         'status',
+        'subtotal',
+        'discount_amount',
         'total_amount',
         'shipping_address',
-        'billing_address',
-        'payment_method',
-        'payment_status',
-        'notes'
+        'phone',
+        'notes',
+        'promo_code_id'
     ];
 
     protected $casts = [
-        'total_amount' => 'decimal:2',
-        'shipping_address' => 'array',
-        'billing_address' => 'array'
+        'subtotal' => 'decimal:2',
+        'discount_amount' => 'decimal:2',
+        'total_amount' => 'decimal:2'
     ];
 
     public function user()

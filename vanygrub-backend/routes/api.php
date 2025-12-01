@@ -11,6 +11,7 @@ use App\Http\Controllers\Api\MediaController;
 use App\Http\Controllers\Api\SessionDebugController;
 use App\Http\Controllers\Api\HomepageController;
 use App\Http\Controllers\Api\CartController;
+use App\Http\Controllers\Api\OrderController;
 
 /*
 |--------------------------------------------------------------------------
@@ -53,6 +54,11 @@ Route::prefix('vny')->group(function () {
     Route::put('cart/{id}', [CartController::class, 'update']);
     Route::delete('cart/{id}', [CartController::class, 'destroy']);
     Route::post('cart/clear', [CartController::class, 'clear']);
+
+    // Orders API
+    Route::apiResource('orders', OrderController::class);
+    Route::get('orders/code/{orderCode}', [OrderController::class, 'getByOrderCode']);
+    Route::get('orders/stats/summary', [OrderController::class, 'getStats']);
 
     // Hero Sections API
     Route::apiResource('hero-sections', HeroSectionController::class);
