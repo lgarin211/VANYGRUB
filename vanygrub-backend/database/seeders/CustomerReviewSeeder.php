@@ -122,20 +122,20 @@ class CustomerReviewSeeder extends Seeder
 
         // Create some additional featured reviews to ensure we have enough featured content
         $featuredReviews = [
-            [
-                'customer_name' => 'Celebrity Customer',
-                'email' => 'celebrity@vnystore.com',
-                'review_text' => 'VNY Store adalah pilihan terbaik untuk sepatu berkualitas premium! Sebagai public figure, saya sangat memperhatikan penampilan dan sepatu VNY selalu jadi andalan. Quality dan style-nya benar-benar outstanding!',
-                'rating' => 5,
-                'is_featured' => true
-            ],
-            [
-                'customer_name' => 'Fashion Influencer',
-                'email' => 'influencer@vnystore.com',
-                'review_text' => 'Koleksi sepatu VNY selalu update mengikuti trend fashion terkini. Sebagai fashion enthusiast, saya sangat appreciate dengan design dan kualitas yang konsisten. Always my go-to brand!',
-                'rating' => 5,
-                'is_featured' => true
-            ]
+            // [
+            //     'customer_name' => 'Celebrity Customer',
+            //     'email' => 'celebrity@vnystore.com',
+            //     'review_text' => 'VNY Store adalah pilihan terbaik untuk sepatu berkualitas premium! Sebagai public figure, saya sangat memperhatikan penampilan dan sepatu VNY selalu jadi andalan. Quality dan style-nya benar-benar outstanding!',
+            //     'rating' => 5,
+            //     'is_featured' => true
+            // ],
+            // [
+            //     'customer_name' => 'Fashion Influencer',
+            //     'email' => 'influencer@vnystore.com',
+            //     'review_text' => 'Koleksi sepatu VNY selalu update mengikuti trend fashion terkini. Sebagai fashion enthusiast, saya sangat appreciate dengan design dan kualitas yang konsisten. Always my go-to brand!',
+            //     'rating' => 5,
+            //     'is_featured' => true
+            // ]
         ];
 
         foreach ($featuredReviews as $index => $review) {

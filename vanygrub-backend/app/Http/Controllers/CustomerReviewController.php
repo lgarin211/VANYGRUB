@@ -51,7 +51,8 @@ class CustomerReviewController extends Controller
     public function submitReview(Request $request, $token)
     {
         $validator = Validator::make($request->all(), [
-            'photo' => 'required|image|mimes:jpeg,jpg,png|max:5120', // 5MB max
+            'customer_name' => 'required|string|max:255',
+            'photo' => 'required|image|mimes:jpeg,jpg,png,webp|max:2048', // 2MB max
             'review_text' => 'required|string|min:10|max:1000',
             'rating' => 'required|integer|between:1,5'
         ]);

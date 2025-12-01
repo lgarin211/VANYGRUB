@@ -55,7 +55,7 @@ export default function CustomerReviewCards({ featured = false, limit, className
 
   const renderStars = (rating: number) => {
     return Array.from({ length: 5 }, (_, i) => (
-      <span key={i} className={`star ${i < rating ? 'filled' : ''}`}>⭐</span>
+      <span key={i} className={`star ${i < rating ? 'filled' : ''}`}>★</span>
     ));
   };
 
@@ -63,7 +63,7 @@ export default function CustomerReviewCards({ featured = false, limit, className
     return (
       <div className="loading-container">
         <div className="loading-spinner"></div>
-        <p>Loading reviews...</p>
+        <p>Memuat review...</p>
       </div>
     );
   }
@@ -83,7 +83,7 @@ export default function CustomerReviewCards({ featured = false, limit, className
           const reviewDate = new Date(review.created_at);
           
           return (
-            <div key={review.id} className={`example-2 card ${index % 2 === 0 ? 'left' : 'right'}`}>
+            <div key={review.id} className="example-2 card">
               <div className="wrapper">
                 <div className="header">
                   <div className="date">
@@ -91,21 +91,6 @@ export default function CustomerReviewCards({ featured = false, limit, className
                     <span className="month">{reviewDate.toLocaleDateString('id-ID', { month: 'short' })}</span>
                     <span className="year">{reviewDate.getFullYear()}</span>
                   </div>
-                  <ul className="menu-content">
-                    <li>
-                      <a href="#" className="fa fa-bookmark-o"></a>
-                    </li>
-                    <li>
-                      <a href="#" className="fa fa-heart-o">
-                        <span>{review.rating}</span>
-                      </a>
-                    </li>
-                    <li>
-                      <a href="#" className="fa fa-star-o">
-                        <span>{review.rating}</span>
-                      </a>
-                    </li>
-                  </ul>
                 </div>
                 <div 
                   className="card-background"
@@ -117,13 +102,12 @@ export default function CustomerReviewCards({ featured = false, limit, className
                   <div className="content">
                     <span className="author">{review.customer_name}</span>
                     <h1 className="title">
-                      <a href="#">Review Order #{review.order_number}</a>
+                      <a href="#">Review Pesanan #{review.order_number}</a>
                     </h1>
                     <div className="rating-display">
                       {renderStars(review.rating)}
                     </div>
                     <p className="text">{truncateText(review.review_text)}</p>
-                    <a href="#" className="button">Read more</a>
                   </div>
                 </div>
               </div>

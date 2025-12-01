@@ -88,7 +88,7 @@ export default function AllCustomerReviewsPage() {
       <div className="min-h-screen bg-gray-50 flex items-center justify-center">
         <div className="text-center">
           <div className="animate-spin rounded-full h-32 w-32 border-b-2 border-red-600 mx-auto mb-4"></div>
-          <p className="text-red-600 font-medium">Loading all reviews...</p>
+          <p className="text-red-600 font-medium">Memuat semua review...</p>
         </div>
       </div>
     );
@@ -101,7 +101,7 @@ export default function AllCustomerReviewsPage() {
         <div className="container mx-auto px-4 py-8">
           <div className="flex items-center justify-between">
             <div>
-              <h1 className="text-4xl font-bold text-red-600 mb-2">All Customer Reviews</h1>
+              <h1 className="text-4xl font-bold text-red-600 mb-2">Semua Review Pelanggan</h1>
               <p className="text-gray-600">
                 Semua review dari customer yang puas dengan VNY Store
               </p>
@@ -110,7 +110,7 @@ export default function AllCustomerReviewsPage() {
               href="/customerreview"
               className="px-6 py-3 bg-red-600 text-white rounded-lg hover:bg-red-700 transition-colors"
             >
-              ← Back to Featured
+              ← Kembali ke Unggulan
             </Link>
           </div>
         </div>
@@ -119,7 +119,7 @@ export default function AllCustomerReviewsPage() {
       <div className="container mx-auto px-4 py-12">
         {/* Statistics Overview */}
         <div className="bg-white rounded-lg shadow-lg p-8 mb-12">
-          <h2 className="text-2xl font-bold text-gray-800 mb-6">Review Statistics</h2>
+          <h2 className="text-2xl font-bold text-gray-800 mb-6">Statistik Review</h2>
           
           <div className="grid md:grid-cols-2 gap-8">
             {/* Overall Stats */}
@@ -128,7 +128,7 @@ export default function AllCustomerReviewsPage() {
               <div className="flex justify-center mb-2">
                 {renderStars(Math.round(stats.averageRating))}
               </div>
-              <p className="text-gray-600">Based on {stats.total} reviews</p>
+              <p className="text-gray-600">Berdasarkan {stats.total} review</p>
             </div>
 
             {/* Rating Breakdown */}
@@ -141,7 +141,7 @@ export default function AllCustomerReviewsPage() {
                 { stars: 1, count: stats.oneStar, label: 'Poor' }
               ].map((item) => (
                 <div key={item.stars} className="flex items-center gap-4">
-                  <span className="text-sm font-medium w-16">{item.stars} stars</span>
+                  <span className="text-sm font-medium w-16">{item.stars} bintang</span>
                   <div className="flex-1 bg-gray-200 rounded-full h-3">
                     <div 
                       className="bg-yellow-400 h-3 rounded-full transition-all duration-500"
@@ -162,7 +162,7 @@ export default function AllCustomerReviewsPage() {
           <>
             <div className="text-center mb-8">
               <h2 className="text-3xl font-bold text-gray-800 mb-4">
-                All Customer Reviews ({stats.total})
+                Semua Review Pelanggan ({stats.total})
               </h2>
               <p className="text-gray-600">
                 Tidak ada effects pada halaman ini - hanya menampilkan semua review yang ada
@@ -185,7 +185,7 @@ export default function AllCustomerReviewsPage() {
                       />
                     ) : (
                       <div className="w-full h-full flex items-center justify-center text-gray-400">
-                        No Image
+                        Tidak Ada Gambar
                       </div>
                     )}
                     
@@ -204,7 +204,7 @@ export default function AllCustomerReviewsPage() {
                           {review.customer_name}
                         </h3>
                         <p className="text-sm text-gray-500">
-                          Order #{review.order_number}
+                          Pesanan #{review.order_number}
                         </p>
                       </div>
                       <div className="text-right">
@@ -231,14 +231,14 @@ export default function AllCustomerReviewsPage() {
             {/* Load More Button (for future implementation) */}
             <div className="text-center mt-12">
               <p className="text-gray-500 italic">
-                Showing all {stats.total} approved reviews
+                Menampilkan semua {stats.total} review yang disetujui
               </p>
             </div>
           </>
         ) : (
           <div className="text-center py-16">
             <div className="text-gray-400 text-6xl mb-4">📝</div>
-            <h3 className="text-2xl font-semibold text-gray-600 mb-4">No Reviews Yet</h3>
+            <h3 className="text-2xl font-semibold text-gray-600 mb-4">Belum Ada Review</h3>
             <p className="text-gray-500 mb-8">
               Belum ada customer review yang disetujui untuk ditampilkan.
             </p>
@@ -246,7 +246,7 @@ export default function AllCustomerReviewsPage() {
               href="/"
               className="inline-block bg-red-600 text-white px-8 py-3 rounded-lg hover:bg-red-700 transition-colors"
             >
-              Shop Now
+              Belanja Sekarang
             </Link>
           </div>
         )}

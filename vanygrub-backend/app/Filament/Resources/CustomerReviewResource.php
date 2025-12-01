@@ -64,7 +64,13 @@ class CustomerReviewResource extends Resource
                             ->image()
                             ->imageEditor()
                             ->directory('customer-reviews')
+                            ->disk('public')
                             ->visibility('public')
+                            ->imageResizeMode('cover')
+                            ->imageCropAspectRatio('1:1')
+                            ->imageResizeTargetWidth('800')
+                            ->imageResizeTargetHeight('800')
+                            ->maxSize(2048)
                             ->required(),
 
                         Forms\Components\Select::make('rating')
@@ -113,7 +119,10 @@ class CustomerReviewResource extends Resource
                 Tables\Columns\ImageColumn::make('photo_url')
                     ->label('Photo')
                     ->circular()
-                    ->size(60),
+                    ->size(60)
+                    ->getStateUsing(function (CustomerReview $record): ?string {
+                        return $record->photo_url ? asset('storage/' . $record->photo_url) : null;
+                    }),
 
                 Tables\Columns\TextColumn::make('customer_name')
                     ->label('Customer')
@@ -133,7 +142,7 @@ class CustomerReviewResource extends Resource
                 Tables\Columns\TextColumn::make('review_text')
                     ->label('Review')
                     ->limit(50)
-                    ->tooltip(fn(CustomerReview $record): string => $record->review_text),
+                    ->tooltip(fn(CustomerReview $record): string => $record->review_text ?? 'No review text'),
 
                 Tables\Columns\IconColumn::make('is_approved')
                     ->label('Approved')

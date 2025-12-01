@@ -10,6 +10,7 @@
         "elibyy/tcpdf-laravel": "^11.5",
         "filament/filament": "^3.3",
         "guzzlehttp/guzzle": "^7.2",
+        "intervention/image": "^3.11",
         "laravel/framework": "^10.10",
         "laravel/sanctum": "^3.3",
         "laravel/tinker": "^2.8",

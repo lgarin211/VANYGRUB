@@ -6,6 +6,9 @@ use App\Models\CustomerReview;
 use App\Models\Order;
 use SimpleSoftwareIO\QrCode\Facades\QrCode;
 use Illuminate\Support\Facades\Storage;
+use Illuminate\Http\UploadedFile;
+use Intervention\Image\ImageManager;
+use Intervention\Image\Drivers\Gd\Driver;
 
 class ReviewService
 {
@@ -83,6 +86,35 @@ class ReviewService
     }
 
     /**
+     * Compress and store uploaded image
+     */
+    private function compressAndStoreImage(UploadedFile $file): string
+    {
+        // Generate unique filename
+        $filename = time() . '_' . uniqid() . '.webp';
+        $directory = 'customer-reviews';
+        $fullPath = storage_path('app/public/' . $directory . '/' . $filename);
+
+        // Create directory if it doesn't exist
+        if (!file_exists(dirname($fullPath))) {
+            mkdir(dirname($fullPath), 0755, true);
+        }
+
+        // Initialize Image Manager with GD driver
+        $manager = new ImageManager(new Driver());
+
+        // Compress and resize image with heavy compression
+        $image = $manager->read($file->getPathname())
+            ->cover(800, 800)
+            ->toWebp(60); // Convert to WebP with 60% quality for smaller file size
+
+        // Save the compressed image
+        $image->save($fullPath);
+
+        return $directory . '/' . $filename;
+    }
+
+    /**
      * Submit customer review
      */
     public function submitReview(string $reviewToken, array $data): bool
@@ -93,14 +125,15 @@ class ReviewService
             return false;
         }
 
-        // Handle photo upload
+        // Handle photo upload with compression
         $photoPath = '';
         if (isset($data['photo']) && $data['photo']) {
-            $photoPath = $data['photo']->store('customer-reviews', 'public');
+            $photoPath = $this->compressAndStoreImage($data['photo']);
         }
 
         // Update review
         $review->update([
+            'customer_name' => $data['customer_name'] ?? '',
             'photo_url' => $photoPath,
             'review_text' => $data['review_text'] ?? '',
             'rating' => $data['rating'] ?? 5,
