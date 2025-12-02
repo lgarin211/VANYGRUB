@@ -264,6 +264,7 @@ const TransactionsPage: React.FC = () => {
     }
 
     const whatsappNumber = '6282111424592';
+    // +62 813-1587-1101
     const message = generateWhatsAppMessage();
     const whatsappUrl = `https://wa.me/${whatsappNumber}?text=${message}`;
     

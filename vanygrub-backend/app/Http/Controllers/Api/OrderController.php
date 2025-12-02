@@ -98,6 +98,20 @@ class OrderController extends Controller
             'notes' => 'sometimes|string'
         ]);
 
+        // Validate product IDs exist
+        $productIds = collect($request->items)->pluck('product_id')->toArray();
+        $existingProducts = Product::whereIn('id', $productIds)->pluck('id')->toArray();
+        $missingProductIds = array_diff($productIds, $existingProducts);
+
+        if (!empty($missingProductIds)) {
+            return response()->json([
+                'success' => false,
+                'message' => 'Some products do not exist',
+                'error' => 'Product IDs not found: ' . implode(', ', $missingProductIds),
+                'available_products' => Product::select('id', 'name', 'price')->get()
+            ], 400);
+        }
+
         try {
             DB::beginTransaction();
 

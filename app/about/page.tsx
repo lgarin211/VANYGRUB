@@ -313,7 +313,7 @@ const AboutPage: React.FC = () => {
               <h4 className="mb-4 font-semibold">Contact</h4>
               <ul className="space-y-2 text-gray-300">
                 <li>📧 info@vnygroup.com</li>
-                <li>📱 +62 821-1142-4592</li>
+                <li>📱 +62 813-1587-1101</li>
                 <li>📍 Medan, North Sumatra</li>
               </ul>
             </div>
