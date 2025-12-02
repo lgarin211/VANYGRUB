@@ -18,7 +18,7 @@ return [
     ],
 
     'hero_section' => [
-        'title' => env('HERO_TITLE', 'Welcome to VANY GROUB'),
+        'title' => env('HERO_TITLE', ' VANY GROUB'),
         'subtitle' => env('HERO_SUBTITLE', 'Premium Lifestyle Collection'),
         'description' => env('HERO_DESCRIPTION', 'Explore our curated collection of premium products and services')
     ],

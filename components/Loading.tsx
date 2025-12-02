@@ -152,7 +152,7 @@ const Loading: React.FC<LoadingProps> = ({ isVisible, onComplete }) => {
             {currentLoader === 1 && "Loading Collections..."}
             {currentLoader === 2 && "Preparing Sneakers..."}
             {currentLoader === 3 && "Almost Ready..."}
-            {currentLoader === 4 && "Welcome to VNY!"}
+            {currentLoader === 4 && " VNY!"}
           </h2>
           <p className="text-gray-600">Please wait while we set things up</p>
         </div>

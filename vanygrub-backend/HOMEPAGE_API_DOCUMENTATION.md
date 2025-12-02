@@ -24,7 +24,7 @@ Mendapatkan semua konstanta untuk homepage termasuk metadata, hero section, gall
             "KEYWORDS": ["vany", "premium", "lifestyle", "fashion", "hospitality", "beauty"]
         },
         "HERO_SECTION": {
-            "TITLE": "Welcome to VANY GROUB",
+            "TITLE": " VANY GROUB",
             "SUBTITLE": "Premium Lifestyle Collection",
             "DESCRIPTION": "Explore our curated collection of premium products and services"
         },
@@ -176,7 +176,7 @@ HOMEPAGE_TITLE="VANY GROUB - Premium Lifestyle Collection"
 HOMEPAGE_DESCRIPTION="Discover premium lifestyle products from traditional fashion to modern hospitality services"
 
 # Hero Section
-HERO_TITLE="Welcome to VANY GROUB"
+HERO_TITLE=" VANY GROUB"
 HERO_SUBTITLE="Premium Lifestyle Collection" 
 HERO_DESCRIPTION="Explore our curated collection of premium products and services"
 
