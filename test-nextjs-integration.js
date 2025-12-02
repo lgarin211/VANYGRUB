@@ -72,7 +72,7 @@ async function testIntegration() {
   console.log('');
 
   console.log('📋 Next Steps:');
-  console.log('1. Start Laravel: cd vanygrub-backend && php artisan serve');
+  console.log('1. Start Laravel: cd VANY GROUB-backend && php artisan serve');
   console.log('2. Start Next.js: npm run dev');
   console.log('3. Visit http://localhost:3000 to see the homepage');
   console.log('4. Check browser console for any API errors');

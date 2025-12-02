@@ -1,4 +1,4 @@
-# VanyGrub - Next.js Food Delivery App
+# VANY GROUB - Next.js Food Delivery App
 
 A modern food delivery application built with Next.js, React, and TypeScript.
 

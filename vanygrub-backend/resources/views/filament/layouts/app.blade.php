@@ -29,7 +29,7 @@
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/sweetalert2@11/dist/sweetalert2.min.css">
 
     <style>
-        /* Custom SweetAlert2 theme for VanyGrub */
+        /* Custom SweetAlert2 theme for VANY GROUB */
         .swal2-popup {
             font-family: inherit !important;
             border-radius: 12px !important;
@@ -91,7 +91,7 @@
     <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
 
     <script>
-        // Initialize SweetAlert2 with VanyGrub theme
+        // Initialize SweetAlert2 with VANY GROUB theme
         const VanyAlert = Swal.mixin({
             customClass: {
                 confirmButton: 'fi-btn fi-btn--primary',

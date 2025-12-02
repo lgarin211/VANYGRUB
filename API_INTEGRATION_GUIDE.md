@@ -1,7 +1,7 @@
-# VanyGrub API Integration Guide
+# VANY GROUB API Integration Guide
 
 ## Overview
-VanyGrub frontend sekarang menggunakan Laravel backend API untuk mengambil data, menggantikan penggunaan JSON files lokal. Ini memberikan data yang real-time dan kemampuan untuk mengelola konten melalui admin panel.
+VANY GROUB frontend sekarang menggunakan Laravel backend API untuk mengambil data, menggantikan penggunaan JSON files lokal. Ini memberikan data yang real-time dan kemampuan untuk mengelola konten melalui admin panel.
 
 ## Architecture Changes
 
@@ -120,7 +120,7 @@ const ProductList = () => {
 ### Start Development Servers
 ```bash
 # Backend (Laravel)
-cd vanygrub-backend
+cd VANY GROUB-backend
 php artisan serve
 
 # Frontend (Next.js)
@@ -135,7 +135,7 @@ node test-api-integration.js
 
 ### Admin Panel Access
 - URL: `http://127.0.0.1:8000 /admin`
-- Email: `admin@vanygrub.com`
+- Email: `admin@VANY GROUB.com`
 - Password: `password123`
 
 ## Deployment Considerations
@@ -178,4 +178,4 @@ NEXT_PUBLIC_API_URL=http://127.0.0.1:8000 /api/vny
 
 ---
 
-🎉 **VanyGrub API integration is now complete and fully functional!**
+🎉 **VANY GROUB API integration is now complete and fully functional!**

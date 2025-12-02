@@ -5,7 +5,7 @@ async function testAdminAPI() {
   try {
     console.log('Testing admin login...');
     
-    const loginResult = await adminApi.login('admin@vanygrub.com', 'admin123');
+    const loginResult = await adminApi.login('admin@VANY GROUB.com', 'admin123');
     console.log('Login successful:', loginResult);
     
     console.log('Testing get profile...');

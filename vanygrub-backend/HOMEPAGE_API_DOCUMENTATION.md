@@ -19,12 +19,12 @@ Mendapatkan semua konstanta untuk homepage termasuk metadata, hero section, gall
     "message": "Homepage constants retrieved successfully",
     "data": {
         "META": {
-            "TITLE": "VANYGRUB - Premium Lifestyle Collection",
+            "TITLE": "VANY GROUB - Premium Lifestyle Collection",
             "DESCRIPTION": "Discover premium lifestyle products from traditional fashion to modern hospitality services",
             "KEYWORDS": ["vany", "premium", "lifestyle", "fashion", "hospitality", "beauty"]
         },
         "HERO_SECTION": {
-            "TITLE": "Welcome to VANYGRUB",
+            "TITLE": "Welcome to VANY GROUB",
             "SUBTITLE": "Premium Lifestyle Collection",
             "DESCRIPTION": "Explore our curated collection of premium products and services"
         },
@@ -133,19 +133,19 @@ Mendapatkan konfigurasi situs termasuk informasi kontak, social media, dan navig
     "status": "success",
     "message": "Site configuration retrieved successfully",
     "data": {
-        "site_name": "VANYGRUB",
+        "site_name": "VANY GROUB",
         "tagline": "Premium Lifestyle Collection",
         "description": "Your one-stop destination for premium lifestyle products and services",
         "contact": {
-            "email": "info@vanygrub.com",
+            "email": "info@VANY GROUB.com",
             "phone": "+62 812-3456-7890",
             "address": "Jl. Premium No. 123, Jakarta, Indonesia"
         },
         "social_media": {
-            "facebook": "https://facebook.com/vanygrub",
-            "instagram": "https://instagram.com/vanygrub",
-            "twitter": "https://twitter.com/vanygrub",
-            "youtube": "https://youtube.com/vanygrub"
+            "facebook": "https://facebook.com/VANY GROUB",
+            "instagram": "https://instagram.com/VANY GROUB",
+            "twitter": "https://twitter.com/VANY GROUB",
+            "youtube": "https://youtube.com/VANY GROUB"
         },
         "navigation": {
             "main_menu": [
@@ -172,11 +172,11 @@ Anda dapat mengkustomisasi konstanta melalui file `.env`:
 
 ```env
 # Meta Information
-HOMEPAGE_TITLE="VANYGRUB - Premium Lifestyle Collection"
+HOMEPAGE_TITLE="VANY GROUB - Premium Lifestyle Collection"
 HOMEPAGE_DESCRIPTION="Discover premium lifestyle products from traditional fashion to modern hospitality services"
 
 # Hero Section
-HERO_TITLE="Welcome to VANYGRUB"
+HERO_TITLE="Welcome to VANY GROUB"
 HERO_SUBTITLE="Premium Lifestyle Collection" 
 HERO_DESCRIPTION="Explore our curated collection of premium products and services"
 
@@ -191,20 +191,20 @@ CAROUSEL_INTERVAL=5000
 TRANSITION_DURATION=300
 
 # Site Configuration
-SITE_NAME="VANYGRUB"
+SITE_NAME="VANY GROUB"
 SITE_TAGLINE="Premium Lifestyle Collection"
 SITE_DESCRIPTION="Your one-stop destination for premium lifestyle products and services"
 
 # Contact Information
-CONTACT_EMAIL="info@vanygrub.com"
+CONTACT_EMAIL="info@VANY GROUB.com"
 CONTACT_PHONE="+62 812-3456-7890"
 CONTACT_ADDRESS="Jl. Premium No. 123, Jakarta, Indonesia"
 
 # Social Media
-SOCIAL_FACEBOOK="https://facebook.com/vanygrub"
-SOCIAL_INSTAGRAM="https://instagram.com/vanygrub"
-SOCIAL_TWITTER="https://twitter.com/vanygrub"
-SOCIAL_YOUTUBE="https://youtube.com/vanygrub"
+SOCIAL_FACEBOOK="https://facebook.com/VANY GROUB"
+SOCIAL_INSTAGRAM="https://instagram.com/VANY GROUB"
+SOCIAL_TWITTER="https://twitter.com/VANY GROUB"
+SOCIAL_YOUTUBE="https://youtube.com/VANY GROUB"
 ```
 
 ### Database Structure

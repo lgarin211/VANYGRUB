@@ -12,13 +12,13 @@ return [
     */
 
     'meta' => [
-        'title' => env('HOMEPAGE_TITLE', 'VANYGRUB - Premium Lifestyle Collection'),
+        'title' => env('HOMEPAGE_TITLE', 'VANY GROUB - Premium Lifestyle Collection'),
         'description' => env('HOMEPAGE_DESCRIPTION', 'Discover premium lifestyle products from traditional fashion to modern hospitality services'),
         'keywords' => ['vany', 'premium', 'lifestyle', 'fashion', 'hospitality', 'beauty']
     ],
 
     'hero_section' => [
-        'title' => env('HERO_TITLE', 'Welcome to VANYGRUB'),
+        'title' => env('HERO_TITLE', 'Welcome to VANY GROUB'),
         'subtitle' => env('HERO_SUBTITLE', 'Premium Lifestyle Collection'),
         'description' => env('HERO_DESCRIPTION', 'Explore our curated collection of premium products and services')
     ],
@@ -48,21 +48,21 @@ return [
     ],
 
     'site_config' => [
-        'site_name' => env('SITE_NAME', 'VANYGRUB'),
+        'site_name' => env('SITE_NAME', 'VANY GROUB'),
         'tagline' => env('SITE_TAGLINE', 'Premium Lifestyle Collection'),
         'description' => env('SITE_DESCRIPTION', 'Your one-stop destination for premium lifestyle products and services'),
 
         'contact' => [
-            'email' => env('CONTACT_EMAIL', 'info@vanygrub.com'),
+            'email' => env('CONTACT_EMAIL', 'info@VANY GROUB.com'),
             'phone' => env('CONTACT_PHONE', '+62 812-3456-7890'),
             'address' => env('CONTACT_ADDRESS', 'Jl. Premium No. 123, Jakarta, Indonesia')
         ],
 
         'social_media' => [
-            'facebook' => env('SOCIAL_FACEBOOK', 'https://facebook.com/vanygrub'),
-            'instagram' => env('SOCIAL_INSTAGRAM', 'https://instagram.com/vanygrub'),
-            'twitter' => env('SOCIAL_TWITTER', 'https://twitter.com/vanygrub'),
-            'youtube' => env('SOCIAL_YOUTUBE', 'https://youtube.com/vanygrub')
+            'facebook' => env('SOCIAL_FACEBOOK', 'https://facebook.com/VANY GROUB'),
+            'instagram' => env('SOCIAL_INSTAGRAM', 'https://instagram.com/VANY GROUB'),
+            'twitter' => env('SOCIAL_TWITTER', 'https://twitter.com/VANY GROUB'),
+            'youtube' => env('SOCIAL_YOUTUBE', 'https://youtube.com/VANY GROUB')
         ],
 
         'navigation' => [

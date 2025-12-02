@@ -1,12 +1,12 @@
 // Site Configuration Constants
 export const SITE_CONFIG = {
-  NAME: "VANYGRUB",
-  TITLE: "VANYGRUB - Premium Lifestyle Collection",
+  NAME: "VANY GROUB",
+  TITLE: "VANY GROUB - Premium Lifestyle Collection",
   DESCRIPTION: "Discover premium lifestyle products from traditional fashion to modern hospitality services",
   URL: "http://localhost:3000",
   
   CONTACT: {
-    EMAIL: "info@vanygrub.com",
+    EMAIL: "info@VANY GROUB.com",
     PHONE: "+62-XXX-XXXX-XXXX",
     ADDRESS: "Indonesia"
   },
@@ -31,7 +31,7 @@ export const SITE_CONFIG = {
       "travel",
       "real estate"
     ],
-    AUTHOR: "VANYGRUB Team",
+    AUTHOR: "VANY GROUB Team",
     LANGUAGE: "id-ID"
   }
 } as const;

@@ -13,14 +13,14 @@ class AdminUserSeeder extends Seeder
     public function run(): void
     {
         \App\Models\User::create([
-            'name' => 'VanyGrub Admin',
-            'email' => 'admin@vanygrub.com',
+            'name' => 'VANY GROUB Admin',
+            'email' => 'admin@VANY GROUB.com',
             'password' => \Illuminate\Support\Facades\Hash::make('password123'),
             'email_verified_at' => now()
         ]);
 
         echo "Admin user created successfully!\n";
-        echo "Email: admin@vanygrub.com\n";
+        echo "Email: admin@VANY GROUB.com\n";
         echo "Password: password123\n";
     }
 }

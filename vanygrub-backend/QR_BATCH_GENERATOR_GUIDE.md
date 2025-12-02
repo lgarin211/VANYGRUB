@@ -100,7 +100,7 @@ QR tokens disimpan di tabel `customer_reviews` dengan:
 ### Cutting Guides
 - Dashed border untuk panduan potong
 - Posisi corner marks untuk alignment
-- Brand text "VANYGRUB" pada setiap QR
+- Brand text "VANY GROUB" pada setiap QR
 
 ## Dependencies
 

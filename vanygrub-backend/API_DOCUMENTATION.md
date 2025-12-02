@@ -1,4 +1,4 @@
-# VanyGrub API Documentation
+# VANY GROUB API Documentation
 
 ## Base URL
 ```

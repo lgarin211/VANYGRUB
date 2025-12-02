@@ -470,7 +470,7 @@ export default function Home() {
 
   // Loading state - after all hooks are called
   if (loading) {
-    return <ApiLoading message="Loading VANYGRUB..." color="border-red-500" />;
+    return <ApiLoading message="Loading VANY GROUB..." color="border-red-500" />;
   }
 
   // Error state - show warning if API failed

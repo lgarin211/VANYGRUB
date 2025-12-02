@@ -1,6 +1,6 @@
 try {
     $body = @{
-        email = "admin@vanygrub.com"
+        email = "admin@VANY GROUB.com"
         password = "admin123"
     } | ConvertTo-Json
 

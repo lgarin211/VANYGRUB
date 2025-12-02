@@ -17,7 +17,7 @@ class SiteConfigSeeder extends Seeder
             [
                 'group' => 'meta',
                 'key' => 'title',
-                'value' => 'VANYGRUB - Premium Lifestyle Collection',
+                'value' => 'VANY GROUB - Premium Lifestyle Collection',
                 'type' => 'text',
                 'description' => 'Main page title for SEO and browser tab'
             ],
@@ -40,7 +40,7 @@ class SiteConfigSeeder extends Seeder
             [
                 'group' => 'hero_section',
                 'key' => 'title',
-                'value' => 'Welcome to VANYGRUB',
+                'value' => 'VANY GROUB',
                 'type' => 'text',
                 'description' => 'Main hero title on homepage'
             ],
@@ -109,7 +109,7 @@ class SiteConfigSeeder extends Seeder
             [
                 'group' => 'site_config',
                 'key' => 'site_name',
-                'value' => 'VANYGRUB',
+                'value' => 'VANY GROUB',
                 'type' => 'text',
                 'description' => 'Website/company name'
             ],
@@ -132,7 +132,7 @@ class SiteConfigSeeder extends Seeder
             [
                 'group' => 'contact',
                 'key' => 'email',
-                'value' => 'info@vanygrub.com',
+                'value' => 'info@VANY GROUB.com',
                 'type' => 'email',
                 'description' => 'Primary contact email'
             ],
@@ -155,28 +155,28 @@ class SiteConfigSeeder extends Seeder
             [
                 'group' => 'social_media',
                 'key' => 'facebook',
-                'value' => 'https://facebook.com/vanygrub',
+                'value' => 'https://facebook.com/VANY GROUB',
                 'type' => 'url',
                 'description' => 'Facebook page URL'
             ],
             [
                 'group' => 'social_media',
                 'key' => 'instagram',
-                'value' => 'https://instagram.com/vanygrub',
+                'value' => 'https://instagram.com/VANY GROUB',
                 'type' => 'url',
                 'description' => 'Instagram profile URL'
             ],
             [
                 'group' => 'social_media',
                 'key' => 'twitter',
-                'value' => 'https://twitter.com/vanygrub',
+                'value' => 'https://twitter.com/VANY GROUB',
                 'type' => 'url',
                 'description' => 'Twitter profile URL'
             ],
             [
                 'group' => 'social_media',
                 'key' => 'youtube',
-                'value' => 'https://youtube.com/vanygrub',
+                'value' => 'https://youtube.com/VANY GROUB',
                 'type' => 'url',
                 'description' => 'YouTube channel URL'
             ],

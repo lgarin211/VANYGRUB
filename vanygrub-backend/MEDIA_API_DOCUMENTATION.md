@@ -1,4 +1,4 @@
-# VanyGrub Media Upload API Documentation
+# VANY GROUB Media Upload API Documentation
 
 ## Overview
 API untuk upload dan manajemen media (gambar, video, dokumen) yang dapat digunakan oleh frontend Next.js untuk mengelola gallery dan asset media.

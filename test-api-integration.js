@@ -34,7 +34,7 @@ async function testEndpoint(endpoint) {
 }
 
 async function runTests() {
-  console.log('🧪 Testing VanyGrub API Integration...\n');
+  console.log('🧪 Testing VANY GROUB API Integration...\n');
   
   const results = await Promise.all(
     testEndpoints.map(testEndpoint)
