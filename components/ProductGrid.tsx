@@ -15,9 +15,49 @@ const ProductGrid: React.FC<ProductGridProps> = ({ title }) => {
   // Load data from API with fallback
   const { data: homeData, loading } = useHomeData();
   
+  // Static fallback data for ProductGrid
+  const fallbackProducts = [
+    {
+      id: 1,
+      title: "Premium Collection",
+      subtitle: "Sneakers Motif Ulu Paung",
+      image: "/temp/nike-just-do-it(6).jpg",
+      bgColor: "from-red-600 to-red-800",
+      buttonText: "Shop Now"
+    },
+    {
+      id: 2,
+      title: "Traditional Style",
+      subtitle: "Gorga Pattern Collection",
+      image: "/temp/nike-just-do-it(7).jpg",
+      bgColor: "from-gray-800 to-black",
+      buttonText: "Explore"
+    },
+    {
+      id: 3,
+      title: "Modern Design",
+      subtitle: "Contemporary Ethnic Wear",
+      image: "/temp/nike-just-do-it(8).jpg",
+      bgColor: "from-blue-600 to-blue-800",
+      buttonText: "Discover"
+    }
+  ];
+  
+  // Debug logging for ProductGrid data
+  useEffect(() => {
+    console.log('ProductGrid DEBUG:', {
+      loading,
+      hasHomeData: !!homeData,
+      productGrid: homeData?.productGrid,
+      productGridItems: homeData?.productGrid?.items,
+      itemsCount: homeData?.productGrid?.items?.length || 0
+    });
+  }, [loading, homeData]);
+  
   // Generate ukuran random setiap kali component mount
   useEffect(() => {
-    if (loading || !homeData?.productGrid?.items) return;
+    const products = homeData?.productGrid?.items || fallbackProducts;
+    if (loading || !products.length) return;
     
     // Gunakan default config karena struktur sizeConfig sudah berubah
     const defaultConfig = {
@@ -26,7 +66,7 @@ const ProductGrid: React.FC<ProductGridProps> = ({ title }) => {
       animationInterval: 8000
     };
     
-    const itemCount = homeData.productGrid.items.length;
+    const itemCount = products.length;
     const sizes = Array.from({ length: itemCount }, () => 
       Math.floor(Math.random() * (defaultConfig.maxHeight - defaultConfig.minHeight)) + defaultConfig.minHeight
     );
@@ -41,12 +81,13 @@ const ProductGrid: React.FC<ProductGridProps> = ({ title }) => {
     }, defaultConfig.animationInterval);
 
     return () => clearInterval(interval);
-  }, [loading, homeData?.productGrid?.items?.length]);
+  }, [loading, homeData?.productGrid?.items?.length, fallbackProducts.length]);
 
-  // Load data from API
-  const products = homeData?.productGrid?.items || [];
+  // Use API data or fallback
+  const products = homeData?.productGrid?.items || fallbackProducts;
 
-  if (loading) {
+  // Only show loading if we have no products at all (including fallback)
+  if (loading && (!products || products.length === 0)) {
     return (
       <section className="bg-gray-100 py-16">
         <div className="container mx-auto px-4">
@@ -54,6 +95,11 @@ const ProductGrid: React.FC<ProductGridProps> = ({ title }) => {
         </div>
       </section>
     );
+  }
+  
+  // Don't show section if no products available
+  if (!products || products.length === 0) {
+    return null;
   }
   
   return (
