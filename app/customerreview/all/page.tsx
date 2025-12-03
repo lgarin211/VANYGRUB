@@ -175,18 +175,19 @@ export default function AllCustomerReviewsPage() {
                 <div key={review.id} className="bg-white rounded-lg shadow-md overflow-hidden hover:shadow-lg transition-shadow">
                   {/* Review Image */}
                   <div className="h-64 bg-gray-200 relative">
-                    <SafeImage 
-                      src={review.photo_url || ''} 
-                      alt={`Review by ${review.customer_name}` || 'Customer review image'}
-                      width={400}
-                      height={256}
-                      className="w-full h-full object-cover"
-                      fallbackContent={
-                        <div className="w-full h-full flex items-center justify-center text-gray-400">
-                          Tidak Ada Gambar
-                        </div>
-                      }
-                    />
+                    {review.photo_url ? (
+                      <SafeImage 
+                        src={review.photo_url} 
+                        alt={`Review by ${review.customer_name}` || 'Customer review image'}
+                        width={400}
+                        height={256}
+                        className="w-full h-full object-cover"
+                      />
+                    ) : (
+                      <div className="w-full h-full flex items-center justify-center text-gray-400">
+                        Tidak Ada Gambar
+                      </div>
+                    )}
                     
                     {/* Rating Badge */}
                     <div className="absolute top-4 right-4 bg-white bg-opacity-90 rounded-full px-3 py-1 flex items-center gap-1">

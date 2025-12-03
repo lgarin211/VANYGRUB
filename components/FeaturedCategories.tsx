@@ -102,10 +102,6 @@ const FeaturedCategories: React.FC = () => {
                   width={400}
                   height={256}
                   className="object-cover w-full h-full transition-transform duration-500 group-hover:scale-110"
-                  onError={() => {
-                    console.log('FeaturedCategories image failed to load:', category.image);
-                    target.src = `/temp/nike-just-do-it(${category.id % 3 + 6}).jpg`;
-                  }}
                 />
                 <div className="absolute inset-0 bg-gradient-to-t from-black/60 to-transparent"></div>
                 <div className="absolute text-white bottom-3 md:bottom-4 left-3 md:left-4">

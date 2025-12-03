@@ -246,20 +246,21 @@ export default function ReviewForm() {
                 <div>
                   <h4 className="text-lg font-semibold mb-4 text-gray-800">Foto Review</h4>
                   <div className="relative w-full h-64 bg-gray-100 rounded-lg overflow-hidden">
-                    <SafeImage
-                      src={submittedReview.photo_url ? `https://vanyadmin.progesio.my.id/storage/${submittedReview.photo_url}` : ''}
-                      alt={`Review by ${submittedReview.customer_name}` || 'Review image'}
-                      fill
-                      className="object-cover"
-                      fallbackContent={
-                        <div className="flex items-center justify-center h-full text-gray-500">
-                          <div className="text-center">
-                            <div className="text-4xl mb-2">📷</div>
-                            <p>Tidak ada foto</p>
-                          </div>
+                    {submittedReview.photo_url ? (
+                      <SafeImage
+                        src={`https://vanyadmin.progesio.my.id/storage/${submittedReview.photo_url}`}
+                        alt={`Review by ${submittedReview.customer_name}` || 'Review image'}
+                        fill
+                        className="object-cover"
+                      />
+                    ) : (
+                      <div className="flex items-center justify-center h-full text-gray-500">
+                        <div className="text-center">
+                          <div className="text-4xl mb-2">📷</div>
+                          <p>Tidak ada foto</p>
                         </div>
-                      }
-                    />
+                      </div>
+                    )}
                   </div>
                 </div>
 
@@ -352,17 +353,18 @@ export default function ReviewForm() {
               </label>
               <div className="border-2 border-dashed border-red-300 rounded-lg p-6 text-center">
                 <div className="relative w-64 h-64 mx-auto mb-4">
-                  <SafeImage
-                    src={photoPreview || ''}
-                    alt="Preview"
-                    fill
-                    className="object-cover rounded-lg"
-                    fallbackContent={
-                      <div className="w-full h-full bg-gray-100 rounded-lg flex items-center justify-center">
-                        <p className="text-gray-600">Preview foto akan muncul di sini</p>
-                      </div>
-                    }
-                  />
+                  {photoPreview ? (
+                    <SafeImage
+                      src={photoPreview}
+                      alt="Preview"
+                      fill
+                      className="object-cover rounded-lg"
+                    />
+                  ) : (
+                    <div className="w-full h-full bg-gray-100 rounded-lg flex items-center justify-center">
+                      <p className="text-gray-600">Preview foto akan muncul di sini</p>
+                    </div>
+                  )}
                 </div>
                 <input
                   type="file"

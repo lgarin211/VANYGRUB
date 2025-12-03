@@ -103,11 +103,6 @@ class ApiClient {
     return this.request(`/hero-sections/${id}`);
   }
 
-  // Site Config API
-  async getSiteConfig() {
-    return this.request('/homepage/site-config');
-  }
-
   // Cart API
   async getCart(sessionId?: string) {
     return this.request(`/cart${sessionId ? `?session_id=${sessionId}` : ''}`);
