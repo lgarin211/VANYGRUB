@@ -74,12 +74,13 @@ const ProductGrid: React.FC<ProductGridProps> = ({ title }) => {
             >
               {/* Product image - Full size background */}
               <div className="absolute inset-0 transition-all duration-[3000ms] ease-in-out">
-                <Image
+                <SafeImage
                   src={product.image}
                   alt={product.title}
                   fill
                   className="object-cover group-hover:scale-105 transition-transform duration-500"
                   sizes="500px"
+                  fallbackSrc="/temp/placeholder-image.svg"
                 />
               </div>
               
