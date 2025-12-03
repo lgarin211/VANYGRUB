@@ -32,14 +32,14 @@ Route::middleware('auth:sanctum')->get('/user', function (Request $request) {
 // VANY GROUB API Routes with prefix /vny/
 Route::prefix('vny')->group(function () {
     // Data endpoints for Next.js constants
-    Route::get('data', [DataController::class, 'getAllData']);
+    Route::get('data', [DataController::class, 'getVnyData']);
     Route::get('home-data', [DataController::class, 'getHomeData']);
 
     // Homepage constants API
     Route::get('homepage/constants', [HomepageController::class, 'getConstants']);
     Route::get('homepage/gallery/{id}', [HomepageController::class, 'getGalleryItem']);
     Route::get('homepage/category/{category}', [HomepageController::class, 'getGalleryByCategory']);
-    Route::get('homepage/site-config', [HomepageController::class, 'getSiteConfig']);
+    Route::get('homepage/site-config', [DataController::class, 'getVnySiteConfig']);
 
     // Categories API
     Route::apiResource('categories', CategoryController::class);

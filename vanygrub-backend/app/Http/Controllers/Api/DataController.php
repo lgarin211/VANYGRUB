@@ -180,4 +180,42 @@ class DataController extends Controller
             ]
         ];
     }
+
+    /**
+     * Get VNY specific data
+     */
+    public function getVnyData()
+    {
+        return response()->json([
+            'success' => true,
+            'data' => $this->getFormattedProducts()
+        ]);
+    }
+
+    /**
+     * Get VNY site configuration
+     */
+    public function getVnySiteConfig()
+    {
+        return response()->json([
+            'success' => true,
+            'data' => [
+                'siteName' => 'VNY Store',
+                'heroTitle' => 'Welcome to VNY Store',
+                'heroDescription' => 'Discover premium sneakers and streetwear collections. Quality meets style in every piece we curate for you.',
+                'sectionTitle' => 'Featured Products',
+                'brandColors' => [
+                    'primary' => '#8B0000',
+                    'secondary' => '#DC143C',
+                    'accent' => '#ff6b35'
+                ],
+                'navigation' => [
+                    ['name' => 'HOME', 'url' => '/'],
+                    ['name' => 'PRODUCT', 'url' => '/products'],
+                    ['name' => 'ABOUT VNY', 'url' => '/about'],
+                    ['name' => 'GALLERY', 'url' => '/gallery']
+                ]
+            ]
+        ]);
+    }
 }

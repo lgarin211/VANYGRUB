@@ -1,6 +1,7 @@
 <?php
 
 use Illuminate\Support\Facades\Route;
+use App\Http\Controllers\FrontendController;
 
 /*
 |--------------------------------------------------------------------------
@@ -13,9 +14,31 @@ use Illuminate\Support\Facades\Route;
 |
 */
 
-Route::get('/', function () {
-    return view('welcome');
-});
+// Frontend Routes
+
+Route::get('/', [FrontendController::class, 'home'])->name('home');
+Route::get('/vny', [FrontendController::class, 'vnyStore'])->name('vny.store');
+Route::get('/gallery', [FrontendController::class, 'gallery'])->name('gallery');
+Route::get('/about', [FrontendController::class, 'about'])->name('about');
+Route::get('/transactions', [FrontendController::class, 'transactions'])->name('transactions');
+
+// Product Routes
+Route::get('/vny/product', [FrontendController::class, 'productList'])->name('vny.product');
+Route::get('/vny/product/{id}', [FrontendController::class, 'productDetail'])->name('product.detail');
+Route::get('/category/{slug}', [FrontendController::class, 'categoryProducts'])->name('category.products');
+Route::get('/search', [FrontendController::class, 'search'])->name('search');
+
+// Tailwind Test Route
+Route::get('/tailwind-test', function () {
+    return view('pages.tailwind-test');
+})->name('tailwind.test');
+
+// Checkout Routes
+Route::get('/checkout/{code?}', [FrontendController::class, 'checkout'])->name('checkout');
+
+// Review Routes
+Route::get('/customerreview', [FrontendController::class, 'customerReview'])->name('customer.review');
+Route::get('/customerreview/all', [FrontendController::class, 'allCustomerReviews'])->name('customer.review.all');
 
 // ubah dikit
 // Order invoice route
