@@ -215,12 +215,12 @@ class ProductController extends Controller
         if (!$image) {
             return null;
         }
-        
+
         // If image starts with http, it's already a full URL
         if (str_starts_with($image, 'http')) {
             return $image;
         }
-        
+
         // Build URL from storage - try both paths for compatibility
         if (str_contains($image, '/')) {
             // Already has path structure

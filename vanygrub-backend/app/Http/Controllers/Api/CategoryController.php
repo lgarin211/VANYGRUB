@@ -55,7 +55,7 @@ class CategoryController extends Controller
     public function show(string $id)
     {
         $category = Category::with('products')->findOrFail($id);
-        
+
         $categoryData = $this->formatCategory($category);
         $categoryData['products'] = $category->products->map(function ($product) {
             return [
@@ -128,12 +128,12 @@ class CategoryController extends Controller
         if (!$image) {
             return null;
         }
-        
+
         // If image starts with http, it's already a full URL
         if (str_starts_with($image, 'http')) {
             return $image;
         }
-        
+
         // Build URL from storage
         return url('/storage/images/' . $image);
     }
