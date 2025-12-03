@@ -43,6 +43,19 @@ $app->singleton(
 
 /*
 |--------------------------------------------------------------------------
+| Load Vercel Configuration
+|--------------------------------------------------------------------------
+|
+| Load Vercel-specific configurations if running on Vercel platform
+|
+*/
+
+if (file_exists(__DIR__ . '/../config/vercel.php')) {
+    require_once __DIR__ . '/../config/vercel.php';
+}
+
+/*
+|--------------------------------------------------------------------------
 | Return The Application
 |--------------------------------------------------------------------------
 |
