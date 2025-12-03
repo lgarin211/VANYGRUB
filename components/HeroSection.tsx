@@ -27,36 +27,9 @@ const HeroSection: React.FC = () => {
   const [isAutoPlay, setIsAutoPlay] = useState(true);
   const [forceShowContent, setForceShowContent] = useState(false);
 
-  // Load data from API with fallback
+  // Load data from API 
   const { data: homeData, loading, error } = useHomeData();
-  
-  // Static fallback slides data
-  const fallbackSlides: SlideData[] = [
-    {
-      id: 1,
-      title: "Ulu Paung Maroon",
-      subtitle: "Premium Collection Motif Ulu Paung Mahogani",
-      description: "Sepatu Etnic Motif Ulu Paung - Maroon",
-      image: "/temp/nike-just-do-it(6).jpg",
-      bgColor: "#800000",
-      textColor: "#ffffff",
-      buttonText: "Beli Sekarang",
-      price: "Rp. 450.000"
-    },
-    {
-      id: 2,
-      title: "Gorga Black",
-      subtitle: "Premium Collection Motif Gorga Black",
-      description: "Sepatu Etnic Dengan Motif Gorga Khas",
-      image: "/temp/nike-just-do-it(7).jpg",
-      bgColor: "#000000",
-      textColor: "#ffffff",
-      buttonText: "Beli Sekarang",
-      price: "Rp. 420.000"
-    }
-  ];
-  
-  const slidesData: SlideData[] = homeData?.heroSection?.slides || (forceShowContent ? fallbackSlides : []);
+  const slidesData: SlideData[] = homeData?.heroSection?.slides || [];
 
   // Debug logging
   useEffect(() => {
@@ -68,7 +41,7 @@ const HeroSection: React.FC = () => {
       forceShowContent,
       heroSection: homeData?.heroSection,
       heroSectionSlides: homeData?.heroSection?.slides,
-      fullHomeData: homeData
+      sampleSlide: slidesData[0]
     });
     
     // Reset forceShowContent when data is successfully loaded
