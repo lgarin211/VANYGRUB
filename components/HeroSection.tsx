@@ -163,13 +163,14 @@ const HeroSection: React.FC = () => {
             >
               {/* Single Clean Background Image Overlay */}
               <div className="absolute inset-0 opacity-15">
-                <Image
+                <SafeImage
                   src={slide.image}
                   alt="Background sneaker"
                   fill
                   className="object-cover blur-sm"
                   priority={false}
                   sizes="100vw"
+                  fallbackSrc="/temp/placeholder-image.svg"
                 />
               </div>
 
@@ -215,14 +216,15 @@ const HeroSection: React.FC = () => {
                          style={{ backgroundColor: slide.textColor }}
                     ></div>
                     
-                    <Image
+                    <SafeImage
                       src={slide.image} 
                       alt={slide.title}
                       fill
                       className="relative z-10 object-contain transition-transform duration-500 transform drop-shadow-xl md:drop-shadow-2xl hover:scale-105"
                       priority={index === currentSlide}
                       sizes="(max-width: 768px) 200px, (max-width: 1024px) 400px, 500px"
-                      onError={(e) => {
+                      fallbackSrc="/temp/placeholder-image.svg"
+                      onError={() => {
                         console.log('Image failed to load:', slide.image);
                       }}
                     />
