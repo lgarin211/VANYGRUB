@@ -1,8 +1,8 @@
 'use client';
 
 import React, { useState, useEffect } from 'react';
-import Image from 'next/image';
 import { useHomeData } from '../hooks/useApi';
+import SafeImage from './SafeImage';
 
 interface ProductGridProps {
   title?: string;
