@@ -13,6 +13,7 @@ export const useHomeData = () => {
     const response: any = await withErrorHandling(() => apiClient.getAllData()) as Promise<any>;
     
     if (response) {
+      
       // Transform API data to match the expected format
       const transformedData = {
         heroSection: {

@@ -1,6 +1,6 @@
 'use client';
 
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import Link from 'next/link';
 import { useHomeData } from '../hooks/useApi';
 import SafeImage from './SafeImage';
@@ -17,22 +17,71 @@ const OurCollection: React.FC = () => {
     carouselConfig: { itemsPerView: 4, gap: 20 }
   };
 
+  // Auto-play carousel if there are more than 4 items
+  useEffect(() => {
+    if (collections && collections.length > itemsPerView) {
+      const interval = setInterval(() => {
+        setCurrentIndex((prev) => {
+          const newIndex = prev + 1;
+          return newIndex >= Math.max(0, collections.length - itemsPerView) ? 0 : newIndex;
+        });
+      }, 4000); // Change slide every 4 seconds
+
+      return () => clearInterval(interval);
+    }
+  }, [collections, itemsPerView]);
+
+
+
   const itemsPerView = 4; // Show 4 items at once
-  const maxIndex = Math.max(0, collections.length - itemsPerView);
+  const maxIndex = Math.max(0, (collections?.length || 0) - itemsPerView);
 
   const nextSlide = () => {
-    setCurrentIndex((prev) => (prev >= maxIndex ? 0 : prev + 1));
+    if (collections && collections.length > itemsPerView) {
+      setCurrentIndex((prev) => (prev >= maxIndex ? 0 : prev + 1));
+    }
   };
 
   const prevSlide = () => {
-    setCurrentIndex((prev) => (prev <= 0 ? maxIndex : prev - 1));
+    if (collections && collections.length > itemsPerView) {
+      setCurrentIndex((prev) => (prev <= 0 ? maxIndex : prev - 1));
+    }
   };
 
+  // Show loading state only if no data at all
+  if (loading && (!collections || collections.length === 0)) {
+    return (
+      <section className="py-16 bg-gray-100">
+        <div className="container px-4 mx-auto">
+          <div className="text-center">
+            <div className="w-12 h-12 mx-auto border-b-2 border-red-600 rounded-full animate-spin"></div>
+            <p className="mt-4 text-gray-600">Loading our collection...</p>
+          </div>
+        </div>
+      </section>
+    );
+  }
+
+  // Show empty state if no collections
+  if (!collections || collections.length === 0) {
+    return (
+      <section className="py-16 bg-gray-100">
+        <div className="container px-4 mx-auto">
+          <div className="text-center">
+            <h2 className="mb-4 text-3xl font-bold text-gray-800">{title}</h2>
+            <p className="mb-8 text-gray-600">{subtitle}</p>
+            <p className="text-gray-500">No collection items available.</p>
+          </div>
+        </div>
+      </section>
+    );
+  }
+
   return (
-    <section className="bg-gray-100 py-16">
-      <div className="container mx-auto px-4">
+    <section className="py-16 bg-gray-100">
+      <div className="container px-4 mx-auto">
         {/* Section Title */}
-        <div className="text-left mb-8 px-8">
+        <div className="px-8 mb-8 text-left">
           <h2 
             className="text-3xl font-bold text-gray-800"
             data-aos="fade-up"
@@ -40,47 +89,54 @@ const OurCollection: React.FC = () => {
           >
             {title}
           </h2>
-          <p className="text-gray-600 mt-2 text-lg">{subtitle}</p>
+          <p className="mt-2 text-lg text-gray-600">{subtitle}</p>
         </div>
 
         {/* Carousel Container */}
-        <div className="relative">
-          {/* Navigation Buttons */}
-          <button 
-            onClick={prevSlide}
-            className="absolute left-2 top-1/2 -translate-y-1/2 z-30 bg-white/90 hover:bg-white rounded-full p-3 shadow-lg transition-all duration-300 border border-gray-200"
-            data-aos="fade-right"
-            data-aos-delay="400"
-          >
-            <svg className="w-5 h-5 text-gray-700" fill="none" stroke="currentColor" viewBox="0 0 24 24" strokeWidth="2">
-              <path strokeLinecap="round" strokeLinejoin="round" d="M15 19l-7-7 7-7" />
-            </svg>
-          </button>
-          
-          <button 
-            onClick={nextSlide}
-            className="absolute right-2 top-1/2 -translate-y-1/2 z-30 bg-white/90 hover:bg-white rounded-full p-3 shadow-lg transition-all duration-300 border border-gray-200"
-            data-aos="fade-left"
-            data-aos-delay="400"
-          >
-            <svg className="w-5 h-5 text-gray-700" fill="none" stroke="currentColor" viewBox="0 0 24 24" strokeWidth="2">
-              <path strokeLinecap="round" strokeLinejoin="round" d="M9 5l7 7-7 7" />
-            </svg>
-          </button>
+        <div className="relative min-h-[220px]">
+          {/* Navigation Buttons - Only show if there are more than 4 items */}
+          {collections && collections.length > itemsPerView && (
+            <>
+              <button 
+                onClick={prevSlide}
+                className="absolute z-30 p-3 transition-all duration-300 -translate-y-1/2 border border-gray-200 rounded-full shadow-lg left-2 top-1/2 bg-white/90 hover:bg-white"
+                data-aos="fade-right"
+                data-aos-delay="400"
+              >
+                <svg className="w-5 h-5 text-gray-700" fill="none" stroke="currentColor" viewBox="0 0 24 24" strokeWidth="2">
+                  <path strokeLinecap="round" strokeLinejoin="round" d="M15 19l-7-7 7-7" />
+                </svg>
+              </button>
+              
+              <button 
+                onClick={nextSlide}
+                className="absolute z-30 p-3 transition-all duration-300 -translate-y-1/2 border border-gray-200 rounded-full shadow-lg right-2 top-1/2 bg-white/90 hover:bg-white"
+                data-aos="fade-left"
+                data-aos-delay="400"
+              >
+                <svg className="w-5 h-5 text-gray-700" fill="none" stroke="currentColor" viewBox="0 0 24 24" strokeWidth="2">
+                  <path strokeLinecap="round" strokeLinejoin="round" d="M9 5l7 7-7 7" />
+                </svg>
+              </button>
+            </>
+          )}
 
           {/* Collection Carousel - Clean Design */}
-          <div className="overflow-hidden px-8">
-            <div 
-              className="flex gap-5 transition-transform duration-500 ease-out"
-              style={{ 
-                transform: `translateX(-${currentIndex * 310}px)`
-              }}
-            >
+          <div className="relative px-8">
+            <div className="overflow-hidden">
+              <div 
+                className="flex gap-5 transition-transform duration-500 ease-out"
+                style={{ 
+                  transform: collections && collections.length > 0 ? `translateX(-${currentIndex * 310}px)` : 'translateX(0)',
+                  width: collections && collections.length > 0 ? `${collections.length * 310}px` : '100%'
+                }}
+              >
               {collections.map((item: any, index: number) => (
                 <div 
-                  key={item.id}
-                  className="relative flex-shrink-0 bg-gray-800 rounded-xl cursor-pointer group overflow-hidden shadow-lg hover:shadow-2xl transition-all duration-300 transform hover:-translate-y-1"
+                  key={item.id || index}
+                  className="relative flex-shrink-0 overflow-hidden transition-all duration-300 transform bg-gray-800 shadow-lg cursor-pointer rounded-xl group hover:shadow-2xl hover:-translate-y-1"
                   style={{ 
+                    minWidth: '290px',
                     width: '290px',
                     height: '200px'
                   }}
@@ -89,59 +145,60 @@ const OurCollection: React.FC = () => {
                 >
                   {/* Badge for special items */}
                   {item.badge && (
-                    <div className="absolute top-3 right-3 bg-black/80 text-white px-2 py-1 rounded-md text-xs font-medium z-30 backdrop-blur-sm">
+                    <div className="absolute z-30 px-2 py-1 text-xs font-medium text-white rounded-md top-3 right-3 bg-black/80 backdrop-blur-sm">
                       {item.badge}
                     </div>
                   )}
                   
                   {/* Product Image Container */}
-                  <div className="relative w-full h-full overflow-hidden rounded-xl">
+                  <div className="relative w-full h-full overflow-hidden bg-gray-200 rounded-xl">
                     <SafeImage
-                      src={item.image}
-                      alt={item.name}
+                      src={item.image || '/temp/placeholder-image.svg'}
+                      alt={item.name || 'Product Image'}
                       fill
-                      className="object-cover group-hover:scale-110 transition-transform duration-500"
+                      className="object-cover transition-transform duration-500 group-hover:scale-110"
                       sizes="290px"
-                      priority={index < 5}
+                      priority={index < 2}
                       fallbackSrc="/temp/placeholder-image.svg"
                     />
                     
                     {/* Dark overlay for better contrast */}
-                    <div className="absolute inset-0 bg-black/25 group-hover:bg-black/15 transition-colors duration-300"></div>
+                    <div className="absolute inset-0 transition-colors duration-300 bg-black/25 group-hover:bg-black/15"></div>
                     
                     {/* Gradient overlay for text area */}
                     <div className="absolute inset-0 bg-gradient-to-t from-black/80 via-transparent to-transparent"></div>
                   </div>
                   
                   {/* Product Name */}
-                  <div className="absolute bottom-4 left-4 right-4 z-20">
-                    <h3 className="text-white text-xl font-bold tracking-wide">
+                  <div className="absolute z-20 bottom-4 left-4 right-4">
+                    <h3 className="text-xl font-bold tracking-wide text-white">
                       {item.name}
                     </h3>
-                    <p className="text-gray-300 text-sm font-medium opacity-80 mt-1">
-                      {item.name}
+                    <p className="mt-1 text-sm font-medium text-gray-300 opacity-80">
+                      {item.price || 'Price not available'}
                     </p>
                   </div>
                   
                   {/* Corner accent */}
-                  <div className="absolute top-0 left-0 w-12 h-12 bg-gradient-to-br from-white/10 to-transparent rounded-xl opacity-0 group-hover:opacity-100 transition-opacity duration-300"></div>
+                  <div className="absolute top-0 left-0 w-12 h-12 transition-opacity duration-300 opacity-0 bg-gradient-to-br from-white/10 to-transparent rounded-xl group-hover:opacity-100"></div>
                 </div>
-              ))}
+              ))
+              </div>
             </div>
           </div>
         </div>
 
         {/* Look More Button */}
-        <div className="text-center mt-5">
+        <div className="mt-5 text-center">
           <Link 
             href="/collection"
-            className="inline-flex items-center bg-red-800 text-white px-8 py-4 rounded-full hover:bg-red-700 transition-all duration-300 transform hover:scale-105 shadow-lg"
+            className="inline-flex items-center px-8 py-4 text-white transition-all duration-300 transform bg-red-800 rounded-full shadow-lg hover:bg-red-700 hover:scale-105"
             data-aos="fade-up"
             data-aos-delay="600"
           >
             Look More
             <svg 
-              className="ml-2 w-5 h-5" 
+              className="w-5 h-5 ml-2" 
               fill="none" 
               stroke="currentColor" 
               viewBox="0 0 24 24"
