@@ -2,8 +2,8 @@
 
 import React, { useState } from 'react';
 import Link from 'next/link';
-import Image from 'next/image';
 import { useHomeData } from '../hooks/useApi';
+import SafeImage from './SafeImage';
 
 const OurCollection: React.FC = () => {
   const [currentIndex, setCurrentIndex] = useState(0);
