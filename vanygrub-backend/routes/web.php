@@ -14,6 +14,15 @@ use App\Http\Controllers\FrontendController;
 |
 */
 
+// Test route for Vercel
+Route::get('/test', function () {
+    return response()->json([
+        'message' => 'VANYGRUB Laravel is working on Vercel!',
+        'timestamp' => now(),
+        'env' => app()->environment()
+    ]);
+});
+
 // Frontend Routes
 
 Route::get('/', [FrontendController::class, 'home'])->name('home');
