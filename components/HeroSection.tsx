@@ -29,11 +29,47 @@ const HeroSection: React.FC = () => {
 
   // Load data from API with fallback
   const { data: homeData, loading, error } = useHomeData();
-  const slidesData: SlideData[] = homeData?.heroSection?.slides || [];
+  
+  // Static fallback slides data
+  const fallbackSlides: SlideData[] = [
+    {
+      id: 1,
+      title: "Ulu Paung Maroon",
+      subtitle: "Premium Collection Motif Ulu Paung Mahogani",
+      description: "Sepatu Etnic Motif Ulu Paung - Maroon",
+      image: "/temp/nike-just-do-it(6).jpg",
+      bgColor: "#800000",
+      textColor: "#ffffff",
+      buttonText: "Beli Sekarang",
+      price: "Rp. 450.000"
+    },
+    {
+      id: 2,
+      title: "Gorga Black",
+      subtitle: "Premium Collection Motif Gorga Black",
+      description: "Sepatu Etnic Dengan Motif Gorga Khas",
+      image: "/temp/nike-just-do-it(7).jpg",
+      bgColor: "#000000",
+      textColor: "#ffffff",
+      buttonText: "Beli Sekarang",
+      price: "Rp. 420.000"
+    }
+  ];
+  
+  const slidesData: SlideData[] = homeData?.heroSection?.slides || (forceShowContent ? fallbackSlides : []);
 
   // Debug logging
   useEffect(() => {
-    console.log('HeroSection DEBUG:', { loading, error, hasHomeData: !!homeData, slidesCount: slidesData.length, forceShowContent, heroSectionSlides: homeData?.heroSection?.slides });
+    console.log('HeroSection DEBUG:', { 
+      loading, 
+      error, 
+      hasHomeData: !!homeData, 
+      slidesCount: slidesData.length, 
+      forceShowContent,
+      heroSection: homeData?.heroSection,
+      heroSectionSlides: homeData?.heroSection?.slides,
+      fullHomeData: homeData
+    });
     
     // Reset forceShowContent when data is successfully loaded
     if (!loading && slidesData.length > 0 && forceShowContent) {
@@ -42,17 +78,17 @@ const HeroSection: React.FC = () => {
     }
   }, [loading, error, homeData, slidesData.length, forceShowContent]);
 
-  // Timeout fallback to prevent infinite loading - only if no data is available after extended time
+  // Aggressive timeout to break infinite loading
   useEffect(() => {
     const timeout = setTimeout(() => {
-      if (loading && !slidesData.length && !homeData) {
-        console.log('HeroSection: Force showing content due to timeout (no data available)');
+      if (loading && !slidesData.length) {
+        console.log('HeroSection: Breaking infinite loading - forcing fallback');
         setForceShowContent(true);
       }
-    }, 10000); // 10 seconds timeout (increased from 5)
+    }, 3000); // 3 seconds aggressive timeout
 
     return () => clearTimeout(timeout);
-  }, [loading, slidesData.length, homeData]);
+  }, []); // Only run once on mount
 
 
 
@@ -140,44 +176,13 @@ const HeroSection: React.FC = () => {
 
 
 
-  // Show loading state only if not forced and still loading
-  if (loading && !forceShowContent) {
+  // Show loading state only for first 2 seconds
+  if (loading && !slidesData.length && !forceShowContent) {
     return (
       <section className="relative flex items-center justify-center h-[70vh] md:h-screen bg-gradient-to-br from-red-600 to-red-800">
         <div className="text-center text-white">
           <div className="inline-block w-12 h-12 mb-4 border-b-2 border-white rounded-full animate-spin"></div>
           <p className="text-xl">Loading Hero Content...</p>
-        </div>
-      </section>
-    );
-  }
-  
-  // Show fallback only if there's a clear error or legitimate timeout with no data
-  if (error && !slidesData.length) {
-    return (
-      <section className="relative flex items-center justify-center h-[70vh] md:h-screen bg-gradient-to-br from-red-600 to-red-800">
-        <div className="max-w-4xl px-4 text-center text-white">
-          <h1 className="mb-4 text-6xl font-bold">VNY</h1>
-          <p className="mb-8 text-2xl">Premium Sneaker Collection</p>
-          <p className="mb-4 text-sm opacity-75">Error loading content: {error}</p>
-          <button className="px-8 py-4 font-semibold text-red-600 transition-colors bg-white rounded-full hover:bg-gray-100">
-            Shop Now
-          </button>
-        </div>
-      </section>
-    );
-  }
-
-  // Show fallback only if forced timeout and absolutely no data available
-  if (forceShowContent && !slidesData.length && !homeData) {
-    return (
-      <section className="relative flex items-center justify-center h-[70vh] md:h-screen bg-gradient-to-br from-red-600 to-red-800">
-        <div className="max-w-4xl px-4 text-center text-white">
-          <h1 className="mb-4 text-6xl font-bold">VNY</h1>
-          <p className="mb-8 text-2xl">Premium Sneaker Collection</p>
-          <button className="px-8 py-4 font-semibold text-red-600 transition-colors bg-white rounded-full hover:bg-gray-100">
-            Shop Now
-          </button>
         </div>
       </section>
     );
