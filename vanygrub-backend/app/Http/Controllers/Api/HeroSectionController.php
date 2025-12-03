@@ -112,12 +112,24 @@ class HeroSectionController extends Controller
      */
     private function formatHeroSection($hero)
     {
+        // Build proper image URL
+        $imageUrl = null;
+        if ($hero->image) {
+            // If image starts with http, it's already a full URL
+            if (str_starts_with($hero->image, 'http')) {
+                $imageUrl = $hero->image;
+            } else {
+                // Build URL from storage
+                $imageUrl = url('/storage/images/' . $hero->image);
+            }
+        }
+
         return [
             'id' => $hero->id,
             'title' => $hero->title,
             'subtitle' => $hero->subtitle,
             'description' => $hero->description,
-            'image' => $hero->image,
+            'image' => $imageUrl,
             'bgColor' => $hero->bg_color,
             'textColor' => $hero->text_color,
             'buttonText' => $hero->button_text,
