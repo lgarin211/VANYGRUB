@@ -112,19 +112,14 @@ export const useProducts = (params?: {
           const transformedProducts = response.data.map(transformApiData.product);
           setProducts(transformedProducts);
         } else {
-          // Fallback to local data
-          const productsData = await import('../constants/productsData.json');
-          setProducts(productsData.default.products);
+          // No fallback to local data - API should be the source of truth
+          setProducts([]);
+          setError('No products found');
         }
       } catch (err) {
         setError('Failed to fetch products');
-        // Fallback to local data
-        try {
-          const productsData = await import('../constants/productsData.json');
-          setProducts(productsData.default.products);
-        } catch (fallbackErr) {
-          console.error('Failed to load fallback products:', fallbackErr);
-        }
+        setProducts([]);
+        console.error('Products fetch error:', err);
       } finally {
         setLoading(false);
       }
@@ -159,21 +154,14 @@ export const useProduct = (id: number) => {
           const transformedProduct = transformApiData.product(response.data);
           setProduct(transformedProduct);
         } else {
-          // Fallback to local data
-          const productsData = await import('../constants/productsData.json');
-          const localProduct = productsData.default.products.find((p: any) => p.id === id);
-          setProduct(localProduct || null);
+          // No fallback to local data - API should be the source of truth
+          setProduct(null);
+          setError('Product not found');
         }
       } catch (err) {
         setError('Failed to fetch product');
-        // Fallback to local data
-        try {
-          const productsData = await import('../constants/productsData.json');
-          const localProduct = productsData.default.products.find((p: any) => p.id === id);
-          setProduct(localProduct || null);
-        } catch (fallbackErr) {
-          console.error('Failed to load fallback product:', fallbackErr);
-        }
+        setProduct(null);
+        console.error('Product fetch error:', err);
       } finally {
         setLoading(false);
       }
@@ -510,7 +498,7 @@ export const useCheckout = () => {
         notes: customerInfo.notes,
         session_id: sessionId,
         items: cartItems.map(item => ({
-          product_id: item.id,
+          product_id: item.product_id || item.id, // Use product_id if available, fallback to id for compatibility
           quantity: item.quantity,
           price: item.originalPrice || parseInt(item.price.replace(/\D/g, ''))
         }))
