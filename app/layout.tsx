@@ -4,6 +4,7 @@ import type { Metadata } from 'next'
 import { Inter } from 'next/font/google'
 import AOSProvider from '@/components/AOSProvider'
 import CacheProvider from '@/components/CacheProvider'
+import { RateLimitDebug } from '@/components/RateLimitDebug'
 
 const inter = Inter({ subsets: ['latin'] })
 
@@ -23,6 +24,7 @@ export default function RootLayout({
         <AOSProvider>
           <CacheProvider>
             {children}
+            <RateLimitDebug />
           </CacheProvider>
         </AOSProvider>
       </body>
