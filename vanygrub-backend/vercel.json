@@ -3,7 +3,10 @@
     "builds": [
         {
             "src": "/api/index.php",
-            "use": "vercel-php@0.6.0"
+            "use": "vercel-php@0.6.0",
+            "config": {
+                "maxLambdaSize": "50mb"
+            }
         },
         {
             "src": "/public/**",
@@ -42,11 +45,5 @@
         "SESSION_DRIVER": "cookie",
         "SESSION_LIFETIME": "120",
         "QUEUE_CONNECTION": "sync"
-    },
-    "functions": {
-        "api/index.php": {
-            "runtime": "vercel-php@0.6.0",
-            "maxDuration": 10
-        }
     }
 }
