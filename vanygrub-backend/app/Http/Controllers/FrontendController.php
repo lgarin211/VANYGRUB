@@ -339,4 +339,12 @@ class FrontendController extends Controller
     {
         return view('pages.all-customer-reviews');
     }
+
+    /**
+     * Cart Page
+     */
+    public function cart()
+    {
+        return view('pages.vny-cart');
+    }
 }

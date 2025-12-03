@@ -51,15 +51,14 @@ class CartController extends Controller
                     'size' => $item->size,
                     'total_price' => $item->formatted_total_price,
                     'total_price_raw' => $item->total_price,
-                    'image' => $item->product && $item->product->main_image ?
-                        asset('storage/' . $item->product->main_image) :
-                        '/api/placeholder/300/300',
+                    'image' => $this->getSelectedImage($item),
+                    'selected_image' => $item->selected_image,
                     'product' => $item->product ? [
                         'id' => $item->product->id,
                         'name' => $item->product->name,
                         'slug' => $item->product->slug,
                         'main_image' => $item->product->main_image ?
-                            asset('storage/' . $item->product->main_image) : null,
+                            'http://vanyadmin.progesio.my.id/storage/' . $item->product->main_image : null,
                         'price' => $item->product->price,
                         'in_stock' => $item->product->in_stock,
                     ] : null
@@ -110,7 +109,8 @@ class CartController extends Controller
                 'quantity' => 'required|integer|min:1',
                 'color' => 'nullable|string|max:100',
                 'size' => 'nullable|string|max:50',
-                'session_id' => 'nullable|string'
+                'session_id' => 'nullable|string',
+                'selected_image' => 'nullable|string|max:255'
             ]);
 
             if ($validator->fails()) {
@@ -148,7 +148,8 @@ class CartController extends Controller
                 'color' => $request->color,
                 'size' => $request->size,
                 'unit_price' => $product->price,
-                'total_price' => $request->quantity * $product->price
+                'total_price' => $request->quantity * $product->price,
+                'selected_image' => $request->selected_image
             ];
 
             if ($userId) {
@@ -322,8 +323,15 @@ class CartController extends Controller
     public function clear(Request $request)
     {
         try {
-            $sessionId = $request->session_id;
+            // Handle both POST (body) and DELETE (query parameter) requests
+            $sessionId = $request->input('session_id') ?: $request->query('session_id');
             $userId = $request->user() ? $request->user()->id : null;
+
+            // For DELETE requests, also check the raw input if JSON body is sent
+            if (!$sessionId && $request->isMethod('delete')) {
+                $data = json_decode($request->getContent(), true);
+                $sessionId = $data['session_id'] ?? null;
+            }
 
             if (!$sessionId && !$userId) {
                 return response()->json([
@@ -354,5 +362,30 @@ class CartController extends Controller
                 'error' => $e->getMessage()
             ], Response::HTTP_INTERNAL_SERVER_ERROR);
         }
+    }
+
+    /**
+     * Get the appropriate image for cart item
+     */
+    private function getSelectedImage($item)
+    {
+        $baseUrl = 'http://vanyadmin.progesio.my.id/storage/';
+
+        // If cart item has a selected image, use it
+        if ($item->selected_image) {
+            // If it's just a path, construct the full URL with production domain
+            if (!str_starts_with($item->selected_image, 'http')) {
+                return $baseUrl . $item->selected_image;
+            }
+            return $item->selected_image;
+        }
+
+        // Fall back to product main image
+        if ($item->product && $item->product->main_image) {
+            return $baseUrl . $item->product->main_image;
+        }
+
+        // Final fallback to placeholder
+        return '/api/placeholder/300/300';
     }
 }

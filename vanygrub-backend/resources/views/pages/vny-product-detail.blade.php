@@ -2,7 +2,101 @@
 
 @section('title', $product['name'] . ' - VNY Store')
 
+@section('head')
+    <meta name="csrf-token" content="{{ csrf_token() }}">
+    <meta name="session-id" content="{{ session()->getId() }}">
+@endsection
+
+@section('styles')
+<style>
+/* Size Selection Enhancements */
+.size-option {
+    position: relative;
+    overflow: hidden;
+}
+
+.size-option:before {
+    content: '';
+    position: absolute;
+    top: 0;
+    left: -100%;
+    width: 100%;
+    height: 100%;
+    background: linear-gradient(90deg, transparent, rgba(239, 68, 68, 0.3), transparent);
+    transition: left 0.5s;
+}
+
+.size-option:hover:before {
+    left: 100%;
+}
+
+.size-option.selected {
+    animation: pulseSize 0.3s ease-in-out;
+}
+
+@keyframes pulseSize {
+    0% { transform: scale(1); }
+    50% { transform: scale(1.1); }
+    100% { transform: scale(1.05); }
+}
+
+/* Color Selection Enhancements */
+.color-option {
+    transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+}
+
+.color-option:hover {
+    transform: translateY(-2px);
+    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.15);
+}
+
+/* Action Button Loading Animation */
+.btn-loading {
+    position: relative;
+    overflow: hidden;
+}
+
+.btn-loading::after {
+    content: '';
+    position: absolute;
+    top: 0;
+    left: -100%;
+    width: 100%;
+    height: 100%;
+    background: linear-gradient(90deg, transparent, rgba(255, 255, 255, 0.3), transparent);
+    animation: shimmer 1.5s infinite;
+}
+
+@keyframes shimmer {
+    0% { left: -100%; }
+    100% { left: 100%; }
+}
+
+/* Responsive Grid Adjustments */
+@media (max-width: 640px) {
+    .size-option {
+        font-size: 0.875rem;
+        padding: 0.625rem 0.5rem;
+    }
+}
+
+/* Success feedback animation */
+@keyframes successPulse {
+    0% { transform: scale(1); }
+    50% { transform: scale(1.05); box-shadow: 0 0 0 10px rgba(34, 197, 94, 0.3); }
+    100% { transform: scale(1); }
+}
+
+.success-animation {
+    animation: successPulse 0.6s ease-in-out;
+}
+</style>
+@endsection
+
 @section('content')
+<!-- Navbar -->
+@include('components.vny-navbar', ['currentPage' => 'product'])
+
 <div class="min-h-screen bg-gray-100">
     <!-- Breadcrumb -->
     <div class="py-4 bg-gray-50">
@@ -176,42 +270,116 @@
 
                     <!-- Size Selection -->
                     @if(!empty($product['sizes']))
-                        <div class="space-y-3">
-                            <h3 class="text-lg font-semibold text-gray-900">Pilih Ukuran</h3>
-                            <div class="grid grid-cols-6 gap-2">
+                        <div class="space-y-4">
+                            <div class="flex items-center space-x-2">
+                                <h3 class="text-lg font-semibold text-gray-900">Pilih Ukuran</h3>
+                                <span class="px-2 py-1 text-xs text-gray-600 bg-gray-100 rounded-full">
+                                    Warna saat ini: <span id="selectedColorDisplay">{{ $product['colors'][0] ?? 'Mahogani' }}</span>
+                                </span>
+                            </div>
+
+                            <!-- Size Grid - Responsive and Better Spacing -->
+                            <div class="grid grid-cols-4 sm:grid-cols-5 md:grid-cols-6 lg:grid-cols-8 gap-3">
                                 @foreach($product['sizes'] as $size)
-                                    <button class="px-2 py-2 text-sm font-medium text-center text-gray-700 transition-all bg-white border border-gray-300 rounded-lg hover:border-red-300 hover:bg-red-50 focus:border-red-500 focus:bg-red-50 size-option"
+                                    <button class="relative group size-option px-3 py-3 text-sm font-semibold text-center text-gray-700 transition-all duration-200 bg-white border-2 border-gray-200 rounded-xl hover:border-red-400 hover:bg-red-50 hover:text-red-600 hover:shadow-md focus:outline-none focus:ring-2 focus:ring-red-500 focus:ring-offset-2"
                                             onclick="selectSize(this, '{{ $size }}')">
-                                        {{ $size }}
+                                        <span class="block">{{ $size }}</span>
+
+                                        <!-- Selected indicator -->
+                                        <div class="absolute inset-0 flex items-center justify-center transition-opacity duration-200 opacity-0 pointer-events-none size-selected-indicator">
+                                            <svg class="w-4 h-4 text-white" fill="currentColor" viewBox="0 0 20 20">
+                                                <path fill-rule="evenodd" d="M16.707 5.293a1 1 0 010 1.414l-8 8a1 1 0 01-1.414 0l-4-4a1 1 0 011.414-1.414L8 12.586l7.293-7.293a1 1 0 011.414 0z" clip-rule="evenodd"></path>
+                                            </svg>
+                                        </div>
+
+                                        <!-- Hover effect -->
+                                        <div class="absolute inset-0 transition-opacity duration-200 bg-red-600 rounded-xl opacity-0 pointer-events-none group-hover:opacity-10"></div>
                                     </button>
                                 @endforeach
+                            </div>
+
+                            <!-- Size Guide Link -->
+                            <div class="flex items-center justify-between pt-2 text-sm">
+                                <span class="text-gray-600">
+                                    <span id="selectedSizeText" class="font-medium text-red-600">Belum dipilih</span>
+                                </span>
+                                <button class="flex items-center space-x-1 text-red-600 hover:text-red-700 hover:underline">
+                                    <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 12h6m-6 4h6m2 5H7a2 2 0 01-2-2V5a2 2 0 012-2h5.586a1 1 0 01.707.293l5.414 5.414a1 1 0 01.293.707V19a2 2 0 01-2 2z"></path>
+                                    </svg>
+                                    <span>Panduan Ukuran</span>
+                                </button>
                             </div>
                         </div>
                     @endif
 
                     <!-- Quantity Section -->
-                    <div class="space-y-3">
+                    <div class="space-y-4">
                         <h3 class="text-lg font-semibold text-gray-900">Jumlah</h3>
-                        <div class="flex items-center gap-3">
-                            <span class="text-sm text-gray-600">Qty:</span>
-                            <div class="flex items-center border border-gray-300 rounded-lg">
-                                <button onclick="decreaseQuantity()" class="p-2 text-gray-600 transition-colors hover:bg-gray-100">
-                                    −
+                        <div class="flex items-center justify-between">
+                            <span class="text-sm font-medium text-gray-600">Quantity:</span>
+                            <div class="flex items-center bg-white border-2 border-gray-200 rounded-xl shadow-sm">
+                                <button onclick="decreaseQuantity()"
+                                        class="p-3 text-gray-600 transition-all duration-200 hover:bg-red-50 hover:text-red-600 rounded-l-xl focus:outline-none focus:ring-2 focus:ring-red-500 focus:ring-offset-2">
+                                    <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M20 12H4"></path>
+                                    </svg>
                                 </button>
-                                <span class="px-4 py-2 font-medium min-w-[50px] text-center" id="quantity">1</span>
-                                <button onclick="increaseQuantity()" class="p-2 text-gray-600 transition-colors hover:bg-gray-100">
-                                    +
+                                <div class="flex items-center justify-center min-w-[60px] px-4 py-3 bg-gray-50 border-x-2 border-gray-200">
+                                    <span class="font-bold text-lg text-gray-800" id="quantity">1</span>
+                                </div>
+                                <button onclick="increaseQuantity()"
+                                        class="p-3 text-gray-600 transition-all duration-200 hover:bg-red-50 hover:text-red-600 rounded-r-xl focus:outline-none focus:ring-2 focus:ring-red-500 focus:ring-offset-2">
+                                    <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 6v6m0 0v6m0-6h6m-6 0H6"></path>
+                                    </svg>
                                 </button>
                             </div>
                         </div>
+
+                        <!-- Stock indicator -->
+                        <div class="flex items-center justify-between text-sm">
+                            <span class="text-gray-500">Stok:</span>
+                            <span class="flex items-center space-x-1">
+                                @if($product['inStock'] ?? true)
+                                    <div class="w-2 h-2 bg-green-500 rounded-full animate-pulse"></div>
+                                    <span class="text-green-600 font-medium">Tersedia</span>
+                                @else
+                                    <div class="w-2 h-2 bg-red-500 rounded-full"></div>
+                                    <span class="text-red-600 font-medium">Habis</span>
+                                @endif
+                            </span>
+                        </div>
                     </div>
 
-                    <!-- Action Button -->
-                    <div class="pt-4">
+                    <!-- Action Buttons -->
+                    <div class="pt-6 space-y-4">
+                        <!-- Main Action Button -->
                         <button id="actionBtn" onclick="handleAction()"
-                                class="w-full px-6 py-3 font-semibold text-white transition-all bg-gray-400 rounded-lg cursor-not-allowed">
-                            Pilih Ukuran Dulu
+                                class="w-full py-4 px-6 rounded-xl font-bold text-gray-600 bg-gray-200 cursor-not-allowed transition-all border-2 border-dashed border-gray-300">
+                            <div class="flex items-center justify-center space-x-2">
+                                <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 8v4l3 3m6-3a9 9 0 11-18 0 9 9 0 0118 0z"></path>
+                                </svg>
+                                <span>Pilih Ukuran Terlebih Dahulu</span>
+                            </div>
                         </button>
+
+                        <!-- Secondary Actions -->
+                        <div class="grid grid-cols-2 gap-3">
+                            <button class="flex items-center justify-center space-x-2 py-3 px-4 bg-white border-2 border-gray-200 rounded-xl text-gray-600 hover:border-red-300 hover:bg-red-50 hover:text-red-600 transition-all duration-200">
+                                <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4.318 6.318a4.5 4.5 0 000 6.364L12 20.364l7.682-7.682a4.5 4.5 0 00-6.364-6.364L12 7.636l-1.318-1.318a4.5 4.5 0 00-6.364 0z"></path>
+                                </svg>
+                                <span class="font-medium">Wishlist</span>
+                            </button>
+                            <button class="flex items-center justify-center space-x-2 py-3 px-4 bg-white border-2 border-gray-200 rounded-xl text-gray-600 hover:border-blue-300 hover:bg-blue-50 hover:text-blue-600 transition-all duration-200">
+                                <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M8.684 13.342C8.886 12.938 9 12.482 9 12c0-.482-.114-.938-.316-1.342m0 2.684a3 3 0 110-2.684m0 2.684l6.632 3.316m-6.632-6l6.632-3.316m0 0a3 3 0 105.367-2.684 3 3 0 00-5.367 2.684zm0 9.316a3 3 0 105.367 2.684 3 3 0 00-5.367-2.684z"></path>
+                                </svg>
+                                <span class="font-medium">Share</span>
+                            </button>
+                        </div>
                     </div>
                 </div>
             </div>
@@ -309,15 +477,36 @@ function selectColor(button, color) {
 }
 
 function selectSize(button, size) {
-    // Update all size buttons
+    // Update all size buttons to default state
     document.querySelectorAll('.size-option').forEach(btn => {
-        btn.className = 'py-2 px-3 border border-gray-300 rounded-lg text-sm font-medium bg-white text-gray-700 hover:border-red-300 hover:bg-red-50 transition-all size-option';
+        btn.className = 'relative group size-option px-3 py-3 text-sm font-semibold text-center text-gray-700 transition-all duration-200 bg-white border-2 border-gray-200 rounded-xl hover:border-red-400 hover:bg-red-50 hover:text-red-600 hover:shadow-md focus:outline-none focus:ring-2 focus:ring-red-500 focus:ring-offset-2';
+
+        // Hide selected indicator
+        const indicator = btn.querySelector('.size-selected-indicator');
+        if (indicator) {
+            indicator.classList.add('opacity-0');
+        }
     });
 
-    // Update selected button
-    button.className = 'py-2 px-3 border border-red-500 rounded-lg text-sm font-medium bg-red-600 text-white transition-all size-option';
+    // Update selected button to active state
+    button.className = 'relative group size-option px-3 py-3 text-sm font-semibold text-center text-white transition-all duration-200 bg-red-600 border-2 border-red-600 rounded-xl shadow-lg transform scale-105 focus:outline-none focus:ring-2 focus:ring-red-500 focus:ring-offset-2';
 
+    // Show selected indicator
+    const selectedIndicator = button.querySelector('.size-selected-indicator');
+    if (selectedIndicator) {
+        selectedIndicator.classList.remove('opacity-0');
+        selectedIndicator.classList.add('opacity-100');
+    }
+
+    // Update selected size text and variables
     selectedSize = size;
+    const selectedSizeText = document.getElementById('selectedSizeText');
+    if (selectedSizeText) {
+        selectedSizeText.textContent = `Ukuran ${size} dipilih`;
+        selectedSizeText.classList.remove('text-gray-600');
+        selectedSizeText.classList.add('text-red-600', 'font-semibold');
+    }
+
     updateActionButton();
 }
 
@@ -325,17 +514,49 @@ function updateActionButton() {
     const actionBtn = document.getElementById('actionBtn');
     const inStock = @json($product['inStock'] ?? true);
 
-    if (inStock && selectedSize) {
-        actionBtn.className = 'w-full py-3 px-6 rounded-lg font-semibold text-white bg-red-600 hover:bg-red-700 cursor-pointer transition-all';
-        actionBtn.textContent = 'Pilih Ukuran Dulu';
+    if (inStock && selectedSize && selectedColor) {
+        actionBtn.className = 'w-full py-4 px-6 rounded-xl font-bold text-white bg-gradient-to-r from-red-600 to-red-700 hover:from-red-700 hover:to-red-800 cursor-pointer transition-all duration-300 shadow-lg hover:shadow-xl transform hover:scale-[1.02]';
+        actionBtn.innerHTML = `
+            <div class="flex items-center justify-center space-x-2">
+                <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M3 3h2l.4 2M7 13h10l4-8H5.4m0 0L7 13m0 0l-2.5 8M7 13l2.5 8M17 21a2 2 0 100-4 2 2 0 000 4zM9 21a2 2 0 100-4 2 2 0 000 4z"></path>
+                </svg>
+                <span>Tambah ke Keranjang</span>
+            </div>
+        `;
         actionBtn.disabled = false;
     } else if (!inStock) {
-        actionBtn.className = 'w-full py-3 px-6 rounded-lg font-semibold text-white bg-gray-400 cursor-not-allowed transition-all';
-        actionBtn.textContent = 'Out of Stock';
+        actionBtn.className = 'w-full py-4 px-6 rounded-xl font-bold text-white bg-gray-500 cursor-not-allowed transition-all';
+        actionBtn.innerHTML = `
+            <div class="flex items-center justify-center space-x-2">
+                <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M18.364 18.364A9 9 0 005.636 5.636m12.728 12.728L5.636 5.636m12.728 12.728L18.364 5.636M5.636 18.364l12.728-12.728"></path>
+                </svg>
+                <span>Stok Habis</span>
+            </div>
+        `;
+        actionBtn.disabled = true;
+    } else if (!selectedSize) {
+        actionBtn.className = 'w-full py-4 px-6 rounded-xl font-bold text-gray-600 bg-gray-200 cursor-not-allowed transition-all border-2 border-dashed border-gray-300';
+        actionBtn.innerHTML = `
+            <div class="flex items-center justify-center space-x-2">
+                <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 8v4l3 3m6-3a9 9 0 11-18 0 9 9 0 0118 0z"></path>
+                </svg>
+                <span>Pilih Ukuran Terlebih Dahulu</span>
+            </div>
+        `;
         actionBtn.disabled = true;
     } else {
-        actionBtn.className = 'w-full py-3 px-6 rounded-lg font-semibold text-white bg-gray-400 cursor-not-allowed transition-all';
-        actionBtn.textContent = 'Pilih Ukuran Dulu';
+        actionBtn.className = 'w-full py-4 px-6 rounded-xl font-bold text-gray-600 bg-gray-200 cursor-not-allowed transition-all border-2 border-dashed border-gray-300';
+        actionBtn.innerHTML = `
+            <div class="flex items-center justify-center space-x-2">
+                <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 8v4l3 3m6-3a9 9 0 11-18 0 9 9 0 0118 0z"></path>
+                </svg>
+                <span>Pilih Warna & Ukuran</span>
+            </div>
+        `;
         actionBtn.disabled = true;
     }
 }
@@ -353,8 +574,140 @@ function handleAction() {
         return;
     }
 
-    // Here you would typically add to cart via API
-    alert(`Menambahkan ke keranjang:\n- Produk: {{ $product['name'] }}\n- Warna: ${selectedColor}\n- Ukuran: ${selectedSize}\n- Jumlah: ${quantity}`);
+    // Add to cart via API
+    addToCart();
+}
+
+async function addToCart() {
+    const actionBtn = document.getElementById('actionBtn');
+    const originalContent = actionBtn.innerHTML;
+
+    // Show loading state
+    actionBtn.disabled = true;
+    actionBtn.className = 'w-full py-4 px-6 rounded-xl font-bold text-white bg-gray-400 cursor-not-allowed transition-all';
+    actionBtn.innerHTML = `
+        <div class="flex items-center justify-center space-x-2">
+            <svg class="w-5 h-5 animate-spin" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 12a8 8 0 018-8V0C5.373 0 0 5.373 0 12h4zm2 5.291A7.962 7.962 0 014 12H0c0 3.042 1.135 5.824 3 7.938l3-2.647z"></path>
+            </svg>
+            <span>Menambahkan...</span>
+        </div>
+    `;
+
+    try {
+        // Get CSRF token and create a simple session identifier
+        const csrfToken = document.querySelector('meta[name="csrf-token"]')?.getAttribute('content');
+
+        // Use a simpler session ID approach
+        let sessionId = localStorage.getItem('cart_session_id');
+        if (!sessionId) {
+            sessionId = 'cart_' + Date.now() + '_' + Math.random().toString(36).substr(2, 9);
+            localStorage.setItem('cart_session_id', sessionId);
+        }
+
+        // Get the currently displayed image
+        const currentImage = document.getElementById('mainProductImage').src;
+        // Extract the storage path from the full URL (everything after /storage/)
+        const storageIndex = currentImage.indexOf('/storage/');
+        const currentImagePath = storageIndex !== -1 ? currentImage.substring(storageIndex + 9) : currentImage.split('/').pop();
+
+        const response = await fetch('/api/vny/cart', {
+            method: 'POST',
+            headers: {
+                'Content-Type': 'application/json',
+                'Accept': 'application/json',
+                'X-CSRF-TOKEN': csrfToken || '',
+            },
+            body: JSON.stringify({
+                product_id: {{ $product['id'] }},
+                quantity: quantity,
+                color: selectedColor,
+                size: selectedSize,
+                session_id: sessionId,
+                selected_image: currentImagePath
+            })
+        });
+
+        const data = await response.json();
+
+        if (response.ok && data.success) {
+            // Show success state
+            actionBtn.className = 'w-full py-4 px-6 rounded-xl font-bold text-white bg-green-600 cursor-pointer transition-all';
+            actionBtn.innerHTML = `
+                <div class="flex items-center justify-center space-x-2">
+                    <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 13l4 4L19 7"></path>
+                    </svg>
+                    <span>Berhasil ditambahkan!</span>
+                </div>
+            `;
+
+            // Show success message
+            const successMsg = document.createElement('div');
+            successMsg.className = 'fixed top-4 right-4 bg-green-500 text-white px-6 py-3 rounded-lg shadow-lg z-50 transform transition-all duration-300';
+            successMsg.innerHTML = `
+                <div class="flex items-center space-x-2">
+                    <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 13l4 4L19 7"></path>
+                    </svg>
+                    <span>Produk berhasil ditambahkan ke keranjang</span>
+                </div>
+            `;
+            document.body.appendChild(successMsg);
+
+            // Remove success message after 3 seconds
+            setTimeout(() => {
+                successMsg.remove();
+            }, 3000);
+
+            // Reset button after 2 seconds
+            setTimeout(() => {
+                actionBtn.disabled = false;
+                updateActionButton();
+            }, 2000);
+
+        } else {
+            throw new Error(data.message || 'Gagal menambahkan produk');
+        }
+
+    } catch (error) {
+        console.error('Error adding to cart:', error);
+
+        // Show error state
+        actionBtn.className = 'w-full py-4 px-6 rounded-xl font-bold text-white bg-red-600 cursor-pointer transition-all';
+        actionBtn.innerHTML = `
+            <div class="flex items-center justify-center space-x-2">
+                <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12"></path>
+                </svg>
+                <span>Gagal ditambahkan</span>
+            </div>
+        `;
+
+        // Show error message
+        const errorMsg = document.createElement('div');
+        errorMsg.className = 'fixed top-4 right-4 bg-red-500 text-white px-6 py-3 rounded-lg shadow-lg z-50 transform transition-all duration-300';
+        errorMsg.innerHTML = `
+            <div class="flex items-center space-x-2">
+                <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12"></path>
+                </svg>
+                <span>Gagal menambahkan produk: ${error.message}</span>
+            </div>
+        `;
+        document.body.appendChild(errorMsg);
+
+        // Remove error message after 4 seconds
+        setTimeout(() => {
+            errorMsg.remove();
+        }, 4000);
+
+        // Reset button after 3 seconds
+        setTimeout(() => {
+            actionBtn.disabled = false;
+            updateActionButton();
+        }, 3000);
+    }
 }
 
 function decreaseQuantity() {

@@ -28,6 +28,9 @@ Route::get('/vny/product/{id}', [FrontendController::class, 'productDetail'])->n
 Route::get('/category/{slug}', [FrontendController::class, 'categoryProducts'])->name('category.products');
 Route::get('/search', [FrontendController::class, 'search'])->name('search');
 
+// Cart Route
+Route::get('/vny/cart', [FrontendController::class, 'cart'])->name('vny.cart');
+
 // Tailwind Test Route
 Route::get('/tailwind-test', function () {
     return view('pages.tailwind-test');

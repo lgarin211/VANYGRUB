@@ -7,6 +7,7 @@ use App\Models\Category;
 use App\Models\Product;
 use App\Models\HeroSection;
 use App\Models\ProductGrid;
+use App\Models\SiteConfig;
 use Illuminate\Http\Request;
 
 class DataController extends Controller
@@ -197,25 +198,51 @@ class DataController extends Controller
      */
     public function getVnySiteConfig()
     {
-        return response()->json([
-            'success' => true,
-            'data' => [
-                'siteName' => 'VNY Store',
-                'heroTitle' => 'Welcome to VNY Store',
-                'heroDescription' => 'Discover premium sneakers and streetwear collections. Quality meets style in every piece we curate for you.',
-                'sectionTitle' => 'Featured Products',
-                'brandColors' => [
-                    'primary' => '#8B0000',
-                    'secondary' => '#DC143C',
-                    'accent' => '#ff6b35'
-                ],
-                'navigation' => [
-                    ['name' => 'HOME', 'url' => '/'],
-                    ['name' => 'PRODUCT', 'url' => '/products'],
-                    ['name' => 'ABOUT VNY', 'url' => '/about'],
-                    ['name' => 'GALLERY', 'url' => '/gallery']
+        try {
+            // Get configurations from database
+            $configs = \App\Models\SiteConfig::where('is_active', true)->get();
+            $data = [];
+
+            // Organize configs by group
+            foreach ($configs as $config) {
+                if (!isset($data[$config->group])) {
+                    $data[$config->group] = [];
+                }
+                $data[$config->group][$config->key] = $config->value;
+            }
+
+            // Fallback to hardcoded values if database is empty
+            if (empty($data)) {
+                $data = [
+                    'meta' => [
+                        'siteName' => 'VNY Store',
+                    ],
+                    'hero_section' => [
+                        'title' => 'Welcome to VNY Store',
+                        'description' => 'Discover premium sneakers and streetwear collections. Quality meets style in every piece we curate for you.',
+                    ],
+                    'contact' => [
+                        'phone' => '+62 821-1142-4592',
+                        'email' => 'info@vnystore.com'
+                    ]
+                ];
+            }
+
+            return response()->json([
+                'success' => true,
+                'data' => $data
+            ]);
+        } catch (\Exception $e) {
+            // Fallback response if there's an error
+            return response()->json([
+                'success' => true,
+                'data' => [
+                    'contact' => [
+                        'phone' => '+62 821-1142-4592',
+                        'email' => 'info@vnystore.com'
+                    ]
                 ]
-            ]
-        ]);
+            ]);
+        }
     }
 }

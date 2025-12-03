@@ -91,44 +91,7 @@
 
 @section('content')
 <!-- Header -->
-<header class="shadow-lg vny-header-gradient">
-  <div class="flex items-center justify-between px-5 py-3 mx-auto max-w-7xl">
-    <div class="flex items-center gap-2 text-sm font-medium text-white">
-      <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0z"></path>
-      </svg>
-      Search
-    </div>
-
-    <div class="text-2xl font-bold tracking-wide text-white">
-      VNY
-    </div>
-
-    <div class="flex items-center gap-6">
-      <a href="#" class="text-sm font-medium text-white transition-colors duration-200 hover:text-gray-200">CART</a>
-      <a href="#" class="text-sm font-medium text-white transition-colors duration-200 hover:text-gray-200">TRANSACTION</a>
-    </div>
-  </div>
-
-  <nav class="border-t border-red-400/30">
-    <div class="px-5 mx-auto max-w-7xl">
-      <ul class="flex items-center justify-center">
-        <li>
-          <a href="{{ route('home') }}" class="block px-6 py-3 text-sm font-medium text-white transition-colors duration-200 hover:bg-white/10">HOME</a>
-        </li>
-        <li>
-          <a href="{{ route('vny.product') }}" class="block px-6 py-3 text-sm font-medium text-white border-b-2 border-white bg-white/20">PRODUCT</a>
-        </li>
-        <li>
-          <a href="#" class="block px-6 py-3 text-sm font-medium text-white transition-colors duration-200 hover:bg-white/10">ABOUT VNY</a>
-        </li>
-        <li>
-          <a href="{{ route('vny.store') }}" class="block px-6 py-3 text-sm font-medium text-white transition-colors duration-200 hover:bg-white/10">GALLERY</a>
-        </li>
-      </ul>
-    </div>
-  </nav>
-</header>
+@include('components.vny-navbar', ['currentPage' => 'product'])
 
 <!-- Page Header -->
 <div class="py-16 text-white vny-header-gradient">

@@ -54,7 +54,7 @@ Route::prefix('vny')->group(function () {
     Route::post('cart', [CartController::class, 'store']);
     Route::put('cart/{id}', [CartController::class, 'update']);
     Route::delete('cart/{id}', [CartController::class, 'destroy']);
-    Route::post('cart/clear', [CartController::class, 'clear']);
+    Route::match(['POST', 'DELETE'], 'cart/clear', [CartController::class, 'clear']);
 
     // Orders API
     Route::apiResource('orders', OrderController::class);

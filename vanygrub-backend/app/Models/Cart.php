@@ -19,7 +19,8 @@ class Cart extends Model
         'color',
         'size',
         'unit_price',
-        'total_price'
+        'total_price',
+        'selected_image'
     ];
 
     protected $casts = [
