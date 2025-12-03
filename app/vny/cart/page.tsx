@@ -5,7 +5,7 @@ import Image from 'next/image';
 import Link from 'next/link';
 import { showSuccess, showError, showWarning, showOrderSuccess } from '../../../utils/sweetAlert';
 import { getSessionId, clearSession } from '../../../utils/session';
-import { useCart, useCheckout } from '../../../hooks/useApi';
+import { useCart, useCheckout, useSiteConfig } from '../../../hooks/useApi';
 import Header from '../../../components/Header';
 
 interface CartItem {
@@ -34,6 +34,7 @@ const CartPage: React.FC = () => {
   const sessionId = getSessionId();
   const { cart, loading: cartLoading, addToCart, updateCartItem, removeFromCart, refreshCart, clearCart } = useCart(sessionId);
   const { processCheckout, creating, error: checkoutError } = useCheckout();
+  const { siteConfig, loading: siteConfigLoading } = useSiteConfig();
   const [promoCode, setPromoCode] = useState('');
   const [appliedPromo, setAppliedPromo] = useState<string | null>(null);
   const [showCheckoutModal, setShowCheckoutModal] = useState(false);
@@ -185,7 +186,7 @@ const CartPage: React.FC = () => {
     };
 
     try {
-      const result = await processCheckout(customerInfo, cartItems, pricingInfo, sessionId);
+      const result = await processCheckout(customerInfo, cartItems, pricingInfo, sessionId, siteConfig);
       
       // Open WhatsApp with the message
       window.open(result.whatsappUrl, '_blank');

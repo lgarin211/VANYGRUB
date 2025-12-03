@@ -257,6 +257,55 @@ export const useCategories = () => {
   return { categories, loading, error };
 };
 
+// Hook for fetching site config
+export const useSiteConfig = () => {
+  const [siteConfig, setSiteConfig] = useState<any>(null);
+  const [loading, setLoading] = useState(true);
+  const [error, setError] = useState<string | null>(null);
+
+  useEffect(() => {
+    const fetchSiteConfig = async () => {
+      try {
+        setLoading(true);
+        const siteConfigCacheTTL = parseInt(process.env.NEXT_PUBLIC_SITE_CONFIG_CACHE_TTL || '300') * 60 * 1000; // Default 5 hours
+        const cacheKey = 'site-config';
+        
+        const response: any = await withCache(
+          cacheKey,
+          () => withErrorHandling(() => apiClient.getSiteConfig()) as Promise<any>,
+          siteConfigCacheTTL
+        );
+        
+        if (response && response.data) {
+          setSiteConfig(response.data);
+        } else {
+          // Fallback config
+          setSiteConfig({
+            contact: {
+              phone: '+62 821-1142-4592' // Default fallback number
+            }
+          });
+        }
+      } catch (err) {
+        setError('Failed to fetch site config');
+        // Fallback config
+        setSiteConfig({
+          contact: {
+            phone: '+62 821-1142-4592' // Default fallback number
+          }
+        });
+        console.error('Site config fetch error:', err);
+      } finally {
+        setLoading(false);
+      }
+    };
+
+    fetchSiteConfig();
+  }, []);
+
+  return { siteConfig, loading, error };
+};
+
 // Cart and Checkout hooks
 export const useCart = (sessionId?: string) => {
   const [cart, setCart] = useState<any>(null);
@@ -451,6 +500,23 @@ export const useCheckout = () => {
     return `VNY${timestamp}${random}`;
   };
 
+  const getWhatsAppNumber = (siteConfig?: any): string => {
+    // Extract phone number from site config and format for WhatsApp
+    const phone = siteConfig?.contact?.phone || '+62 821-1142-4592'; // Default fallback
+    
+    // Remove all non-numeric characters and format for WhatsApp
+    const cleanPhone = phone.replace(/\D/g, '');
+    
+    // Ensure it starts with 62 (Indonesia country code)
+    if (cleanPhone.startsWith('0')) {
+      return '62' + cleanPhone.substring(1);
+    } else if (cleanPhone.startsWith('62')) {
+      return cleanPhone;
+    } else {
+      return '62' + cleanPhone;
+    }
+  };
+
   const generateWhatsAppMessage = (orderCode: string, customerInfo: any, cartItems: any[], total: number) => {
     const baseUrl = typeof window !== 'undefined' ? window.location.origin : '';
     const trackingUrl = `${baseUrl}/checkout/${orderCode}`;
@@ -485,7 +551,7 @@ export const useCheckout = () => {
     return encodeURIComponent(message);
   };
 
-  const processCheckout = async (customerInfo: any, cartItems: any[], pricingInfo: any, sessionId: string) => {
+  const processCheckout = async (customerInfo: any, cartItems: any[], pricingInfo: any, sessionId: string, siteConfig?: any) => {
     try {
       const orderPayload = {
         customer_name: customerInfo.name,
@@ -540,7 +606,7 @@ export const useCheckout = () => {
       }
 
       // Generate WhatsApp message
-      const whatsappNumber = '6282111424592';
+      const whatsappNumber = getWhatsAppNumber(siteConfig);
       const message = generateWhatsAppMessage(orderCode, customerInfo, cartItems, pricingInfo.total);
       const whatsappUrl = `https://wa.me/${whatsappNumber}?text=${message}`;
       
@@ -566,7 +632,7 @@ export const useCheckout = () => {
       
       localStorage.setItem(`order_${orderCode}`, JSON.stringify(orderData));
 
-      const whatsappNumber = '6282111424592';
+      const whatsappNumber = getWhatsAppNumber(siteConfig);
       const message = generateWhatsAppMessage(orderCode, customerInfo, cartItems, pricingInfo.total);
       const whatsappUrl = `https://wa.me/${whatsappNumber}?text=${message}`;
       
@@ -585,7 +651,8 @@ export const useCheckout = () => {
     creating, 
     error,
     generateWhatsAppMessage,
-    generateUniqueCode
+    generateUniqueCode,
+    getWhatsAppNumber
   };
 };
 

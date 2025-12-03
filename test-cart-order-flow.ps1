@@ -5,9 +5,9 @@ Write-Host "Testing Cart to Order Flow with Product ID Fix..." -ForegroundColor 
 Write-Host "`n1. Adding item to cart..." -ForegroundColor Green
 $addCartBody = @{
     product_id = 15
-    quantity = 2
-    size = "41"
-    color = "Red"
+    quantity   = 2
+    size       = "41"
+    color      = "Red"
     session_id = "test_session_flow"
 } | ConvertTo-Json
 
@@ -16,7 +16,8 @@ try {
     Write-Host "✓ SUCCESS: Item added to cart" -ForegroundColor Green
     Write-Host "  Cart Item ID: $($cartResponse.data.id)" -ForegroundColor White
     Write-Host "  Product ID: $($cartResponse.data.product_id)" -ForegroundColor White
-} catch {
+}
+catch {
     Write-Host "✗ FAILED: Could not add item to cart" -ForegroundColor Red
     Write-Host "  Error: $($_.Exception.Message)" -ForegroundColor White
     exit 1
@@ -36,7 +37,8 @@ try {
         
         if ($firstItem.id -ne $firstItem.product_id) {
             Write-Host "✓ CORRECT: Cart item ID ($($firstItem.id)) is different from Product ID ($($firstItem.product_id))" -ForegroundColor Green
-        } else {
+        }
+        else {
             Write-Host "✗ WARNING: Cart item ID and Product ID are the same - this might be wrong" -ForegroundColor Yellow
         }
         
@@ -44,11 +46,13 @@ try {
         $cartItems = $cart.data.items
         $total = $cart.data.summary.total
         
-    } else {
+    }
+    else {
         Write-Host "✗ FAILED: Cart is empty" -ForegroundColor Red
         exit 1
     }
-} catch {
+}
+catch {
     Write-Host "✗ FAILED: Could not retrieve cart" -ForegroundColor Red
     Write-Host "  Error: $($_.Exception.Message)" -ForegroundColor White
     exit 1
@@ -57,24 +61,24 @@ try {
 # Test 3: Create order using cart data (simulating frontend flow)
 Write-Host "`n3. Creating order with cart data..." -ForegroundColor Green
 $orderBody = @{
-    customer_name = "Test Customer Flow"
-    customer_email = "flow@example.com" 
-    customer_phone = "123456789"
-    shipping_address = "Test Address"
-    shipping_city = "Test City"
+    customer_name        = "Test Customer Flow"
+    customer_email       = "flow@example.com" 
+    customer_phone       = "123456789"
+    shipping_address     = "Test Address"
+    shipping_city        = "Test City"
     shipping_postal_code = "12345"
-    total_amount = $total
-    notes = "Test order from cart flow"
-    session_id = "test_session_flow"
-    items = @()
+    total_amount         = $total
+    notes                = "Test order from cart flow"
+    session_id           = "test_session_flow"
+    items                = @()
 } 
 
 # Map cart items to order items (this is what the frontend should do)
 foreach ($cartItem in $cartItems) {
     $orderItem = @{
         product_id = $cartItem.product_id  # Use product_id, NOT cart item id
-        quantity = $cartItem.quantity
-        price = $cartItem.originalPrice
+        quantity   = $cartItem.quantity
+        price      = $cartItem.originalPrice
     }
     $orderBody.items += $orderItem
 }
@@ -86,7 +90,8 @@ try {
     Write-Host "✓ SUCCESS: Order created successfully" -ForegroundColor Green
     Write-Host "  Order Code: $($orderResponse.data.order_code)" -ForegroundColor White
     Write-Host "  Order ID: $($orderResponse.data.id)" -ForegroundColor White
-} catch {
+}
+catch {
     Write-Host "✗ FAILED: Could not create order" -ForegroundColor Red
     Write-Host "  Error: $($_.Exception.Message)" -ForegroundColor White
     
@@ -112,12 +117,14 @@ try {
             
             if ($orderItem.product_id -eq $cartItems[0].product_id) {
                 Write-Host "✓ PERFECT: Product IDs match between cart and order!" -ForegroundColor Green
-            } else {
+            }
+            else {
                 Write-Host "✗ ERROR: Product ID mismatch!" -ForegroundColor Red
             }
         }
     }
-} catch {
+}
+catch {
     Write-Host "⚠ WARNING: Could not verify order (might be normal)" -ForegroundColor Yellow
 }
 

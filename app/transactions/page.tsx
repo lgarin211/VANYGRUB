@@ -5,7 +5,7 @@ import Image from 'next/image';
 import Link from 'next/link';
 import { showWarning } from '../../utils/sweetAlert';
 import Header from '../../components/Header';
-import { useTransactions } from '../../hooks/useApi';
+import { useTransactions, useSiteConfig, useCheckout } from '../../hooks/useApi';
 
 interface TransactionItem {
   id: number;
@@ -49,6 +49,8 @@ const TransactionsPage: React.FC = () => {
   const [activeTab, setActiveTab] = useState<'history' | 'checkout'>('history');
   const [selectedTransaction, setSelectedTransaction] = useState<Transaction | null>(null);
   const [showCustomerForm, setShowCustomerForm] = useState(false);
+  const { siteConfig, loading: siteConfigLoading } = useSiteConfig();
+  const { getWhatsAppNumber } = useCheckout();
   const [customerInfo, setCustomerInfo] = useState<CustomerInfo>({
     name: '',
     phone: '',
@@ -263,8 +265,7 @@ const TransactionsPage: React.FC = () => {
       return;
     }
 
-    const whatsappNumber = '6282111424592';
-    // +62 813-1587-1101
+    const whatsappNumber = getWhatsAppNumber(siteConfig);
     const message = generateWhatsAppMessage();
     const whatsappUrl = `https://wa.me/${whatsappNumber}?text=${message}`;
     
