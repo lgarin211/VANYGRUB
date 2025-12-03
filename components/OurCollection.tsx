@@ -96,13 +96,14 @@ const OurCollection: React.FC = () => {
                   
                   {/* Product Image Container */}
                   <div className="relative w-full h-full overflow-hidden rounded-xl">
-                    <Image
+                    <SafeImage
                       src={item.image}
                       alt={item.name}
                       fill
                       className="object-cover group-hover:scale-110 transition-transform duration-500"
                       sizes="290px"
                       priority={index < 5}
+                      fallbackSrc="/temp/placeholder-image.svg"
                     />
                     
                     {/* Dark overlay for better contrast */}
