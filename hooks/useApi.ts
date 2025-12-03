@@ -71,7 +71,7 @@ export const useProducts = (params?: {
   featured?: boolean;
   search?: string;
 }) => {
-  const fetchProducts = async () => {
+  const fetchProducts = useCallback(async () => {
     const response: any = await withErrorHandling(() => apiClient.getProducts(params)) as Promise<any>;
     
     if (response && response.data) {
@@ -80,10 +80,10 @@ export const useProducts = (params?: {
       // No fallback to local data - API should be the source of truth
       throw new Error('No products found');
     }
-  };
+  }, [params?.category_id, params?.featured, params?.search]);
 
   return useRateLimitAware(
-    `products-${JSON.stringify(params || {})}`,
+    'products',
     fetchProducts,
     [params?.category_id, params?.featured, params?.search],
     getAdjustedConfig('PRODUCTS')
@@ -92,7 +92,7 @@ export const useProducts = (params?: {
 
 // Hook for fetching single product - Rate Limited
 export const useProduct = (id: number) => {
-  const fetchProduct = async () => {
+  const fetchProduct = useCallback(async () => {
     if (!id) throw new Error('Product ID is required');
     
     const response: any = await withErrorHandling(() => apiClient.getProduct(id)) as Promise<any>;
@@ -102,7 +102,7 @@ export const useProduct = (id: number) => {
     } else {
       throw new Error('Product not found');
     }
-  };
+  }, [id]);
 
   return useRateLimitAware(
     `product-${id}`,
