@@ -29,11 +29,11 @@ const HeroSection: React.FC = () => {
 
   // Load data from API with fallback
   const { data: homeData, loading, error } = useHomeData();
-  const slidesData: SlideData[] = homeData?.heroSections || [];
+  const slidesData: SlideData[] = homeData?.heroSection?.slides || [];
 
   // Debug logging
   useEffect(() => {
-    console.log('HeroSection DEBUG:', { loading, error, hasHomeData: !!homeData, slidesCount: slidesData.length, forceShowContent, heroSections: homeData?.heroSections });
+    console.log('HeroSection DEBUG:', { loading, error, hasHomeData: !!homeData, slidesCount: slidesData.length, forceShowContent, heroSectionSlides: homeData?.heroSection?.slides });
     
     // Reset forceShowContent when data is successfully loaded
     if (!loading && slidesData.length > 0 && forceShowContent) {
