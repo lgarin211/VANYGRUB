@@ -1,9 +1,9 @@
 'use client';
 
 import React, { useEffect, useRef, useState } from 'react';
-import Image from 'next/image';
 import { gsap } from 'gsap';
 import { useHomeData } from '../hooks/useApi';
+import SafeImage from './SafeImage';
 
 interface SlideData {
   id: number;
