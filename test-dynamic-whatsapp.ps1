@@ -16,18 +16,22 @@ try {
         
         if ($cleanPhone.StartsWith('0')) {
             $whatsappNumber = '62' + $cleanPhone.Substring(1)
-        } elseif ($cleanPhone.StartsWith('62')) {
+        }
+        elseif ($cleanPhone.StartsWith('62')) {
             $whatsappNumber = $cleanPhone
-        } else {
+        }
+        else {
             $whatsappNumber = '62' + $cleanPhone
         }
         
         Write-Host "  Cleaned number: $cleanPhone" -ForegroundColor Cyan
         Write-Host "  WhatsApp format: $whatsappNumber" -ForegroundColor Cyan
-    } else {
+    }
+    else {
         Write-Host "✗ WARNING: No phone number in site config" -ForegroundColor Yellow
     }
-} catch {
+}
+catch {
     Write-Host "✗ FAILED: Could not access site config API" -ForegroundColor Red
     Write-Host "  Error: $($_.Exception.Message)" -ForegroundColor White
     Write-Host "  This means fallback number will be used: 6282111424592" -ForegroundColor Yellow
@@ -49,9 +53,11 @@ foreach ($phone in $testPhones) {
     
     if ($cleanPhone.StartsWith('0')) {
         $formatted = '62' + $cleanPhone.Substring(1)
-    } elseif ($cleanPhone.StartsWith('62')) {
+    }
+    elseif ($cleanPhone.StartsWith('62')) {
         $formatted = $cleanPhone
-    } else {
+    }
+    else {
         $formatted = '62' + $cleanPhone
     }
     
@@ -69,7 +75,8 @@ try {
         Write-Host "✓ SUCCESS: WhatsApp URL generated" -ForegroundColor Green
         Write-Host "  URL: $whatsappUrl" -ForegroundColor Cyan
         Write-Host "  Number used: $whatsappNumber (from site config)" -ForegroundColor Green
-    } else {
+    }
+    else {
         $fallbackNumber = "6282111424592"
         $testMessage = "Hello from VANY Store! This is a test message."
         $encodedMessage = [System.Web.HttpUtility]::UrlEncode($testMessage)
@@ -79,7 +86,8 @@ try {
         Write-Host "  URL: $whatsappUrl" -ForegroundColor Cyan
         Write-Host "  Number used: $fallbackNumber (fallback)" -ForegroundColor Yellow
     }
-} catch {
+}
+catch {
     Write-Host "✗ ERROR: URL generation failed" -ForegroundColor Red
     Write-Host "  Error: $($_.Exception.Message)" -ForegroundColor White
 }
