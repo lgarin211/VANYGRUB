@@ -493,7 +493,7 @@ document.addEventListener('DOMContentLoaded', function() {
         document.getElementById('loadingIndicator').style.display = 'none';
 
         let apiSuccess = false;
-
+        console.log('Data Response:', dataResponse);
         if (dataResponse && (dataResponse.categories || dataResponse.featuredProducts || dataResponse.heroSections)) {
             vnyData = dataResponse;
             apiSuccess = true;
@@ -509,6 +509,7 @@ document.addEventListener('DOMContentLoaded', function() {
         }
 
         // Show success notification if API worked
+        console.log('VNY Data:', vnyData);
         if (apiSuccess) {
             showApiSuccess();
             console.log('✅ VNY API berhasil dimuat!');

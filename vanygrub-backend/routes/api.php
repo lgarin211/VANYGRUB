@@ -32,7 +32,7 @@ Route::middleware('auth:sanctum')->get('/user', function (Request $request) {
 // VANY GROUB API Routes with prefix /vny/
 Route::prefix('vny')->group(function () {
     // Data endpoints for Next.js constants
-    Route::get('data', [DataController::class, 'getVnyData']);
+    Route::get('data', [DataController::class, 'getAllData']);
     Route::get('home-data', [DataController::class, 'getHomeData']);
 
     // Homepage constants API
