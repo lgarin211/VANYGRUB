@@ -71,6 +71,8 @@ const SafeImage: React.FC<SafeImageProps> = ({
       <div 
         className={`bg-gray-200 flex items-center justify-center ${className}`}
         style={{ width, height, ...style }}
+        role="img"
+        aria-label={alt || 'Image not available'}
       >
         <span className="text-gray-500 text-sm">Image not available</span>
       </div>

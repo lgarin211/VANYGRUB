@@ -221,13 +221,7 @@ class ProductController extends Controller
             return $image;
         }
 
-        // Build URL from storage - try both paths for compatibility
-        if (str_contains($image, '/')) {
-            // Already has path structure
-            return url('/storage/' . $image);
-        } else {
-            // Just filename, assume it's in images folder
-            return url('/storage/images/' . $image);
-        }
+        // Build URL from storage
+        return url('/storage/' . $image);
     }
 }

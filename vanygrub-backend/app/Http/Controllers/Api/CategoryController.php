@@ -135,7 +135,7 @@ class CategoryController extends Controller
         }
 
         // Build URL from storage
-        return url('/storage/images/' . $image);
+        return url('/storage/' . $image);
     }
 
     /**

@@ -120,7 +120,7 @@ class HeroSectionController extends Controller
                 $imageUrl = $hero->image;
             } else {
                 // Build URL from storage
-                $imageUrl = url('/storage/images/' . $hero->image);
+                $imageUrl = url('/storage/' . $hero->image);
             }
         }
 
