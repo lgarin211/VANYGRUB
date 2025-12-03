@@ -177,26 +177,26 @@ const HeroSection: React.FC = () => {
               <div className="absolute inset-0 bg-gradient-to-r from-black/20 via-transparent to-black/20"></div>
 
               {/* Slide content */}
-              <div className="absolute inset-0 z-20 flex flex-col md:flex-row items-center justify-center md:justify-between px-4 md:px-16 py-8">
+              <div className="absolute inset-0 z-20 flex flex-col items-center justify-center px-4 py-8 md:flex-row md:justify-between md:px-16">
                 {/* Text content */}
                 <div 
                   ref={index === currentSlide ? textRef : null}
-                  className="relative z-30 flex-1 max-w-2xl text-center md:text-left mb-8 md:mb-0"
+                  className="relative z-30 flex-1 max-w-2xl mb-8 text-center md:text-left md:mb-0"
                   style={{ color: slide.textColor }}
                 >
-                  <h1 className="mb-3 md:mb-4 font-black tracking-wider text-4xl md:text-7xl lg:text-9xl drop-shadow-lg">
+                  <h1 className="mb-3 text-4xl font-black tracking-wider md:mb-4 md:text-7xl lg:text-9xl drop-shadow-lg">
                     {slide.title}
                   </h1>
-                  <h2 className="mb-4 md:mb-6 text-lg md:text-3xl lg:text-5xl font-bold opacity-90">
+                  <h2 className="mb-4 text-lg font-bold md:mb-6 md:text-3xl lg:text-5xl opacity-90">
                     {slide.subtitle}
                   </h2>
-                  <p className="max-w-xl mb-6 md:mb-8 text-sm md:text-xl lg:text-2xl leading-relaxed opacity-80 mx-auto md:mx-0">
+                  <p className="max-w-xl mx-auto mb-6 text-sm leading-relaxed md:mb-8 md:text-xl lg:text-2xl opacity-80 md:mx-0">
                     {slide.description}
                   </p>
-                  <div className="flex flex-col md:flex-row items-center justify-center md:justify-start gap-4 md:gap-6 mb-6 md:mb-8">
-                    <span className="text-2xl md:text-4xl font-bold">{slide.price}</span>
+                  <div className="flex flex-col items-center justify-center gap-4 mb-6 md:flex-row md:justify-start md:gap-6 md:mb-8">
+                    <span className="text-2xl font-bold md:text-4xl">{slide.price}</span>
                     <button 
-                      className="px-6 md:px-8 py-3 md:py-4 text-sm md:text-lg font-bold transition-all duration-300 transform rounded-full shadow-xl bg-white/90 hover:bg-white hover:scale-105 backdrop-blur-sm"
+                      className="px-6 py-3 text-sm font-bold transition-all duration-300 transform rounded-full shadow-xl md:px-8 md:py-4 md:text-lg bg-white/90 hover:bg-white hover:scale-105 backdrop-blur-sm"
                       style={{ 
                         backgroundColor: slide.textColor === '#ffffff' ? 'rgba(255,255,255,0.9)' : 'rgba(0,0,0,0.9)',
                         color: slide.textColor === '#ffffff' ? '#1f2937' : '#ffffff'
@@ -260,13 +260,13 @@ const HeroSection: React.FC = () => {
       </div>
 
       {/* Navigation controls */}
-      <div className="absolute flex items-center gap-2 md:gap-4 transform -translate-x-1/2 bottom-6 md:bottom-8 left-1/2">
+      <div className="absolute flex items-center gap-2 transform -translate-x-1/2 md:gap-4 bottom-6 md:bottom-8 left-1/2">
         {/* Previous button */}
         <button 
           onClick={prevSlide}
-          className="p-2 md:p-3 transition-all duration-300 border rounded-full bg-white/20 backdrop-blur-sm border-white/30 hover:bg-white/30 touch-manipulation"
+          className="p-2 transition-all duration-300 border rounded-full md:p-3 bg-white/20 backdrop-blur-sm border-white/30 hover:bg-white/30 touch-manipulation"
         >
-          <svg className="w-4 h-4 md:w-6 md:h-6 text-white" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+          <svg className="w-4 h-4 text-white md:w-6 md:h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
             <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M15 19l-7-7 7-7" />
           </svg>
         </button>
@@ -289,17 +289,17 @@ const HeroSection: React.FC = () => {
         {/* Next button */}
         <button 
           onClick={nextSlide}
-          className="p-2 md:p-3 transition-all duration-300 border rounded-full bg-white/20 backdrop-blur-sm border-white/30 hover:bg-white/30 touch-manipulation"
+          className="p-2 transition-all duration-300 border rounded-full md:p-3 bg-white/20 backdrop-blur-sm border-white/30 hover:bg-white/30 touch-manipulation"
         >
-          <svg className="w-4 h-4 md:w-6 md:h-6 text-white" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+          <svg className="w-4 h-4 text-white md:w-6 md:h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
             <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M9 5l7 7-7 7" />
           </svg>
         </button>
       </div>
 
       {/* Slide counter */}
-      <div className="absolute px-3 md:px-4 py-1 md:py-2 text-white rounded-full top-4 md:top-8 right-4 md:right-8 bg-black/30 backdrop-blur-sm">
-        <span className="text-sm md:text-lg font-bold">
+      <div className="absolute px-3 py-1 text-white rounded-full md:px-4 md:py-2 top-4 md:top-8 right-4 md:right-8 bg-black/30 backdrop-blur-sm">
+        <span className="text-sm font-bold md:text-lg">
           {String(currentSlide + 1).padStart(2, '0')} / {String(slidesData.length).padStart(2, '0')}
         </span>
       </div>
