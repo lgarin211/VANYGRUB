@@ -42,14 +42,14 @@ const HeroSection: React.FC = () => {
     }
   }, [loading, error, homeData, slidesData.length, forceShowContent]);
 
-  // Timeout fallback to prevent infinite loading - only if no data is available
+  // Timeout fallback to prevent infinite loading - only if no data is available after extended time
   useEffect(() => {
     const timeout = setTimeout(() => {
       if (loading && !slidesData.length && !homeData) {
         console.log('HeroSection: Force showing content due to timeout (no data available)');
         setForceShowContent(true);
       }
-    }, 5000); // 5 seconds timeout
+    }, 10000); // 10 seconds timeout (increased from 5)
 
     return () => clearTimeout(timeout);
   }, [loading, slidesData.length, homeData]);
@@ -152,18 +152,29 @@ const HeroSection: React.FC = () => {
     );
   }
   
-  // Show fallback only if no slides AND (error OR forced timeout)
-  if (!slidesData.length && (error || forceShowContent)) {
+  // Show fallback only if there's a clear error or legitimate timeout with no data
+  if (error && !slidesData.length) {
     return (
       <section className="relative flex items-center justify-center h-[70vh] md:h-screen bg-gradient-to-br from-red-600 to-red-800">
         <div className="max-w-4xl px-4 text-center text-white">
           <h1 className="mb-4 text-6xl font-bold">VNY</h1>
           <p className="mb-8 text-2xl">Premium Sneaker Collection</p>
-          {(error || forceShowContent) && (
-            <p className="mb-4 text-sm opacity-75">
-              {forceShowContent ? 'Loading timeout - showing fallback content' : `Error: ${error}`}
-            </p>
-          )}
+          <p className="mb-4 text-sm opacity-75">Error loading content: {error}</p>
+          <button className="px-8 py-4 font-semibold text-red-600 transition-colors bg-white rounded-full hover:bg-gray-100">
+            Shop Now
+          </button>
+        </div>
+      </section>
+    );
+  }
+
+  // Show fallback only if forced timeout and absolutely no data available
+  if (forceShowContent && !slidesData.length && !homeData) {
+    return (
+      <section className="relative flex items-center justify-center h-[70vh] md:h-screen bg-gradient-to-br from-red-600 to-red-800">
+        <div className="max-w-4xl px-4 text-center text-white">
+          <h1 className="mb-4 text-6xl font-bold">VNY</h1>
+          <p className="mb-8 text-2xl">Premium Sneaker Collection</p>
           <button className="px-8 py-4 font-semibold text-red-600 transition-colors bg-white rounded-full hover:bg-gray-100">
             Shop Now
           </button>
@@ -310,6 +321,7 @@ const HeroSection: React.FC = () => {
             <button
               key={index}
               onClick={() => goToSlide(index)}
+              aria-label={`Go to slide ${index + 1}`}
               className={`w-2 h-2 md:w-3 md:h-3 rounded-full transition-all duration-300 touch-manipulation ${
                 index === currentSlide 
                   ? 'bg-white scale-125' 
