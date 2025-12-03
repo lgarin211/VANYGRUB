@@ -147,11 +147,9 @@ export const withCache = async <T>(
   // Try to get from cache first
   const cached = cache.get(key);
   if (cached) {
-    console.log(`Cache hit for key: ${key}`);
-    return cached;
+    // Return immediately for cache hits - this should resolve very fast
+    return Promise.resolve(cached);
   }
-
-  console.log(`Cache miss for key: ${key}, fetching...`);
   
   try {
     const data = await fetcher();

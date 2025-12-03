@@ -1,7 +1,7 @@
 'use client';
 
 import React from 'react';
-import Image from 'next/image';
+import SafeImage from './SafeImage';
 import { useHomeData } from '../hooks/useApi';
 
 interface SpecialOfferProps {
@@ -52,7 +52,7 @@ const SpecialOffer: React.FC<SpecialOfferProps> = ({ title }) => {
             >
               {/* Product Image */}
               <div className="absolute inset-0">
-                <Image
+                <SafeImage
                   src={offer.image}
                   alt={offer.title}
                   fill

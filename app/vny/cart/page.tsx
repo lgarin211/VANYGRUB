@@ -1,12 +1,12 @@
 'use client';
 
 import React, { useState, useEffect, useMemo } from 'react';
-import Image from 'next/image';
 import Link from 'next/link';
 import { showSuccess, showError, showWarning, showOrderSuccess } from '../../../utils/sweetAlert';
 import { getSessionId, clearSession } from '../../../utils/session';
 import { useCart, useCheckout, useSiteConfig } from '../../../hooks/useApi';
 import Header from '../../../components/Header';
+import SafeImage from '../../../components/SafeImage';
 
 interface CartItem {
   id: number;
@@ -295,7 +295,7 @@ const CartPage: React.FC = () => {
                         {/* Product Image */}
                         <div className="flex-shrink-0">
                           <div className="w-24 h-24 overflow-hidden bg-gray-100 rounded-xl">
-                            <Image
+                            <SafeImage
                               src={item.image}
                               alt={item.name}
                               width={96}
@@ -664,7 +664,7 @@ const CartPage: React.FC = () => {
                     {cartItems.map((item: CartItem, index: number) => (
                       <div key={index} className="flex items-center space-x-3">
                         <div className="w-12 h-12 overflow-hidden bg-gray-100 rounded-lg">
-                          <Image
+                          <SafeImage
                             src={item.image}
                             alt={item.name}
                             width={48}

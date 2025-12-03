@@ -1,8 +1,8 @@
 'use client';
 
 import React, { useState, useEffect, useCallback } from 'react';
-import Image from 'next/image';
 import Link from 'next/link';
+import SafeImage from '../../../../components/SafeImage';
 import { showSuccess, showError, showCart } from '../../../../utils/sweetAlert';
 import { getSessionId } from '../../../../utils/session';
 import { useParams } from 'next/navigation';
@@ -313,7 +313,7 @@ const ProductDetail: React.FC = () => {
                 ) : (
                   // Image Slider
                   <>
-                    <Image
+                    <SafeImage
                       src={getCurrentImage()}
                       alt={`${product.name} - ${selectedColor} - Image ${activeImageIndex + 1}`}
                       width={600}
@@ -379,7 +379,7 @@ const ProductDetail: React.FC = () => {
                         : 'border-transparent hover:border-red-300'
                     }`}
                   >
-                    <Image
+                    <SafeImage
                       src={image}
                       alt={`${product.name} thumbnail ${index + 1}`}
                       width={100}

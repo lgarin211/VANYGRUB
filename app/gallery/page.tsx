@@ -2,8 +2,8 @@
 
 import React, { useState, useCallback, useMemo } from 'react';
 import Link from 'next/link';
-import Image from 'next/image';
 import Header from '../../components/Header';
+import SafeImage from '../../components/SafeImage';
 import '../../styles/gallery.css';
 
 const Gallery: React.FC = () => {
@@ -98,7 +98,7 @@ const Gallery: React.FC = () => {
 
     document.addEventListener('keydown', handleKeyDown);
     return () => document.removeEventListener('keydown', handleKeyDown);
-  }, [selectedItem, currentIndex, handleNext, handlePrev]);
+  }, []);
 
   return (
     <div className="gallery-container">
@@ -118,7 +118,7 @@ const Gallery: React.FC = () => {
             {galleryItems.slice(0, 3).map((item, index) => (
               <li key={item.id} className="gallery-item" style={{'--delay': `${index * 0.2}s`} as React.CSSProperties}>
                 <figure className="image" onClick={() => handleItemClick(item, index)}>
-                  <Image src={item.image} alt={item.title} width={400} height={300} className="w-full h-full object-cover" />
+                  <SafeImage src={item.image} alt={item.title} width={400} height={300} className="object-cover w-full h-full" />
                   <figcaption>{item.title}</figcaption>
                 </figure>
               </li>
@@ -130,7 +130,7 @@ const Gallery: React.FC = () => {
             {galleryItems.slice(3, 5).map((item, index) => (
               <li key={item.id} className="gallery-item" style={{'--delay': `${(index + 3) * 0.2}s`} as React.CSSProperties}>
                 <figure className="image" onClick={() => handleItemClick(item, index + 3)}>
-                  <Image src={item.image} alt={item.title} width={400} height={300} className="w-full h-full object-cover" />
+                  <SafeImage src={item.image} alt={item.title} width={400} height={300} className="object-cover w-full h-full" />
                   <figcaption>{item.title}</figcaption>
                 </figure>
               </li>
@@ -141,7 +141,7 @@ const Gallery: React.FC = () => {
           <ul className="third">
             <li className="gallery-item" style={{'--delay': '1.0s'} as React.CSSProperties}>
               <figure className="image" onClick={() => handleItemClick(galleryItems[5], 5)}>
-                <Image src={galleryItems[5].image} alt={galleryItems[5].title} width={400} height={300} className="w-full h-full object-cover" />
+                <SafeImage src={galleryItems[5].image} alt={galleryItems[5].title} width={400} height={300} className="object-cover w-full h-full" />
                 <figcaption>{galleryItems[5].title}</figcaption>
               </figure>
             </li>
@@ -166,8 +166,8 @@ const Gallery: React.FC = () => {
                 </svg>
               </button>
               
-              <div className="gallery-modal-image">
-                <Image src={selectedItem.image} alt={selectedItem.title} width={800} height={600} className="w-full h-full object-contain" />
+              <div className="gallery2-modal-image">
+                <SafeImage src={selectedItem.image} alt={selectedItem.title} width={800} height={600} className="object-contain w-full h-full" />
               </div>
               
               <button className="gallery-modal-nav gallery-modal-next" onClick={handleNext}>

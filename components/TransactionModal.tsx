@@ -1,7 +1,7 @@
 'use client';
 
 import React, { useState, useEffect } from 'react';
-import Image from 'next/image';
+import SafeImage from './SafeImage';
 
 interface TransactionItem {
   id: number;
@@ -213,9 +213,9 @@ const TransactionModal: React.FC<TransactionModalProps> = ({
                     {selectedTransaction.items.map((item, index) => (
                       <div key={index} className="flex items-center space-x-4 p-4 bg-gray-50 rounded-lg">
                         <div className="w-16 h-16 bg-white rounded-lg overflow-hidden">
-                          <Image
+                          <SafeImage
                             src={item.image}
-                            alt={item.name}
+                            alt={item.name || 'Transaction item'}
                             width={64}
                             height={64}
                             className="w-full h-full object-cover"
@@ -282,9 +282,9 @@ const TransactionModal: React.FC<TransactionModalProps> = ({
                       <div className="flex items-center space-x-3 mb-3">
                         {transaction.items.slice(0, 3).map((item, index) => (
                           <div key={index} className="w-12 h-12 bg-white rounded-lg overflow-hidden">
-                            <Image
+                            <SafeImage
                               src={item.image}
-                              alt={item.name}
+                              alt={item.name || 'Transaction item'}
                               width={48}
                               height={48}
                               className="w-full h-full object-cover"

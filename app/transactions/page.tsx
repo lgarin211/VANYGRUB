@@ -1,10 +1,10 @@
 'use client';
 
 import { useState, useEffect } from 'react';
-import Image from 'next/image';
 import Link from 'next/link';
 import { showWarning } from '../../utils/sweetAlert';
 import Header from '../../components/Header';
+import SafeImage from '../../components/SafeImage';
 import { useTransactions, useSiteConfig, useCheckout } from '../../hooks/useApi';
 
 interface TransactionItem {
@@ -372,7 +372,7 @@ const TransactionsPage: React.FC = () => {
                       <div className="flex items-center mb-4 space-x-3">
                         {transaction.items.slice(0, 4).map((item: TransactionItem, index: number) => (
                           <div key={index} className="w-10 h-10 overflow-hidden bg-gray-100 rounded-lg">
-                            <Image
+                            <SafeImage
                               src={item.image}
                               alt={item.name}
                               width={40}
@@ -501,7 +501,7 @@ const TransactionsPage: React.FC = () => {
                     {selectedTransaction.items.map((item: TransactionItem, index: number) => (
                       <div key={index} className="flex items-center p-4 space-x-4 rounded-lg bg-gray-50">
                         <div className="w-16 h-16 overflow-hidden bg-white rounded-lg">
-                          <Image
+                          <SafeImage
                             src={item.image}
                             alt={item.name}
                             width={64}
@@ -664,7 +664,7 @@ const TransactionsPage: React.FC = () => {
                     {cartItems.map((item: TransactionItem, index: number) => (
                       <div key={index} className="flex items-center space-x-4">
                         <div className="w-16 h-16 overflow-hidden bg-gray-100 rounded-lg">
-                          <Image
+                          <SafeImage
                             src={item.image}
                             alt={item.name}
                             width={64}

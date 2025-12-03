@@ -25,10 +25,36 @@ const HeroSection: React.FC = () => {
   
   const [currentSlide, setCurrentSlide] = useState(0);
   const [isAutoPlay, setIsAutoPlay] = useState(true);
+  const [forceShowContent, setForceShowContent] = useState(false);
 
   // Load data from API with fallback
   const { data: homeData, loading, error } = useHomeData();
   const slidesData: SlideData[] = homeData?.heroSection?.slides || [];
+
+  // Debug logging
+  useEffect(() => {
+    console.log('HeroSection DEBUG:', { loading, error, hasHomeData: !!homeData, slidesCount: slidesData.length, forceShowContent });
+    
+    // Reset forceShowContent when data is successfully loaded
+    if (!loading && slidesData.length > 0 && forceShowContent) {
+      console.log('HeroSection: Resetting forceShowContent - data loaded successfully');
+      setForceShowContent(false);
+    }
+  }, [loading, error, homeData, slidesData.length, forceShowContent]);
+
+  // Timeout fallback to prevent infinite loading - only if no data is available
+  useEffect(() => {
+    const timeout = setTimeout(() => {
+      if (loading && !slidesData.length && !homeData) {
+        console.log('HeroSection: Force showing content due to timeout (no data available)');
+        setForceShowContent(true);
+      }
+    }, 5000); // 5 seconds timeout
+
+    return () => clearTimeout(timeout);
+  }, [loading, slidesData.length, homeData]);
+
+
 
   // Auto-play functionality
   useEffect(() => {
@@ -39,7 +65,7 @@ const HeroSection: React.FC = () => {
     }, homeData?.heroSection?.autoPlayInterval || 5000);
 
     return () => clearInterval(interval);
-  }, [isAutoPlay, slidesData.length, loading, homeData]);
+  }, [isAutoPlay, slidesData.length, loading, homeData?.heroSection?.autoPlayInterval]);
 
   // GSAP Animations for slide transitions
   useEffect(() => {
@@ -114,8 +140,8 @@ const HeroSection: React.FC = () => {
 
 
 
-  // Show loading state
-  if (loading) {
+  // Show loading state only if not forced and still loading
+  if (loading && !forceShowContent) {
     return (
       <section className="relative flex items-center justify-center h-[70vh] md:h-screen bg-gradient-to-br from-red-600 to-red-800">
         <div className="text-center text-white">
@@ -126,13 +152,18 @@ const HeroSection: React.FC = () => {
     );
   }
   
-  // Show fallback if no slides available
-  if (!slidesData.length) {
+  // Show fallback only if no slides AND (error OR forced timeout)
+  if (!slidesData.length && (error || forceShowContent)) {
     return (
       <section className="relative flex items-center justify-center h-[70vh] md:h-screen bg-gradient-to-br from-red-600 to-red-800">
         <div className="max-w-4xl px-4 text-center text-white">
           <h1 className="mb-4 text-6xl font-bold">VNY</h1>
           <p className="mb-8 text-2xl">Premium Sneaker Collection</p>
+          {(error || forceShowContent) && (
+            <p className="mb-4 text-sm opacity-75">
+              {forceShowContent ? 'Loading timeout - showing fallback content' : `Error: ${error}`}
+            </p>
+          )}
           <button className="px-8 py-4 font-semibold text-red-600 transition-colors bg-white rounded-full hover:bg-gray-100">
             Shop Now
           </button>
@@ -218,7 +249,7 @@ const HeroSection: React.FC = () => {
                     
                     <SafeImage
                       src={slide.image} 
-                      alt={slide.title}
+                      alt={'gambar property of vany Groub'}
                       fill
                       className="relative z-10 object-contain transition-transform duration-500 transform drop-shadow-xl md:drop-shadow-2xl hover:scale-105"
                       priority={index === currentSlide}

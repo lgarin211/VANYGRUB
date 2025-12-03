@@ -1,8 +1,8 @@
 'use client';
 
-import React, { useState, useMemo } from 'react';
-import Image from 'next/image';
+import React, { useState, useEffect } from 'react';
 import Link from 'next/link';
+import SafeImage from './SafeImage';
 import { useProducts, useCategories } from '../hooks/useApi';
 
 interface Product {
@@ -315,7 +315,7 @@ const ProductList: React.FC = () => {
                 <Link key={product.id} href={`/vny/product/${product.id}`}>
                   <div className="bg-white rounded-lg md:rounded-xl overflow-hidden shadow-md hover:shadow-lg transition-all duration-300 cursor-pointer group">
                     <div className="aspect-square bg-gray-200 relative overflow-hidden">
-                      <Image
+                      <SafeImage
                         src={product.image}
                         alt={product.name}
                         fill

@@ -2,7 +2,7 @@
 
 import React from 'react';
 import Link from 'next/link';
-import Image from 'next/image';
+import SafeImage from './SafeImage';
 import { useCategories } from '../hooks/useApi';
 
 interface Category {
@@ -18,6 +18,8 @@ interface Category {
 
 const FeaturedCategories: React.FC = () => {
   const { data: apiCategories, loading, error } = useCategories();
+  
+
 
   // Filter active categories and sort by sortOrder
   const categories = (apiCategories || [] as Category[])
@@ -94,15 +96,14 @@ const FeaturedCategories: React.FC = () => {
               className="overflow-hidden transition-shadow bg-white shadow-lg rounded-xl md:rounded-2xl hover:shadow-xl group"
             >
               <div className="relative h-48 overflow-hidden md:h-64">
-                <Image 
+                <SafeImage 
                   src={category.image} 
                   alt={`${category.name} Collection`} 
                   width={400}
                   height={256}
                   className="object-cover w-full h-full transition-transform duration-500 group-hover:scale-110"
-                  onError={(e) => {
-                    // Fallback to placeholder if image fails to load
-                    const target = e.target as HTMLImageElement;
+                  onError={() => {
+                    console.log('FeaturedCategories image failed to load:', category.image);
                     target.src = `/temp/nike-just-do-it(${category.id % 3 + 6}).jpg`;
                   }}
                 />

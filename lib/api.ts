@@ -53,6 +53,11 @@ class ApiClient {
     return this.request(`/categories/${id}`);
   }
 
+  // Site Configuration API
+  async getSiteConfig() {
+    return this.request('/homepage/site-config');
+  }
+
   // Products API
   async getProducts(params?: {
     category_id?: number;
@@ -259,9 +264,13 @@ export const withErrorHandling = async <T>(
   fallbackData?: T
 ): Promise<T | null> => {
   try {
-    return await apiCall();
+    console.log('withErrorHandling: Starting API call');
+    const result = await apiCall();
+    console.log('withErrorHandling: Success, result:', result);
+    return result;
   } catch (error) {
-    console.error('API call failed:', error);
+    console.error('withErrorHandling: API call failed:', error);
+    console.log('withErrorHandling: Returning fallback data:', fallbackData);
     return fallbackData || null;
   }
 };

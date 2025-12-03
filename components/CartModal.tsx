@@ -1,8 +1,8 @@
 'use client';
 
 import React, { useState, useEffect } from 'react';
-import Image from 'next/image';
 import Link from 'next/link';
+import SafeImage from './SafeImage';
 
 interface CartItem {
   id: number;
@@ -123,9 +123,9 @@ const CartModal: React.FC<CartModalProps> = ({
                 {cartItems.map((item) => (
                   <div key={`${item.id}-${item.color}-${item.size}`} className="flex items-center space-x-4 p-4 bg-gray-50 rounded-lg">
                     <div className="w-16 h-16 bg-white rounded-lg overflow-hidden flex-shrink-0">
-                      <Image
+                      <SafeImage
                         src={item.image}
-                        alt={item.name}
+                        alt={item.name || 'Cart item'}
                         width={64}
                         height={64}
                         className="w-full h-full object-cover"

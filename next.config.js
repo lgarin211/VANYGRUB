@@ -26,6 +26,9 @@ const nextConfig = {
     contentSecurityPolicy: "default-src 'self'; script-src 'none'; sandbox;",
     // Allow unoptimized images for external domains
     unoptimized: false,
+    // Minimize aspect ratio warnings
+    minimumCacheTTL: 60,
+    formats: ['image/webp'],
   },
   reactStrictMode: true,
   swcMinify: true,

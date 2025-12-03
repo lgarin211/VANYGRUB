@@ -1,11 +1,11 @@
 'use client'
 
 import { useEffect, useState, useCallback, useMemo } from 'react'
-import Image from 'next/image'
 import { useHomepageConstants } from '../hooks/useHomepageApi'
 import { type GalleryItem } from '../lib/homepageApi'
 import ApiLoading from '../components/ApiLoading'
 import DynamicMetadata from '../components/DynamicMetadata'
+import SafeImage from '../components/SafeImage'
 import { preloadImages } from '../lib/cache'
 import './home.css'
 
@@ -424,7 +424,7 @@ export default function Home() {
 
     document.addEventListener('keydown', handleKeyDown);
     return () => document.removeEventListener('keydown', handleKeyDown);
-  }, [selectedItem, handleNext, handlePrev, closeModal]);
+  }, []);
 
   useEffect(() => {
     // Only initialize GSAP slider when we have gallery items and component is not loading
@@ -501,7 +501,7 @@ export default function Home() {
         <div className="slider-track" id="sliderTrack">
           {GALLERY_ITEMS.map((item) => (
             <div key={item.id} className="card" data-title={item.title} data-desc={item.description}>
-              <Image src={item.image} alt={item.title} width={400} height={300} className="w-full h-full object-cover" />
+              <SafeImage src={item.image} alt={item.title} width={400} height={300} className="object-cover w-full h-full" />
               <div className="hover-overlay"><span>Click to see more</span></div>
             </div>
           ))}
@@ -537,7 +537,7 @@ export default function Home() {
               </button>
               
               <div className="gallery2-modal-image">
-                <Image src={selectedItem.image} alt={selectedItem.title} width={800} height={600} className="w-full h-full object-contain" />
+                <SafeImage src={selectedItem.image} alt={selectedItem.title} width={800} height={600} className="object-contain w-full h-full" />
               </div>
               
               <button className="gallery2-modal-nav gallery2-modal-next" onClick={handleNext}>

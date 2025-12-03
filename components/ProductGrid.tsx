@@ -41,7 +41,7 @@ const ProductGrid: React.FC<ProductGridProps> = ({ title }) => {
     }, defaultConfig.animationInterval);
 
     return () => clearInterval(interval);
-  }, [loading, homeData?.productGrid?.items]);
+  }, [loading, homeData?.productGrid?.items?.length]);
 
   // Load data from API
   const products = homeData?.productGrid?.items || [];

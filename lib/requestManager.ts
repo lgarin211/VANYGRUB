@@ -241,23 +241,32 @@ export const useRateLimitAware = <T>(
       
       setData(result);
       setRetryCount(0);
+      setLoading(false); // Set loading false immediately on success
     } catch (err: any) {
       console.error(`Request failed for ${key}:`, err);
       setError(err.message || 'Request failed');
       
       // Auto-retry with longer delay for rate limit errors
       if (err.status === 429 || err.message?.includes('Too Many Attempts')) {
-        setRetryCount(prev => prev + 1);
-        if (retryCount < 3) {
-          setTimeout(() => {
-            fetchData();
-          }, Math.min(5000 * Math.pow(2, retryCount), 30000)); // Max 30 seconds
-        }
+        setRetryCount(prev => {
+          const newCount = prev + 1;
+          if (newCount < 3) {
+            // Keep loading true while retrying
+            setTimeout(() => {
+              fetchData();
+            }, Math.min(5000 * Math.pow(2, prev), 30000)); // Max 30 seconds
+            return newCount;
+          } else {
+            // Max retries reached, stop loading
+            setLoading(false);
+            return newCount;
+          }
+        });
+      } else {
+        setLoading(false); // Set loading false on non-retry errors
       }
-    } finally {
-      setLoading(false);
     }
-  }, [key, apiCall, ...dependencies, retryCount]);
+  }, [key, apiCall, ...dependencies]);
 
   useEffect(() => {
     fetchData();

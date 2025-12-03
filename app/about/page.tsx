@@ -2,8 +2,8 @@
 
 import React, { useEffect } from 'react';
 import Link from 'next/link';
-import Image from 'next/image';
 import Header from '../../components/Header';
+import SafeImage from '../../components/SafeImage';
 import { preloadImages } from '../../lib/cache';
 
 const AboutPage: React.FC = () => {
@@ -75,7 +75,7 @@ const AboutPage: React.FC = () => {
               
               <div className="relative">
                 <div className="p-8 bg-red-50 rounded-2xl">
-                  <Image 
+                  <SafeImage 
                     src="/temp/nike-just-do-it(6).jpg" 
                     alt="VNY Toba Shoes History" 
                     width={400}
@@ -150,14 +150,14 @@ const AboutPage: React.FC = () => {
             <div className="grid items-center grid-cols-1 gap-12 lg:grid-cols-2">
               <div className="relative">
                 <div className="grid grid-cols-2 gap-4">
-                  <Image 
+                  <SafeImage 
                     src="/temp/nike-just-do-it(7).jpg" 
                     alt="Craftsmanship 1" 
                     width={300}
                     height={192}
                     className="object-cover w-full h-48 shadow-lg rounded-xl"
                   />
-                  <Image 
+                  <SafeImage 
                     src="/temp/nike-just-do-it(8).jpg" 
                     alt="Craftsmanship 2"
                     width={300}

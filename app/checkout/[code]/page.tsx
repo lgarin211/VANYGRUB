@@ -1,8 +1,8 @@
 'use client';
 
 import React, { useState, useEffect } from 'react';
-import Image from 'next/image';
 import Link from 'next/link';
+import SafeImage from '../../../components/SafeImage';
 import { useParams } from 'next/navigation';
 import Header from '../../../components/Header';
 import { useOrderTracking } from '../../../hooks/useApi';
@@ -310,9 +310,9 @@ const CheckoutTrackingPage: React.FC = () => {
               {orderData.items.map((item: CartItem, index: number) => (
                 <div key={index} className="flex flex-col items-start p-4 space-y-3 bg-white border border-gray-200 rounded-lg shadow-sm sm:flex-row sm:items-center sm:space-y-0 sm:space-x-4">
                   <div className="w-20 h-20 overflow-hidden bg-gray-100 rounded-lg shadow-sm">
-                    <Image
+                    <SafeImage
                       src={item.image}
-                      alt={item.name}
+                      alt={item.name || 'Product image'}
                       width={80}
                       height={80}
                       className="object-cover w-full h-full"

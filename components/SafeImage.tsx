@@ -16,6 +16,8 @@ interface SafeImageProps {
   style?: React.CSSProperties;
   fallbackSrc?: string;
   onError?: () => void;
+  // Add aspect ratio handling
+  aspectRatio?: 'square' | '16/9' | '4/3' | '3/2' | 'auto';
 }
 
 const SafeImage: React.FC<SafeImageProps> = ({
@@ -29,8 +31,9 @@ const SafeImage: React.FC<SafeImageProps> = ({
   sizes,
   placeholder,
   style,
-  fallbackSrc = '/temp/placeholder-image.jpg',
+  fallbackSrc = '/temp/placeholder-image.svg',
   onError,
+  aspectRatio = 'auto',
   ...props
 }) => {
   const [imgSrc, setImgSrc] = useState(src);
@@ -79,6 +82,14 @@ const SafeImage: React.FC<SafeImageProps> = ({
     );
   }
 
+  // Handle aspect ratio for better optimization
+  const aspectRatioStyles = aspectRatio !== 'auto' ? {
+    aspectRatio: aspectRatio === 'square' ? '1/1' : 
+                 aspectRatio === '16/9' ? '16/9' :
+                 aspectRatio === '4/3' ? '4/3' :
+                 aspectRatio === '3/2' ? '3/2' : undefined
+  } : {};
+
   // Render with fallback handling
   const imageProps = {
     src: imgSrc,
@@ -86,14 +97,20 @@ const SafeImage: React.FC<SafeImageProps> = ({
     onError: handleError,
     className,
     priority,
-    sizes,
+    sizes: sizes || (fill ? '100vw' : undefined),
     placeholder,
-    style,
+    style: { ...style, ...aspectRatioStyles },
     ...props
   };
 
   if (fill) {
-    return <Image {...imageProps} fill />;
+    return (
+      <Image 
+        {...imageProps} 
+        fill 
+        alt={alt || 'Image'}
+      />
+    );
   }
 
   return (
@@ -101,6 +118,7 @@ const SafeImage: React.FC<SafeImageProps> = ({
       {...imageProps}
       width={width || 500}
       height={height || 300}
+      alt={alt || 'Image'}
     />
   );
 };

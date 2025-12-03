@@ -1,7 +1,7 @@
 // Custom hooks for API data fetching with rate limiting protection
 'use client';
 
-import { useState, useEffect } from 'react';
+import { useState, useEffect, useCallback } from 'react';
 import { apiClient, transformApiData, withErrorHandling } from '../lib/api';
 import { withCache } from '../lib/cache';
 import { safeRequest, useRateLimitAware } from '../lib/requestManager';
@@ -9,7 +9,7 @@ import { getAdjustedConfig, RateLimitMonitor } from '../lib/rateLimitConfig';
 
 // Hook for fetching all data (replacement for dataHome.json) - Rate Limited
 export const useHomeData = () => {
-  const fetchHomeData = async () => {
+  const fetchHomeData = useCallback(async () => {
     const response: any = await withErrorHandling(() => apiClient.getAllData()) as Promise<any>;
     
     if (response) {
@@ -55,7 +55,7 @@ export const useHomeData = () => {
       const homeData = await import('../constants/dataHome.json');
       return homeData.default;
     }
-  };
+  }, []); // Empty dependency array since this function doesn't depend on any props or state
 
   return useRateLimitAware(
     'home-data',
@@ -143,7 +143,7 @@ export const useFeaturedProducts = () => {
 
 // Hook for fetching categories - Rate Limited
 export const useCategories = () => {
-  const fetchCategories = async () => {
+  const fetchCategories = useCallback(async () => {
     try {
       const response: any = await withErrorHandling(() => apiClient.getCategories());
       
@@ -160,7 +160,7 @@ export const useCategories = () => {
       const productsData = await import('../constants/productsData.json');
       return productsData.default.categories || [];
     }
-  };
+  }, []);
 
   return useRateLimitAware(
     'categories',
