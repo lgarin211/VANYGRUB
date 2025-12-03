@@ -29,11 +29,11 @@ const HeroSection: React.FC = () => {
 
   // Load data from API with fallback
   const { data: homeData, loading, error } = useHomeData();
-  const slidesData: SlideData[] = homeData?.heroSection?.slides || [];
+  const slidesData: SlideData[] = homeData?.heroSections || [];
 
   // Debug logging
   useEffect(() => {
-    console.log('HeroSection DEBUG:', { loading, error, hasHomeData: !!homeData, slidesCount: slidesData.length, forceShowContent });
+    console.log('HeroSection DEBUG:', { loading, error, hasHomeData: !!homeData, slidesCount: slidesData.length, forceShowContent, heroSections: homeData?.heroSections });
     
     // Reset forceShowContent when data is successfully loaded
     if (!loading && slidesData.length > 0 && forceShowContent) {
@@ -62,7 +62,7 @@ const HeroSection: React.FC = () => {
 
     const interval = setInterval(() => {
       setCurrentSlide((prev) => (prev + 1) % slidesData.length);
-    }, homeData?.heroSection?.autoPlayInterval || 5000);
+    }, 5000); // Use fixed 5 second interval
 
     return () => clearInterval(interval);
   }, [isAutoPlay, slidesData.length, loading, homeData?.heroSection?.autoPlayInterval]);
