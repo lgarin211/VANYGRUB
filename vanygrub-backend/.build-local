@@ -1,0 +1,3 @@
+# This file ensures that the build process is handled locally
+# The public/build directory should be committed to git
+# DO NOT run npm build on server - it should be done locally
