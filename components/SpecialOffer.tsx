@@ -45,8 +45,8 @@ const SpecialOffer: React.FC<SpecialOfferProps> = ({ title }) => {
           {specialOffers.map((offer: any, index: number) => (
             <div
               key={offer.id}
-              className={`relative rounded-2xl overflow-hidden group cursor-pointer transform hover:scale-[${cardConfig.hoverScaleFactor}] transition-all duration-[${cardConfig.transitionDuration}] shadow-lg hover:shadow-2xl`}
-              style={{ height: `${cardConfig.height}px` }}
+              className={`relative rounded-2xl overflow-hidden group cursor-pointer transform hover:scale-105 transition-all duration-300 shadow-lg hover:shadow-2xl`}
+              style={{ height: `${(cardConfig as any)?.height || 400}px` }}
               data-aos="fade-up"
               data-aos-delay={`${index * 100}`}
             >

@@ -3,15 +3,26 @@
 import React from 'react';
 import Link from 'next/link';
 import Image from 'next/image';
-import { useCategories, type Category } from '../hooks/useCategories';
+import { useCategories } from '../hooks/useApi';
+
+interface Category {
+  id: number;
+  name: string;
+  slug: string;
+  description: string;
+  image: string;
+  isActive: boolean;
+  sortOrder?: number;
+  productsCount?: number;
+}
 
 const FeaturedCategories: React.FC = () => {
-  const { categories: apiCategories, loading, error } = useCategories();
+  const { data: apiCategories, loading, error } = useCategories();
 
   // Filter active categories and sort by sortOrder
-  const categories = apiCategories
-    .filter((cat) => cat.isActive)
-    .sort((a, b) => a.sortOrder - b.sortOrder);
+  const categories = (apiCategories || [] as Category[])
+    .filter((cat: Category) => cat.isActive)
+    .sort((a: Category, b: Category) => (a.sortOrder || 0) - (b.sortOrder || 0));
 
   if (loading) {
     return (
@@ -77,7 +88,7 @@ const FeaturedCategories: React.FC = () => {
         </div>
 
         <div className="grid grid-cols-1 gap-6 md:gap-8 md:grid-cols-2 lg:grid-cols-3">
-          {categories.map((category) => (
+          {categories.map((category: Category) => (
             <div 
               key={category.id}
               className="overflow-hidden transition-shadow bg-white shadow-lg rounded-xl md:rounded-2xl hover:shadow-xl group"

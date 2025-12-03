@@ -34,7 +34,7 @@ const CartPage: React.FC = () => {
   const sessionId = getSessionId();
   const { cart, loading: cartLoading, addToCart, updateCartItem, removeFromCart, refreshCart, clearCart } = useCart(sessionId);
   const { processCheckout, creating, error: checkoutError } = useCheckout();
-  const { siteConfig, loading: siteConfigLoading } = useSiteConfig();
+  const { data: siteConfig, loading: siteConfigLoading } = useSiteConfig();
   const [promoCode, setPromoCode] = useState('');
   const [appliedPromo, setAppliedPromo] = useState<string | null>(null);
   const [showCheckoutModal, setShowCheckoutModal] = useState(false);
@@ -231,7 +231,7 @@ const CartPage: React.FC = () => {
     <div className="min-h-screen bg-gray-50">
       <Header />
 
-      <div className="container px-4 py-4 md:py-8 mx-auto">
+      <div className="container px-4 py-4 mx-auto md:py-8">
         {/* Breadcrumb */}
         <div className="mb-6 md:mb-8">
           <div className="flex items-center space-x-2 text-xs md:text-sm">
@@ -239,39 +239,39 @@ const CartPage: React.FC = () => {
             <span className="text-gray-400">/</span>
             <span className="text-gray-600">Keranjang Belanja</span>
           </div>
-          <h1 className="mt-3 md:mt-4 text-2xl md:text-3xl font-bold text-gray-900">Keranjang Belanja</h1>
-          <p className="text-sm md:text-base text-gray-600">Kelola produk yang ingin Anda beli</p>
+          <h1 className="mt-3 text-2xl font-bold text-gray-900 md:mt-4 md:text-3xl">Keranjang Belanja</h1>
+          <p className="text-sm text-gray-600 md:text-base">Kelola produk yang ingin Anda beli</p>
         </div>
 
         {cartItems.length === 0 ? (
           /* Empty Cart */
-          <div className="flex flex-col items-center justify-center py-12 md:py-16 text-center bg-white rounded-xl md:rounded-2xl px-4">
-            <div className="w-24 h-24 md:w-32 md:h-32 mb-4 md:mb-6 bg-gray-100 rounded-full flex items-center justify-center">
-              <svg className="w-12 h-12 md:w-16 md:h-16 text-gray-400" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+          <div className="flex flex-col items-center justify-center px-4 py-12 text-center bg-white md:py-16 rounded-xl md:rounded-2xl">
+            <div className="flex items-center justify-center w-24 h-24 mb-4 bg-gray-100 rounded-full md:w-32 md:h-32 md:mb-6">
+              <svg className="w-12 h-12 text-gray-400 md:w-16 md:h-16" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                 <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={1} d="M3 3h2l.4 2M7 13h10l4-8H5.4m0 0L7 13m0 0l-2.5 5M7 13v6a2 2 0 002 2h10a2 2 0 002-2v-6m-10 0V9a2 2 0 012-2h6a2 2 0 012 2v4" />
               </svg>
             </div>
-            <h2 className="mb-3 md:mb-4 text-xl md:text-2xl font-bold text-gray-900">Keranjang Kosong</h2>
-            <p className="mb-6 md:mb-8 text-sm md:text-base text-gray-500 max-w-md">
+            <h2 className="mb-3 text-xl font-bold text-gray-900 md:mb-4 md:text-2xl">Keranjang Kosong</h2>
+            <p className="max-w-md mb-6 text-sm text-gray-500 md:mb-8 md:text-base">
               Belum ada produk yang ditambahkan ke keranjang. Mulai berbelanja dan temukan sepatu impian Anda!
             </p>
             <Link 
               href="/vny/product"
-              className="px-6 md:px-8 py-3 md:py-4 text-sm md:text-base text-white bg-red-600 rounded-lg md:rounded-xl font-semibold hover:bg-red-700 transition-colors shadow-lg"
+              className="px-6 py-3 text-sm font-semibold text-white transition-colors bg-red-600 rounded-lg shadow-lg md:px-8 md:py-4 md:text-base md:rounded-xl hover:bg-red-700"
             >
               Mulai Belanja
             </Link>
           </div>
         ) : (
           /* Cart Content */
-          <div className="grid grid-cols-1 lg:grid-cols-3 gap-4 md:gap-8">
+          <div className="grid grid-cols-1 gap-4 lg:grid-cols-3 md:gap-8">
             {/* Cart Items */}
             <div className="lg:col-span-2">
-              <div className="bg-white rounded-xl md:rounded-2xl shadow-sm overflow-hidden">
+              <div className="overflow-hidden bg-white shadow-sm rounded-xl md:rounded-2xl">
                 {/* Header */}
-                <div className="px-4 md:px-6 py-3 md:py-4 bg-gray-50 border-b border-gray-200">
+                <div className="px-4 py-3 border-b border-gray-200 md:px-6 md:py-4 bg-gray-50">
                   <div className="flex items-center justify-between">
-                    <h2 className="text-lg md:text-xl font-semibold text-gray-900">
+                    <h2 className="text-lg font-semibold text-gray-900 md:text-xl">
                       Item dalam Keranjang ({cartItems.reduce((sum: number, item: CartItem) => sum + item.quantity, 0)})
                     </h2>
                     <button 
@@ -280,7 +280,7 @@ const CartPage: React.FC = () => {
                         await refreshCart();
                         showSuccess('Berhasil!', 'Semua item telah dihapus dari keranjang');
                       }}
-                      className="text-xs md:text-sm text-red-600 hover:text-red-700 font-medium"
+                      className="text-xs font-medium text-red-600 md:text-sm hover:text-red-700"
                     >
                       Hapus Semua
                     </button>
@@ -294,13 +294,13 @@ const CartPage: React.FC = () => {
                       <div className="flex items-start space-x-4">
                         {/* Product Image */}
                         <div className="flex-shrink-0">
-                          <div className="w-24 h-24 bg-gray-100 rounded-xl overflow-hidden">
+                          <div className="w-24 h-24 overflow-hidden bg-gray-100 rounded-xl">
                             <Image
                               src={item.image}
                               alt={item.name}
                               width={96}
                               height={96}
-                              className="w-full h-full object-cover"
+                              className="object-cover w-full h-full"
                             />
                           </div>
                         </div>
@@ -309,19 +309,19 @@ const CartPage: React.FC = () => {
                         <div className="flex-1 min-w-0">
                           <div className="flex items-start justify-between">
                             <div className="flex-1 pr-2">
-                              <h3 className="text-base md:text-lg font-semibold text-gray-900 mb-1 line-clamp-2">
+                              <h3 className="mb-1 text-base font-semibold text-gray-900 md:text-lg line-clamp-2">
                                 <Link href={`/vny/product/${item.id}`} className="hover:text-red-600">
                                   {item.name}
                                 </Link>
                               </h3>
-                              <div className="flex flex-col md:flex-row md:items-center md:space-x-4 text-xs md:text-sm text-gray-600 mb-2 space-y-1 md:space-y-0">
+                              <div className="flex flex-col mb-2 space-y-1 text-xs text-gray-600 md:flex-row md:items-center md:space-x-4 md:text-sm md:space-y-0">
                                 <span>Warna: <span className="font-medium">{item.color}</span></span>
                                 <span>Ukuran: <span className="font-medium">{item.size}</span></span>
                               </div>
                               <div className="flex items-center space-x-2">
-                                <span className="text-base md:text-lg font-bold text-red-600">{item.price}</span>
+                                <span className="text-base font-bold text-red-600 md:text-lg">{item.price}</span>
                                 {item.discount && (
-                                  <span className="px-2 py-1 bg-green-100 text-green-700 text-xs font-medium rounded-full">
+                                  <span className="px-2 py-1 text-xs font-medium text-green-700 bg-green-100 rounded-full">
                                     {item.discount} OFF
                                   </span>
                                 )}
@@ -331,7 +331,7 @@ const CartPage: React.FC = () => {
                             {/* Remove Button */}
                             <button
                               onClick={() => handleRemoveItem(item.id)}
-                              className="p-1 md:p-2 text-gray-400 hover:text-red-500 rounded-lg hover:bg-red-50 transition-colors flex-shrink-0"
+                              className="flex-shrink-0 p-1 text-gray-400 transition-colors rounded-lg md:p-2 hover:text-red-500 hover:bg-red-50"
                             >
                               <svg className="w-4 h-4 md:w-5 md:h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                                 <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M19 7l-.867 12.142A2 2 0 0116.138 21H7.862a2 2 0 01-1.995-1.858L5 7m5 4v6m4-6v6m1-10V4a1 1 0 00-1-1h-4a1 1 0 00-1 1v3M4 7h16" />
@@ -340,13 +340,13 @@ const CartPage: React.FC = () => {
                           </div>
 
                           {/* Quantity Controls */}
-                          <div className="flex flex-col md:flex-row md:items-center md:justify-between mt-3 md:mt-4 space-y-3 md:space-y-0">
+                          <div className="flex flex-col mt-3 space-y-3 md:flex-row md:items-center md:justify-between md:mt-4 md:space-y-0">
                             <div className="flex items-center space-x-3">
-                              <span className="text-xs md:text-sm font-medium text-gray-700">Jumlah:</span>
+                              <span className="text-xs font-medium text-gray-700 md:text-sm">Jumlah:</span>
                               <div className="flex items-center border border-gray-300 rounded-lg">
                                 <button
                                   onClick={() => handleUpdateQuantity(item.id, item.quantity - 1)}
-                                  className="px-2 md:px-3 py-1 md:py-2 text-sm md:text-base text-gray-600 hover:text-gray-800 hover:bg-gray-50"
+                                  className="px-2 py-1 text-sm text-gray-600 md:px-3 md:py-2 md:text-base hover:text-gray-800 hover:bg-gray-50"
                                 >
                                   −
                                 </button>
@@ -355,7 +355,7 @@ const CartPage: React.FC = () => {
                                 </span>
                                 <button
                                   onClick={() => handleUpdateQuantity(item.id, item.quantity + 1)}
-                                  className="px-2 md:px-3 py-1 md:py-2 text-sm md:text-base text-gray-600 hover:text-gray-800 hover:bg-gray-50"
+                                  className="px-2 py-1 text-sm text-gray-600 md:px-3 md:py-2 md:text-base hover:text-gray-800 hover:bg-gray-50"
                                 >
                                   +
                                 </button>
@@ -363,8 +363,8 @@ const CartPage: React.FC = () => {
                             </div>
                             
                             <div className="text-right">
-                              <div className="text-xs md:text-sm text-gray-500">Subtotal</div>
-                              <div className="text-base md:text-lg font-bold text-gray-900">
+                              <div className="text-xs text-gray-500 md:text-sm">Subtotal</div>
+                              <div className="text-base font-bold text-gray-900 md:text-lg">
                                 {formatPrice(item.originalPrice * item.quantity)}
                               </div>
                             </div>
@@ -380,7 +380,7 @@ const CartPage: React.FC = () => {
               <div className="mt-6">
                 <Link 
                   href="/vny/product"
-                  className="inline-flex items-center space-x-2 text-red-600 hover:text-red-700 font-medium"
+                  className="inline-flex items-center space-x-2 font-medium text-red-600 hover:text-red-700"
                 >
                   <svg className="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                     <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M15 19l-7-7 7-7" />
@@ -392,16 +392,16 @@ const CartPage: React.FC = () => {
 
             {/* Order Summary */}
             <div className="lg:col-span-1">
-              <div className="bg-white rounded-2xl shadow-sm overflow-hidden sticky top-4">
+              <div className="sticky overflow-hidden bg-white shadow-sm rounded-2xl top-4">
                 {/* Header */}
-                <div className="px-6 py-4 bg-gray-50 border-b border-gray-200">
+                <div className="px-6 py-4 border-b border-gray-200 bg-gray-50">
                   <h2 className="text-xl font-semibold text-gray-900">Ringkasan Pesanan</h2>
                 </div>
 
                 <div className="p-6">
                   {/* Promo Code */}
                   <div className="mb-6">
-                    <label className="block text-sm font-medium text-gray-700 mb-2">
+                    <label className="block mb-2 text-sm font-medium text-gray-700">
                       Kode Promo
                     </label>
                     <div className="flex space-x-2">
@@ -416,26 +416,26 @@ const CartPage: React.FC = () => {
                       {appliedPromo ? (
                         <button
                           onClick={handleRemovePromo}
-                          className="px-4 py-2 bg-gray-200 text-gray-700 rounded-lg hover:bg-gray-300 transition-colors"
+                          className="px-4 py-2 text-gray-700 transition-colors bg-gray-200 rounded-lg hover:bg-gray-300"
                         >
                           Hapus
                         </button>
                       ) : (
                         <button
                           onClick={handleApplyPromo}
-                          className="px-4 py-2 bg-red-600 text-white rounded-lg hover:bg-red-700 transition-colors"
+                          className="px-4 py-2 text-white transition-colors bg-red-600 rounded-lg hover:bg-red-700"
                         >
                           Gunakan
                         </button>
                       )}
                     </div>
                     {appliedPromo && (
-                      <div className="mt-2 p-2 bg-green-50 border border-green-200 rounded-lg">
+                      <div className="p-2 mt-2 border border-green-200 rounded-lg bg-green-50">
                         <div className="flex items-center space-x-2">
                           <svg className="w-4 h-4 text-green-500" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                             <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M5 13l4 4L19 7" />
                           </svg>
-                          <span className="text-sm text-green-700 font-medium">
+                          <span className="text-sm font-medium text-green-700">
                             Kode promo {appliedPromo} diterapkan
                           </span>
                         </div>
@@ -444,7 +444,7 @@ const CartPage: React.FC = () => {
                   </div>
 
                   {/* Price Breakdown */}
-                  <div className="space-y-3 mb-6">
+                  <div className="mb-6 space-y-3">
                     <div className="flex justify-between">
                       <span className="text-gray-600">Subtotal ({cartItems.reduce((sum: number, item: CartItem) => sum + item.quantity, 0)} item)</span>
                       <span className="font-medium">{formatPrice(subtotal)}</span>
@@ -474,8 +474,8 @@ const CartPage: React.FC = () => {
                       <span className="font-medium">{formatPrice(shipping)}</span>
                     </div>
                     
-                    <div className="border-t border-gray-200 pt-3">
-                      <div className="flex justify-between items-center">
+                    <div className="pt-3 border-t border-gray-200">
+                      <div className="flex items-center justify-between">
                         <span className="text-lg font-semibold text-gray-900">Total</span>
                         <span className="text-2xl font-bold text-red-600">{formatPrice(total)}</span>
                       </div>
@@ -485,7 +485,7 @@ const CartPage: React.FC = () => {
                   {/* Checkout Button */}
                   <button
                     onClick={() => setShowCheckoutModal(true)}
-                    className="w-full bg-red-600 text-white py-4 rounded-xl font-semibold text-lg hover:bg-red-700 transition-colors shadow-lg"
+                    className="w-full py-4 text-lg font-semibold text-white transition-colors bg-red-600 shadow-lg rounded-xl hover:bg-red-700"
                   >
                     Checkout Sekarang
                   </button>
@@ -509,12 +509,12 @@ const CartPage: React.FC = () => {
       {showCheckoutModal && (
         <div className="fixed inset-0 z-50 flex items-center justify-center p-4 bg-black/50 backdrop-blur-sm">
           <div className="bg-white rounded-2xl shadow-2xl max-w-4xl w-full max-h-[90vh] overflow-y-auto">
-            <div className="sticky top-0 bg-white px-6 py-4 border-b border-gray-200 rounded-t-2xl">
+            <div className="sticky top-0 px-6 py-4 bg-white border-b border-gray-200 rounded-t-2xl">
               <div className="flex items-center justify-between">
                 <h2 className="text-2xl font-bold text-gray-900">Checkout - Data Pembeli</h2>
                 <button
                   onClick={() => setShowCheckoutModal(false)}
-                  className="p-2 hover:bg-gray-100 rounded-lg transition-colors"
+                  className="p-2 transition-colors rounded-lg hover:bg-gray-100"
                 >
                   <svg className="w-6 h-6 text-gray-500" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                     <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M6 18L18 6M6 6l12 12" />
@@ -523,13 +523,13 @@ const CartPage: React.FC = () => {
               </div>
             </div>
 
-            <div className="grid grid-cols-1 lg:grid-cols-3 gap-8 p-6">
+            <div className="grid grid-cols-1 gap-8 p-6 lg:grid-cols-3">
               {/* Customer Form */}
               <div className="lg:col-span-2">
                 <div className="space-y-6">
                   <div>
-                    <h3 className="text-lg font-semibold text-gray-900 mb-4">Informasi Pembeli</h3>
-                    <div className="mb-6 p-4 bg-blue-50 border border-blue-200 rounded-lg">
+                    <h3 className="mb-4 text-lg font-semibold text-gray-900">Informasi Pembeli</h3>
+                    <div className="p-4 mb-6 border border-blue-200 rounded-lg bg-blue-50">
                       <div className="flex items-start space-x-3">
                         <svg className="w-5 h-5 text-blue-500 mt-0.5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                           <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M13 16h-1v-4h-1m1-4h.01M21 12a9 9 0 11-18 0 9 9 0 0118 0z" />
@@ -543,14 +543,14 @@ const CartPage: React.FC = () => {
                         </div>
                       </div>
                     </div>
-                    <p className="text-sm text-gray-600 mb-6">
+                    <p className="mb-6 text-sm text-gray-600">
                       Lengkapi data di bawah untuk mengirim pesanan via WhatsApp ke admin VNY Store
                     </p>
                   </div>
 
-                  <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
+                  <div className="grid grid-cols-1 gap-6 md:grid-cols-2">
                     <div>
-                      <label className="block text-sm font-medium text-gray-700 mb-2">
+                      <label className="block mb-2 text-sm font-medium text-gray-700">
                         Nama Lengkap *
                       </label>
                       <input
@@ -564,7 +564,7 @@ const CartPage: React.FC = () => {
                     </div>
                     
                     <div>
-                      <label className="block text-sm font-medium text-gray-700 mb-2">
+                      <label className="block mb-2 text-sm font-medium text-gray-700">
                         Nomor Telefon *
                       </label>
                       <input
@@ -579,7 +579,7 @@ const CartPage: React.FC = () => {
                   </div>
 
                   <div>
-                    <label className="block text-sm font-medium text-gray-700 mb-2">
+                    <label className="block mb-2 text-sm font-medium text-gray-700">
                       Email *
                     </label>
                     <input
@@ -593,7 +593,7 @@ const CartPage: React.FC = () => {
                   </div>
 
                   <div>
-                    <label className="block text-sm font-medium text-gray-700 mb-2">
+                    <label className="block mb-2 text-sm font-medium text-gray-700">
                       Alamat Lengkap *
                     </label>
                     <textarea
@@ -606,9 +606,9 @@ const CartPage: React.FC = () => {
                     />
                   </div>
 
-                  <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
+                  <div className="grid grid-cols-1 gap-6 md:grid-cols-2">
                     <div>
-                      <label className="block text-sm font-medium text-gray-700 mb-2">
+                      <label className="block mb-2 text-sm font-medium text-gray-700">
                         Kota *
                       </label>
                       <input
@@ -622,7 +622,7 @@ const CartPage: React.FC = () => {
                     </div>
                     
                     <div>
-                      <label className="block text-sm font-medium text-gray-700 mb-2">
+                      <label className="block mb-2 text-sm font-medium text-gray-700">
                         Kode Pos *
                       </label>
                       <input
@@ -637,7 +637,7 @@ const CartPage: React.FC = () => {
                   </div>
 
                   <div>
-                    <label className="block text-sm font-medium text-gray-700 mb-2">
+                    <label className="block mb-2 text-sm font-medium text-gray-700">
                       Catatan Tambahan <span className="text-red-500">*</span>
                     </label>
                     <textarea
@@ -656,20 +656,20 @@ const CartPage: React.FC = () => {
 
               {/* Order Summary */}
               <div className="lg:col-span-1">
-                <div className="bg-gray-50 rounded-2xl p-6 sticky top-4">
-                  <h3 className="text-lg font-semibold text-gray-900 mb-4">Ringkasan Pesanan</h3>
+                <div className="sticky p-6 bg-gray-50 rounded-2xl top-4">
+                  <h3 className="mb-4 text-lg font-semibold text-gray-900">Ringkasan Pesanan</h3>
                   
                   {/* Cart Items Summary */}
-                  <div className="space-y-3 mb-6">
+                  <div className="mb-6 space-y-3">
                     {cartItems.map((item: CartItem, index: number) => (
                       <div key={index} className="flex items-center space-x-3">
-                        <div className="w-12 h-12 bg-gray-100 rounded-lg overflow-hidden">
+                        <div className="w-12 h-12 overflow-hidden bg-gray-100 rounded-lg">
                           <Image
                             src={item.image}
                             alt={item.name}
                             width={48}
                             height={48}
-                            className="w-full h-full object-cover"
+                            className="object-cover w-full h-full"
                           />
                         </div>
                         <div className="flex-1 min-w-0">
@@ -685,7 +685,7 @@ const CartPage: React.FC = () => {
                   </div>
 
                   {/* Price Breakdown */}
-                  <div className="space-y-2 mb-6 pt-4 border-t border-gray-200">
+                  <div className="pt-4 mb-6 space-y-2 border-t border-gray-200">
                     <div className="flex justify-between text-sm">
                       <span className="text-gray-600">Subtotal</span>
                       <span className="font-medium">{formatPrice(subtotal)}</span>
@@ -710,8 +710,8 @@ const CartPage: React.FC = () => {
                       <span className="text-gray-600">Ongkir</span>
                       <span className="font-medium">{formatPrice(shipping)}</span>
                     </div>
-                    <div className="border-t border-gray-200 pt-2">
-                      <div className="flex justify-between items-center">
+                    <div className="pt-2 border-t border-gray-200">
+                      <div className="flex items-center justify-between">
                         <span className="font-semibold text-gray-900">Total</span>
                         <span className="text-xl font-bold text-red-600">{formatPrice(total)}</span>
                       </div>
@@ -730,7 +730,7 @@ const CartPage: React.FC = () => {
                   >
                     {creating ? (
                       <>
-                        <svg className="animate-spin -ml-1 mr-3 h-5 w-5 text-white" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24">
+                        <svg className="w-5 h-5 mr-3 -ml-1 text-white animate-spin" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24">
                           <circle className="opacity-25" cx="12" cy="12" r="10" stroke="currentColor" strokeWidth="4"></circle>
                           <path className="opacity-75" fill="currentColor" d="M4 12a8 8 0 018-8V0C5.373 0 0 5.373 0 12h4zm2 5.291A7.962 7.962 0 014 12H0c0 3.042 1.135 5.824 3 7.938l3-2.647z"></path>
                         </svg>

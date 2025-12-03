@@ -90,7 +90,7 @@ const ProductDetail: React.FC = () => {
   const transactions = orders || [];
 
   // Load product from API
-  const { product, loading, error } = useProduct(productId);
+  const { data: product, loading, error } = useProduct(productId);
 
   useEffect(() => {
     if (product && product.colors && Array.isArray(product.colors) && product.colors.length > 0) {
@@ -441,9 +441,9 @@ const ProductDetail: React.FC = () => {
                   <span className="bg-red-100 text-red-800 text-xs font-semibold px-2.5 py-0.5 rounded">
                     {product.serial}
                   </span>
-                  {product.discount && (
+                  {product.salePrice && product.originalPrice && product.salePrice < product.originalPrice && (
                     <span className="bg-green-100 text-green-800 text-xs font-semibold px-2.5 py-0.5 rounded">
-                      {product.discount} OFF
+                      {Math.round(((product.originalPrice - product.salePrice) / product.originalPrice) * 100)}% OFF
                     </span>
                   )}
                   {product.inStock ? (
@@ -462,7 +462,7 @@ const ProductDetail: React.FC = () => {
                 {/* Price */}
                 <div className="flex items-baseline mb-4 space-x-2">
                   <span className="text-3xl font-bold text-red-600">{product.price}</span>
-                  {product.discount && (
+                  {product.salePrice && product.originalPrice && product.salePrice < product.originalPrice && (
                     <span className="text-lg text-gray-500 line-through">
                       Rp. {(product.originalPrice).toLocaleString('id-ID')}
                     </span>
@@ -612,7 +612,7 @@ const ProductDetail: React.FC = () => {
             <h2 className="mb-6 text-2xl font-bold">Detail Produk</h2>
             <div 
               className="prose prose-lg max-w-none"
-              dangerouslySetInnerHTML={{ __html: product.detailDescription }}
+              dangerouslySetInnerHTML={{ __html: product.detailedDescription }}
               style={{
                 '--tw-prose-headings': '#1f2937',
                 '--tw-prose-body': '#374151',

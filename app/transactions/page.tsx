@@ -49,7 +49,7 @@ const TransactionsPage: React.FC = () => {
   const [activeTab, setActiveTab] = useState<'history' | 'checkout'>('history');
   const [selectedTransaction, setSelectedTransaction] = useState<Transaction | null>(null);
   const [showCustomerForm, setShowCustomerForm] = useState(false);
-  const { siteConfig, loading: siteConfigLoading } = useSiteConfig();
+  const { data: siteConfig, loading: siteConfigLoading } = useSiteConfig();
   const { getWhatsAppNumber } = useCheckout();
   const [customerInfo, setCustomerInfo] = useState<CustomerInfo>({
     name: '',

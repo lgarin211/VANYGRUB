@@ -26,8 +26,8 @@ const ProductList: React.FC = () => {
   const [showMobileFilters, setShowMobileFilters] = useState(false);
 
   // Load data from API with fallback
-  const { products, loading: productsLoading } = useProducts({ search: searchTerm });
-  const { categories: rawCategories, loading: categoriesLoading } = useCategories();
+  const { data: products, loading: productsLoading } = useProducts({ search: searchTerm });
+  const { data: rawCategories, loading: categoriesLoading } = useCategories();
   
   const isLoading = productsLoading || categoriesLoading;
   
@@ -48,6 +48,9 @@ const ProductList: React.FC = () => {
   
   // Generate serials and price ranges from products
   const serials = useMemo(() => {
+    if (!products || !Array.isArray(products)) {
+      return ['Semua'];
+    }
     const uniqueSerials = ['Semua', ...Array.from(new Set(products.map((p: Product) => p.serial)))];
     return uniqueSerials;
   }, [products]);
@@ -61,7 +64,7 @@ const ProductList: React.FC = () => {
   ];
 
   // Filter products
-  const filteredProducts = products.filter((product: Product) => {
+  const filteredProducts = (products || []).filter((product: Product) => {
     const matchesSearch = product.name.toLowerCase().includes(searchTerm.toLowerCase());
     const matchesCategory = selectedCategory === 'Semua Kategori' || product.category === selectedCategory;
     const matchesSerial = selectedSerial === 'Semua' || product.serial === selectedSerial;
@@ -148,9 +151,9 @@ const ProductList: React.FC = () => {
                 <div>
                   <h3 className="font-semibold text-gray-700 mb-3">Serial</h3>
                   <div className="flex flex-wrap gap-2">
-                    {serials.map(serial => (
+                    {serials.map((serial: any) => (
                       <button
-                        key={serial}
+                        key={String(serial)}
                         className={`px-4 py-2 text-sm rounded-lg ${
                           selectedSerial === serial
                             ? 'bg-red-800 text-white'
@@ -222,9 +225,9 @@ const ProductList: React.FC = () => {
             <div className="mb-6">
               <h3 className="font-semibold text-gray-700 mb-3">Serial</h3>
               <div className="flex flex-wrap gap-2">
-                {serials.map(serial => (
+                {serials.map((serial: any) => (
                   <button
-                    key={serial}
+                    key={String(serial)}
                     className={`px-3 py-1 text-sm rounded ${
                       selectedSerial === serial
                         ? 'bg-red-800 text-white'
