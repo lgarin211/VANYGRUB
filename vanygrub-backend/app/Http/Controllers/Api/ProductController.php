@@ -182,10 +182,10 @@ class ProductController extends Controller
             'manageStock' => $product->manage_stock,
             'inStock' => $product->in_stock,
             'status' => $product->status,
-            'image' => $product->image ? url('storage/' . $product->image) : null,
-            'mainImage' => $product->main_image ? url('storage/' . $product->main_image) : null,
+            'image' => $this->formatImageUrl($product->image),
+            'mainImage' => $this->formatImageUrl($product->main_image),
             'gallery' => $product->gallery ? array_map(function ($image) {
-                return url('storage/' . $image);
+                return $this->formatImageUrl($image);
             }, $product->gallery) : [],
             'weight' => $product->weight,
             'dimensions' => $product->dimensions,
@@ -205,5 +205,29 @@ class ProductController extends Controller
             'createdAt' => $product->created_at->toISOString(),
             'updatedAt' => $product->updated_at->toISOString()
         ];
+    }
+
+    /**
+     * Format image URL helper
+     */
+    private function formatImageUrl($image)
+    {
+        if (!$image) {
+            return null;
+        }
+        
+        // If image starts with http, it's already a full URL
+        if (str_starts_with($image, 'http')) {
+            return $image;
+        }
+        
+        // Build URL from storage - try both paths for compatibility
+        if (str_contains($image, '/')) {
+            // Already has path structure
+            return url('/storage/' . $image);
+        } else {
+            // Just filename, assume it's in images folder
+            return url('/storage/images/' . $image);
+        }
     }
 }

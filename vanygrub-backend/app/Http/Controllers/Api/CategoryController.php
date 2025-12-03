@@ -18,16 +18,7 @@ class CategoryController extends Controller
             ->orderBy('sort_order')
             ->get()
             ->map(function ($category) {
-                return [
-                    'id' => $category->id,
-                    'name' => $category->name,
-                    'slug' => $category->slug,
-                    'description' => $category->description,
-                    'image' => $category->image,
-                    'isActive' => $category->is_active,
-                    'sortOrder' => $category->sort_order,
-                    'productsCount' => $category->products()->count()
-                ];
+                return $this->formatCategory($category);
             });
 
         return response()->json([
@@ -64,28 +55,22 @@ class CategoryController extends Controller
     public function show(string $id)
     {
         $category = Category::with('products')->findOrFail($id);
+        
+        $categoryData = $this->formatCategory($category);
+        $categoryData['products'] = $category->products->map(function ($product) {
+            return [
+                'id' => $product->id,
+                'name' => $product->name,
+                'slug' => $product->slug,
+                'price' => (float) $product->price,
+                'salePrice' => $product->sale_price ? (float) $product->sale_price : null,
+                'image' => $this->formatImageUrl($product->image),
+                'inStock' => $product->in_stock
+            ];
+        });
 
         return response()->json([
-            'data' => [
-                'id' => $category->id,
-                'name' => $category->name,
-                'slug' => $category->slug,
-                'description' => $category->description,
-                'image' => $category->image,
-                'isActive' => $category->is_active,
-                'sortOrder' => $category->sort_order,
-                'products' => $category->products->map(function ($product) {
-                    return [
-                        'id' => $product->id,
-                        'name' => $product->name,
-                        'slug' => $product->slug,
-                        'price' => (float) $product->price,
-                        'salePrice' => $product->sale_price ? (float) $product->sale_price : null,
-                        'image' => $product->image,
-                        'inStock' => $product->in_stock
-                    ];
-                })
-            ],
+            'data' => $categoryData,
             'message' => 'Category retrieved successfully'
         ]);
     }
@@ -133,5 +118,40 @@ class CategoryController extends Controller
         return response()->json([
             'message' => 'Category deleted successfully'
         ]);
+    }
+
+    /**
+     * Format image URL helper
+     */
+    private function formatImageUrl($image)
+    {
+        if (!$image) {
+            return null;
+        }
+        
+        // If image starts with http, it's already a full URL
+        if (str_starts_with($image, 'http')) {
+            return $image;
+        }
+        
+        // Build URL from storage
+        return url('/storage/images/' . $image);
+    }
+
+    /**
+     * Format category data for API response
+     */
+    private function formatCategory($category)
+    {
+        return [
+            'id' => $category->id,
+            'name' => $category->name,
+            'slug' => $category->slug,
+            'description' => $category->description,
+            'image' => $this->formatImageUrl($category->image),
+            'isActive' => $category->is_active,
+            'sortOrder' => $category->sort_order,
+            'productsCount' => $category->products()->count()
+        ];
     }
 }
