@@ -1,9 +1,10 @@
 @extends('layouts.app')
 
-@section('title', 'VNY - Premium Sneakers Collection')
+@section('title', 'VANY GROUP - Exclusive Batak Ethnic Collection')
 
 @section('styles')
 @import url("https://fonts.googleapis.com/css2?family=Poppins:ital,wght@0,100;0,200;0,300;0,400;0,500;0,600;0,700;0,800;0,900;1,100;1,200;1,300;1,400;1,500;1,600;1,700;1,800;1,900&display=swap");
+@import url('https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,400;0,500;0,600;0,700;0,800;0,900;1,400;1,500;1,600;1,700;1,800;1,900&display=swap');
 
 * {
   margin: 0;
@@ -15,15 +16,18 @@ body {
   font-family: "Poppins", sans-serif;
   background: #fafafa url('https://asset.kompas.com/crops/eV3pVhsTUUlB_nffNUO84gOd4UQ=/34x11:951x622/750x500/data/photo/2022/02/28/621c6c100fc46.jpg') repeat;
   background-size: 300px 200px;
-  opacity: 0.9;
+  opacity: 1;
   min-height: 100vh;
   display: flex;
   flex-direction: column;
   align-items: center;
-  justify-content: center;
+  justify-content: flex-start;
   user-select: none;
-  padding: 40px 20px;
+  padding: 20px 15px;
   position: relative;
+  overflow-x: hidden;
+  height: 100dvh;
+  overflow: hidden !important;
 }
 
 body::before {
@@ -40,13 +44,16 @@ body::before {
 
 .header {
   text-align: center;
-  margin-bottom: 60px;
+  margin-bottom: 40px;
+  margin-top: 20px;
   position: relative;
   z-index: 1;
+  width: 100%;
+  max-width: 100%;
 }
 
 .subtitle {
-  color: #ff6b35;
+  color: maroon;
   font-size: 14px;
   font-weight: 700;
   text-transform: uppercase;
@@ -55,10 +62,20 @@ body::before {
 }
 
 .main-title {
-  font-size: clamp(36px, 5vw, 56px);
-  font-weight: 900;
+  font-size: clamp(48px, 6vw, 72px);
+  font-weight: 700;
+  letter-spacing: 6px;
   color: #0a0a0a;
-  line-height: 1.1;
+  line-height: 1.2;
+  font-family: 'Playfair Display', serif;
+  text-transform: uppercase;
+  text-shadow: 3px 3px 6px rgba(0, 0, 0, 0.3);
+  margin: 20px 0 40px 0;
+  background: linear-gradient(135deg, #800020, #9d0032, #b30045, #DAA520);
+  background-clip: text;
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+  font-style: italic;
 }
 
 .slider-container {
@@ -173,19 +190,23 @@ body::before {
 
 .card-info {
   position: fixed;
-  bottom: 80px;
+  top: 50%;
   left: 50%;
-  transform: translateX(-50%);
+  transform: translate(-50%, -50%);
   text-align: center;
   opacity: 0;
   pointer-events: none;
-  transition: opacity 0.6s ease;
+  transition: all 0.4s ease;
   z-index: 1001;
   max-width: 600px;
   padding: 1.5rem;
   background: #ff6b35;
-  box-shadow: 4px 3px 18px 4px #b7b7b721;
+  box-shadow: 0 10px 30px rgba(0, 0, 0, 0.3);
   min-width: 375px;
+  border-radius: 15px;
+  border: 2px solid rgba(255, 255, 255, 0.2);
+  backdrop-filter: blur(10px);
+  -webkit-backdrop-filter: blur(10px);
 }
 
 .card-info.visible {
@@ -212,8 +233,8 @@ body::before {
   right: 40px;
   width: 60px;
   height: 60px;
-  background: white;
-  border: none;
+  background: rgba(255, 255, 255, 0.95);
+  border: 2px solid rgba(255, 107, 53, 0.3);
   border-radius: 50%;
   display: flex;
   align-items: center;
@@ -223,7 +244,9 @@ body::before {
   opacity: 0;
   pointer-events: none;
   transition: all 0.3s ease;
-  box-shadow: 0 8px 25px rgba(0, 0, 0, 0.2);
+  box-shadow: 0 8px 25px rgba(0, 0, 0, 0.25);
+  -webkit-tap-highlight-color: transparent;
+  touch-action: manipulation;
 }
 
 .close-btn.visible {
@@ -351,37 +374,48 @@ body::before {
 }
 
 .gallery2-modal-nav {
-  position: absolute;
-  top: 50%;
-  transform: translateY(-50%);
-  background: linear-gradient(45deg, rgba(128, 0, 0, 0.3), rgba(0, 0, 0, 0.3));
-  backdrop-filter: blur(15px);
-  border: none;
-  border-radius: 50%;
-  width: 70px;
-  height: 70px;
-  color: white;
+  position: absolute !important;
+  top: 50% !important;
+  transform: translateY(-50%) !important;
+  background: rgba(0, 0, 0, 0.8) !important;
+  backdrop-filter: blur(10px);
+  border: 2px solid rgba(255, 255, 255, 0.4) !important;
+  border-radius: 50% !important;
+  width: 70px !important;
+  height: 70px !important;
+  color: white !important;
   cursor: pointer;
-  display: flex;
-  align-items: center;
-  justify-content: center;
+  display: flex !important;
+  align-items: center !important;
+  justify-content: center !important;
   transition: all 0.3s ease;
-  z-index: 2001;
-  border: 1px solid rgba(255, 255, 255, 0.2);
+  z-index: 2001 !important;
+  box-shadow: 0 4px 15px rgba(0, 0, 0, 0.3) !important;
+  font-size: 20px !important;
+  font-weight: bold !important;
+  visibility: visible !important;
+  opacity: 1 !important;
 }
 
 .gallery2-modal-nav:hover {
-  background: linear-gradient(45deg, rgba(128, 0, 0, 0.5), rgba(0, 0, 0, 0.5));
-  transform: translateY(-50%) scale(1.15);
-  box-shadow: 0 15px 30px rgba(128, 0, 0, 0.4);
+  background: rgba(128, 0, 0, 0.9);
+  transform: translateY(-50%) scale(1.1);
+  box-shadow: 0 8px 25px rgba(128, 0, 0, 0.6);
+  border-color: rgba(255, 255, 255, 0.6);
 }
 
 .gallery2-modal-prev {
-  left: 25px;
+  left: 25px !important;
+  display: flex !important;
+  visibility: visible !important;
+  opacity: 1 !important;
 }
 
 .gallery2-modal-next {
-  right: 25px;
+  right: 25px !important;
+  display: flex !important;
+  visibility: visible !important;
+  opacity: 1 !important;
 }
 
 .gallery2-modal-info {
@@ -470,32 +504,164 @@ body::before {
   border: 1px solid rgba(255, 255, 255, 0.1);
 }
 
+/* Swipe Indicator */
+.swipe-indicator {
+  position: fixed;
+  bottom: 30px;
+  left: 50%;
+  transform: translateX(-50%);
+  background: rgba(0, 0, 0, 0.7);
+  backdrop-filter: blur(10px);
+  color: white;
+  padding: 12px 20px;
+  border-radius: 25px;
+  font-size: 14px;
+  font-weight: 500;
+  text-align: center;
+  z-index: 999;
+  opacity: 1;
+  transition: opacity 0.5s ease;
+  border: 1px solid rgba(255, 255, 255, 0.2);
+  display: flex;
+  align-items: center;
+  gap: 8px;
+}
+
+.swipe-indicator.hidden {
+  opacity: 0;
+  pointer-events: none;
+}
+
+.swipe-indicator .swipe-icon {
+  display: inline-flex;
+  align-items: center;
+  animation: swipeAnimation 2s infinite;
+}
+
+@keyframes swipeAnimation {
+  0%, 100% {
+    transform: translateX(0);
+  }
+  25% {
+    transform: translateX(-5px);
+  }
+  75% {
+    transform: translateX(5px);
+  }
+}
+
+.swipe-arrows {
+  display: flex;
+  align-items: center;
+  gap: 4px;
+}
+
+.swipe-arrow {
+  font-size: 16px;
+  opacity: 0.8;
+}
+
+/* Desktop Override - popup at bottom for large screens */
+@media (min-width: 1025px) {
+  .card-info {
+    top: auto;
+    bottom: 80px;
+    left: 50%;
+    transform: translateX(-50%);
+  }
+}
+
 /* Responsive Design */
+@media (max-width: 1024px) and (min-width: 769px) {
+  body {
+    padding: 30px 20px;
+    justify-content: center;
+  }
+
+  .header {
+    margin-bottom: 50px;
+    margin-top: 0;
+  }
+
+  .main-title {
+    font-size: 56px;
+    letter-spacing: 5px;
+    margin: 18px 0 35px 0;
+  }
+}
+
 @media (max-width: 768px) {
+  body {
+    padding: 15px 10px;
+    justify-content: flex-start;
+    background-size: 200px 150px;
+    width: 100dvw;
+    height: 100dvh;
+  }
+
+  .gallery2-modal-overlay {
+    width: 100dvw;
+    height: 100dvh;
+  }
+
+  .header {
+    margin-bottom: 30px;
+    margin-top: 2rem;
+    transform: scale(2);
+  }
+
   .gallery2-page {
-    padding: 20px 10px;
+    padding: 15px 10px;
   }
 
   .main-title {
     font-size: 32px;
+    letter-spacing: 3px;
+    margin: 10px 0 25px 0;
+    line-height: 1.1;
+  }
+
+  .subtitle {
+    font-size: 12px;
+    letter-spacing: 1.5px;
+    margin-bottom: 12px;
   }
 
   .card {
-    width: 180px;
+    width: 160px;
+    margin: 0 4px;
+  }
+
+  .slider-container {
+    padding: 0 10px;
+    max-width: 100%;
+  }
+
+  .slider-track {
+    gap: 6px;
   }
 
   .card-info {
-    min-width: 300px;
+    position: fixed;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    min-width: calc(100vw - 40px);
+    max-width: calc(100vw - 40px);
     padding: 1rem;
-    bottom: 60px;
+    margin: 0;
+    border-radius: 12px;
+    bottom: auto;
   }
 
   .card-info h2 {
-    font-size: 28px;
+    font-size: 22px;
+    margin-bottom: 12px;
   }
 
   .card-info p {
-    font-size: 16px;
+    font-size: 14px;
+    line-height: 1.5;
   }
 
   .close-btn {
@@ -503,34 +669,173 @@ body::before {
     right: 20px;
     width: 50px;
     height: 50px;
+    min-height: 44px;
+    min-width: 44px;
   }
 
   .close-btn svg {
     width: 20px;
     height: 20px;
   }
-}
+}@media (max-width: 480px) {
+  body {
+    padding: 10px 8px;
+    background-size: 150px 100px;
+    width: 100dvw;
+    height: 100dvh;
+  }
 
-@media (max-width: 480px) {
+  .gallery2-modal-overlay {
+    width: 100dvw;
+    height: 100dvh;
+  }
+
+  .header {
+    margin-bottom: 20px;
+    margin-top: 5px;
+  }
+
   .main-title {
-    font-size: 28px;
+    font-size: 24px;
+    letter-spacing: 1.5px;
+    margin: 8px 0 20px 0;
+    line-height: 1;
+  }
+
+  .subtitle {
+    font-size: 10px;
+    letter-spacing: 1px;
+    margin-bottom: 10px;
   }
 
   .card {
-    width: 140px;
+    width: 130px;
+    margin: 0 3px;
+  }
+
+  .slider-container {
+    padding: 0 5px;
+  }
+
+  .slider-track {
+    gap: 4px;
   }
 
   .card-info {
-    min-width: 280px;
-    bottom: 40px;
+    position: fixed;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    min-width: calc(100vw - 30px);
+    max-width: calc(100vw - 30px);
+    padding: 0.8rem;
+    margin: 0;
+    border-radius: 10px;
+    bottom: auto;
   }
 
   .card-info h2 {
-    font-size: 24px;
+    font-size: 18px;
+    margin-bottom: 10px;
   }
 
   .card-info p {
-    font-size: 14px;
+    font-size: 12px;
+    line-height: 1.4;
+  }
+
+  .close-btn {
+    top: 15px;
+    right: 15px;
+    width: 48px;
+    height: 48px;
+    min-height: 44px;
+    min-width: 44px;
+  }
+
+  .close-btn svg {
+    width: 18px;
+    height: 18px;
+  }
+}/* Extra Small Mobile */
+@media (max-width: 360px) {
+  body {
+    padding: 8px 5px;
+    background-size: 120px 80px;
+    width: 100dvw;
+    height: 100dvh;
+  }
+
+  .gallery2-modal-overlay {
+    width: 100dvw;
+    height: 100dvh;
+  }
+
+  .header {
+    margin-bottom: 15px;
+    margin-top: 0;
+  }
+
+  .main-title {
+    font-size: 20px;
+    letter-spacing: 1px;
+    margin: 5px 0 15px 0;
+  }
+
+  .subtitle {
+    font-size: 9px;
+    letter-spacing: 0.5px;
+    margin-bottom: 8px;
+  }
+
+  .card {
+    width: 110px;
+    margin: 0 2px;
+  }
+
+  .slider-container {
+    padding: 0 3px;
+  }
+
+  .slider-track {
+    gap: 3px;
+  }
+
+  .card-info {
+    position: fixed;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    min-width: calc(100vw - 20px);
+    max-width: calc(100vw - 20px);
+    padding: 0.7rem;
+    margin: 0;
+    border-radius: 8px;
+    bottom: auto;
+  }
+
+  .card-info h2 {
+    font-size: 16px;
+    margin-bottom: 8px;
+  }
+
+  .card-info p {
+    font-size: 11px;
+    line-height: 1.3;
+  }
+
+  .close-btn {
+    top: 10px;
+    right: 10px;
+    width: 46px;
+    height: 46px;
+    min-height: 44px;
+    min-width: 44px;
+  }
+
+  .close-btn svg {
+    width: 16px;
+    height: 16px;
   }
 }
 
@@ -557,34 +862,177 @@ body::before {
 }
 
 @media (max-width: 768px) {
+  .gallery2-modal-content {
+    max-width: 95vw;
+    max-height: 90vh;
+    margin: 20px;
+  }
+
+  .gallery2-modal-close {
+    top: 15px;
+    right: 15px;
+    width: 50px;
+    height: 50px;
+    min-height: 44px;
+    min-width: 44px;
+    -webkit-tap-highlight-color: transparent;
+    touch-action: manipulation;
+  }
+
   .gallery2-modal-info {
-    padding: 30px;
+    padding: 25px;
   }
 
   .gallery2-modal-title {
-    font-size: 28px;
+    font-size: 24px;
   }
 
   .gallery2-modal-description {
-    font-size: 15px;
+    font-size: 14px;
+    line-height: 1.5;
   }
 
   .gallery2-modal-actions {
     flex-direction: column;
-  }
-
-  .gallery2-modal-nav {
-    width: 60px;
-    height: 60px;
+    gap: 10px;
   }
 
   .gallery2-modal-image-container {
-    min-height: 350px;
+    min-height: 250px;
+  }
+}
+
+@media (max-width: 480px) {
+  .gallery2-modal-content {
+    max-width: 98vw;
+    max-height: 85vh;
+    margin: 10px;
+    border-radius: 15px;
+  }
+
+  .gallery2-modal-close {
+    top: 10px;
+    right: 10px;
+    width: 46px;
+    height: 46px;
+  }
+
+  .gallery2-modal-nav {
+    width: 50px;
+    height: 50px;
+    background: rgba(0, 0, 0, 0.95);
+    border: 3px solid white;
+    box-shadow: 0 4px 15px rgba(0, 0, 0, 0.7);
+    font-size: 16px;
+    font-weight: bold;
+  }
+
+  .gallery2-modal-nav:hover {
+    background: rgba(128, 0, 0, 1);
+    transform: translateY(-50%) scale(1.05);
+  }
+
+  .gallery2-modal-prev {
+    left: 10px !important;
+    display: flex !important;
+    visibility: visible !important;
+    opacity: 1 !important;
+  }
+
+  .gallery2-modal-next {
+    right: 10px !important;
+    display: flex !important;
+    visibility: visible !important;
+    opacity: 1 !important;
+  }
+
+  .gallery2-modal-info {
+    padding: 20px;
+  }
+
+  .gallery2-modal-title {
+    font-size: 20px;
+    margin-bottom: 10px;
+  }
+
+  .gallery2-modal-description {
+    font-size: 13px;
+    line-height: 1.4;
+  }
+
+  .gallery2-modal-image-container {
+    min-height: 200px;
   }
 
   .gallery2-modal-image {
-    padding: 30px;
+    padding: 15px;
   }
+}
+
+@media (max-width: 360px) {
+  .gallery2-modal-content {
+    max-width: 100vw;
+    max-height: 80vh;
+    margin: 5px;
+    border-radius: 12px;
+  }
+
+  .gallery2-modal-close {
+    top: 8px;
+    right: 8px;
+    width: 44px;
+    height: 44px;
+  }
+
+  .gallery2-modal-nav {
+    width: 48px;
+    height: 48px;
+    background: rgba(0, 0, 0, 0.95);
+    border: 3px solid white;
+    box-shadow: 0 4px 15px rgba(0, 0, 0, 0.8);
+    font-size: 14px;
+    font-weight: bold;
+  }
+
+  .gallery2-modal-nav:hover {
+    background: rgba(128, 0, 0, 1);
+  }
+
+  .gallery2-modal-prev {
+    left: 8px !important;
+    display: flex !important;
+    visibility: visible !important;
+    opacity: 1 !important;
+  }
+
+  .gallery2-modal-next {
+    right: 8px !important;
+    display: flex !important;
+    visibility: visible !important;
+    opacity: 1 !important;
+  }
+
+  .gallery2-modal-info {
+    padding: 15px;
+  }
+
+  .gallery2-modal-title {
+    font-size: 18px;
+    margin-bottom: 8px;
+  }
+
+  .gallery2-modal-description {
+    font-size: 12px;
+  }
+
+  .gallery2-modal-image-container {
+    min-height: 180px;
+  }
+
+  .gallery2-modal-image {
+    padding: 10px;
+  }
+}
 }
 
 @media (max-width: 480px) {
@@ -608,16 +1056,25 @@ body::before {
   }
 
   .gallery2-modal-nav {
-    width: 50px;
-    height: 50px;
+    width: 55px;
+    height: 55px;
+    background: rgba(0, 0, 0, 0.9);
+    border: 2px solid rgba(255, 255, 255, 0.8);
+    box-shadow: 0 6px 20px rgba(0, 0, 0, 0.5);
+    font-size: 18px;
+  }
+
+  .gallery2-modal-nav:hover {
+    background: rgba(128, 0, 0, 1);
+    border-color: white;
   }
 
   .gallery2-modal-prev {
-    left: 20px;
+    left: 15px;
   }
 
   .gallery2-modal-next {
-    right: 20px;
+    right: 15px;
   }
 
   .gallery2-modal-btn {
@@ -646,6 +1103,15 @@ body::before {
     <div class="slider-track" id="sliderTrack">
       <!-- Gallery items will be loaded here via JavaScript -->
     </div>
+  </div>
+
+  <!-- Swipe Indicator -->
+  <div class="swipe-indicator" id="swipeIndicator">
+    <div class="swipe-arrows">
+      <span class="swipe-arrow">←</span>
+      <span class="swipe-arrow">→</span>
+    </div>
+    <span>Geser untuk navigasi</span>
   </div>
 
   <button class="close-btn" id="closeBtn">
@@ -711,6 +1177,23 @@ document.addEventListener('DOMContentLoaded', function() {
     let GALLERY_ITEMS = [];
     let selectedItem = null;
     let currentIndex = 0;
+    let hasInteracted = false;
+    const swipeIndicator = document.getElementById('swipeIndicator');
+
+    // Hide swipe indicator after user interaction
+    function hideSwipeIndicator() {
+        if (!hasInteracted) {
+            hasInteracted = true;
+            swipeIndicator.classList.add('hidden');
+        }
+    }
+
+    // Show swipe indicator initially and hide after 5 seconds if no interaction
+    setTimeout(() => {
+        if (!hasInteracted) {
+            hideSwipeIndicator();
+        }
+    }, 5000);
 
     // Load data from API
     fetch('https://vanyadmin.progesio.my.id/api/vny/homepage/constants')
@@ -1002,6 +1485,11 @@ document.addEventListener('DOMContentLoaded', function() {
         rotate(direction) {
             if (this.expandedCard) return;
 
+            // Hide swipe indicator on first interaction
+            if (typeof hideSwipeIndicator === 'function') {
+                hideSwipeIndicator();
+            }
+
             this.cards.forEach((card, index) => {
                 let newIndex;
                 if (direction === "next") {
@@ -1079,6 +1567,11 @@ document.addEventListener('DOMContentLoaded', function() {
 
         handleDragStart(e) {
             if (this.expandedCard) return;
+
+            // Hide swipe indicator on first interaction
+            if (typeof hideSwipeIndicator === 'function') {
+                hideSwipeIndicator();
+            }
 
             this.isDragging = true;
             this.container.classList.add("dragging");
