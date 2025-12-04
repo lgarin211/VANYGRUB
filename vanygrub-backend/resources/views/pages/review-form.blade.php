@@ -129,36 +129,58 @@ textarea.form-control {
 .rating-container {
     display: flex;
     align-items: center;
-    gap: 10px;
+    gap: 15px;
+    background: rgba(255, 215, 0, 0.05);
+    padding: 15px;
+    border-radius: 10px;
+    border: 2px solid rgba(255, 215, 0, 0.2);
 }
 
 .star-rating {
     display: flex;
-    gap: 5px;
+    gap: 8px;
 }
 
 .star {
-    font-size: 28px;
-    color: #ddd;
+    font-size: 32px;
+    color: #ccc;
     cursor: pointer;
-    transition: all 0.2s ease;
+    transition: all 0.3s ease;
     user-select: none;
+    text-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+    filter: drop-shadow(0 2px 4px rgba(0, 0, 0, 0.1));
+    position: relative;
+}
+
+.star::before {
+    content: '★';
+    position: absolute;
+    top: 0;
+    left: 0;
+    color: #e0e0e0;
+    z-index: 1;
+}
+
+.star:hover::before,
+.star.active::before {
+    color: #FFD700;
+    text-shadow: 0 0 10px rgba(255, 215, 0, 0.5);
 }
 
 .star:hover,
 .star.active {
-    color: #FFD700;
-    transform: scale(1.1);
+    transform: scale(1.15);
+    filter: drop-shadow(0 4px 8px rgba(255, 215, 0, 0.4));
 }
 
 .star.active {
-    animation: starPulse 0.3s ease;
+    animation: starPulse 0.5s ease;
 }
 
 @keyframes starPulse {
-    0% { transform: scale(1.1); }
+    0% { transform: scale(1.15); }
     50% { transform: scale(1.3); }
-    100% { transform: scale(1.1); }
+    100% { transform: scale(1.15); }
 }
 
 .rating-text {
@@ -308,7 +330,16 @@ textarea.form-control {
     }
 
     .star {
-        font-size: 24px;
+        font-size: 28px;
+    }
+
+    .rating-container {
+        gap: 10px;
+        padding: 12px;
+    }
+
+    .star-rating {
+        gap: 6px;
     }
 }
 
@@ -324,7 +355,19 @@ textarea.form-control {
     }
 
     .star {
-        font-size: 20px;
+        font-size: 24px;
+    }
+
+    .rating-container {
+        flex-direction: column;
+        align-items: flex-start;
+        gap: 8px;
+        padding: 10px;
+    }
+
+    .star-rating {
+        gap: 4px;
+        align-self: center;
     }
 
     .rating-container {
@@ -380,16 +423,16 @@ textarea.form-control {
             </div>
 
             <div class="form-group">
-                <label class="form-label">Rating *</label>
+                <label class="form-label">Rating Produk *</label>
                 <div class="rating-container">
                     <div class="star-rating">
-                        <span class="star" data-rating="1">⭐</span>
-                        <span class="star" data-rating="2">⭐</span>
-                        <span class="star" data-rating="3">⭐</span>
-                        <span class="star" data-rating="4">⭐</span>
-                        <span class="star" data-rating="5">⭐</span>
+                        <span class="star" data-rating="1">★</span>
+                        <span class="star" data-rating="2">★</span>
+                        <span class="star" data-rating="3">★</span>
+                        <span class="star" data-rating="4">★</span>
+                        <span class="star" data-rating="5">★</span>
                     </div>
-                    <span class="rating-text">Pilih rating</span>
+                    <span class="rating-text">Klik untuk memberikan rating</span>
                 </div>
                 <input type="hidden" id="rating" name="rating" required>
             </div>
