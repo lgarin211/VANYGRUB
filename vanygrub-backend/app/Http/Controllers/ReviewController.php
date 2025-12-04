@@ -57,7 +57,17 @@ class ReviewController extends Controller
 
         // Check if review already exists for this token
         $existingReview = CustomerReview::where('review_token', $token)->first();
-        if ($existingReview) {
+
+        // If token doesn't exist in database at all - invalid token
+        if (!$existingReview) {
+            return response()->json([
+                'success' => false,
+                'message' => 'Token review tidak valid'
+            ], 404);
+        }
+
+        // If review_text is already filled - review completed
+        if (!empty($existingReview->review_text)) {
             return response()->json([
                 'success' => false,
                 'message' => 'Review sudah pernah diberikan untuk kode ini'
@@ -174,18 +184,19 @@ class ReviewController extends Controller
                 }
             }
 
-            // Create review
-            $review = CustomerReview::create([
+            // Update existing review record
+            $existingReview->update([
                 'order_id' => $order && isset($order->id) ? $order->id : null, // Allow null for manual reviews
                 'customer_name' => $request->customer_name,
                 'customer_email' => 'guest@vanygrub.com', // Default email for manual reviews
                 'photo_url' => $photoUrl ?? '',
                 'review_text' => $request->review_text,
                 'rating' => $request->rating,
-                'review_token' => $token, // Use the provided token
                 'is_approved' => false, // Need admin approval
                 'is_featured' => false,
             ]);
+
+            $review = $existingReview;
 
             return response()->json([
                 'success' => true,
