@@ -513,7 +513,7 @@ document.addEventListener('DOMContentLoaded', function() {
                 // Show success message with back to shop button
                 const successAlert = document.createElement('div');
                 successAlert.className = 'alert alert-success';
-                successAlert.innerHTML = '<strong>Berhasil!</strong><br>' + data.message + 
+                successAlert.innerHTML = '<strong>Berhasil!</strong><br>' + data.message +
                     '<div style="text-align: center; margin-top: 20px;">' +
                     '<a href="https://vanygroup.id/vny" class="btn-back-shop">🛍️ Kembali Belanja</a>' +
                     '</div>';
