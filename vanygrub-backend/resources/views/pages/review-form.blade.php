@@ -246,6 +246,32 @@ textarea.form-control {
     box-shadow: none;
 }
 
+/* Back to Shop Button */
+.btn-back-shop {
+    display: inline-block;
+    background: linear-gradient(135deg, #CD853F, #8B0000);
+    color: white;
+    text-decoration: none;
+    padding: 16px 32px;
+    border-radius: 12px;
+    font-size: 16px;
+    font-weight: 600;
+    font-family: 'Poppins', sans-serif;
+    text-align: center;
+    transition: all 0.3s ease;
+    text-transform: uppercase;
+    letter-spacing: 1px;
+    margin-top: 20px;
+    box-shadow: 0 5px 15px rgba(205, 133, 63, 0.3);
+}
+
+.btn-back-shop:hover {
+    transform: translateY(-2px);
+    box-shadow: 0 10px 25px rgba(205, 133, 63, 0.5);
+    text-decoration: none;
+    color: white;
+}
+
 /* Success/Error Messages */
 .alert {
     padding: 15px 20px;
@@ -484,10 +510,13 @@ document.addEventListener('DOMContentLoaded', function() {
         .then(response => response.json())
         .then(data => {
             if (data.success) {
-                // Show success message
+                // Show success message with back to shop button
                 const successAlert = document.createElement('div');
                 successAlert.className = 'alert alert-success';
-                successAlert.innerHTML = '<strong>Berhasil!</strong><br>' + data.message;
+                successAlert.innerHTML = '<strong>Berhasil!</strong><br>' + data.message + 
+                    '<div style="text-align: center; margin-top: 20px;">' +
+                    '<a href="https://vanygroup.id/vny" class="btn-back-shop">🛍️ Kembali Belanja</a>' +
+                    '</div>';
 
                 reviewForm.parentNode.insertBefore(successAlert, reviewForm);
                 reviewForm.style.display = 'none';
