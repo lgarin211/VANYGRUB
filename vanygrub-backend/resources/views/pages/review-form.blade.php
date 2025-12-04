@@ -341,22 +341,16 @@ textarea.form-control {
         <p class="review-subtitle">Bagikan pengalaman Anda dengan produk VANY GROUP</p>
     </div>
 
-    @if($existingReview)
-        <div class="alert alert-success">
-            <strong>Review sudah diberikan!</strong><br>
-            Terima kasih, Anda sudah memberikan review untuk order ini pada {{ $existingReview->created_at->format('d M Y H:i') }}.
-        </div>
-    @else
-        <div class="order-info">
-            <h3>Informasi Review</h3>
-            <p><strong>Kode Review:</strong> {{ $token }}</p>
-            <p><strong>Tanggal:</strong> {{ now()->format('d M Y H:i') }}</p>
-            @if(is_object($order) && isset($order->id))
-                <p><strong>Status:</strong> Order ditemukan di sistem</p>
-            @else
-                <p><strong>Terimakasih Sudah Membeli Produk kami</strong></p>
-            @endif
-        </div>
+    <div class="order-info">
+        <h3>Informasi Review</h3>
+        <p><strong>Kode Review:</strong> {{ $token }}</p>
+        <p><strong>Tanggal:</strong> {{ now()->format('d M Y H:i') }}</p>
+        @if(is_object($order) && isset($order->id))
+            <p><strong>Status:</strong> Order ditemukan di sistem</p>
+        @else
+            <p><strong>Status:</strong> Terima kasih sudah membeli produk kami</p>
+        @endif
+    </div>
 
         <form id="reviewForm" enctype="multipart/form-data">
             @csrf
@@ -404,7 +398,6 @@ textarea.form-control {
                 <span class="btn-text">Kirim Review</span>
             </button>
         </form>
-    @endif
 </div>
 
 <script>

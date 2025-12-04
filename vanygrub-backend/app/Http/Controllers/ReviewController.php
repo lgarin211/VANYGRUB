@@ -11,25 +11,38 @@ use Illuminate\Support\Facades\Validator;
 class ReviewController extends Controller
 {
     /**
-     * Show the review form for a specific order token
+     * Show the review form for a specific review token
      */
     public function show($token)
     {
-        // Try to find the order by token, but don't require it
-        $order = Order::where('order_number', $token)
-            ->first();
-
-        // Check if review already exists for this token
+        // Check if this token exists in the customer_reviews table
         $existingReview = CustomerReview::where('review_token', $token)->first();
-
-        // Create a mock order object if no real order exists
+        
+        // If token doesn't exist in database - invalid barcode
+        if (!$existingReview) {
+            return view('pages.review-invalid', compact('token'));
+        }
+        
+        // If token exists and review_text is already filled - review completed
+        if (!empty($existingReview->review_text)) {
+            return view('pages.review-completed', compact('existingReview', 'token'));
+        }
+        
+        // Token exists but review_text is empty - show form to fill review
+        // Try to find associated order
+        $order = null;
+        if ($existingReview->order_id) {
+            $order = Order::find($existingReview->order_id);
+        }
+        
+        // Create mock order if no real order found
         if (!$order) {
             $order = (object) [
                 'order_number' => $token,
-                'created_at' => now()
+                'created_at' => $existingReview->created_at ?? now()
             ];
         }
-
+        
         return view('pages.review-form', compact('order', 'existingReview', 'token'));
     }
 
