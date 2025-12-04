@@ -124,25 +124,25 @@ body {
     body {
         padding: 10px 5px;
     }
-    
+
     .error-container {
         padding: 35px 25px;
         margin: 20px auto;
     }
-    
+
     .error-title {
         font-size: 24px;
     }
-    
+
     .error-icon {
         font-size: 60px;
     }
-    
+
     .btn-group {
         flex-direction: column;
         align-items: center;
     }
-    
+
     .btn {
         width: 100%;
         max-width: 280px;
@@ -155,11 +155,11 @@ body {
         margin: 10px auto;
         border-radius: 15px;
     }
-    
+
     .error-title {
         font-size: 20px;
     }
-    
+
     .error-icon {
         font-size: 50px;
     }
@@ -170,7 +170,7 @@ body {
     <div class="error-icon">❌</div>
     <h1 class="error-title">Link Review Tidak Valid</h1>
     <p class="error-message">
-        Maaf, link review yang Anda akses tidak valid atau sudah tidak berlaku. 
+        Maaf, link review yang Anda akses tidak valid atau sudah tidak berlaku.
         Hal ini bisa terjadi karena beberapa alasan berikut:
     </p>
 

@@ -17,24 +17,24 @@ class ReviewController extends Controller
     {
         // Check if this token exists in the customer_reviews table
         $existingReview = CustomerReview::where('review_token', $token)->first();
-        
+
         // If token doesn't exist in database - invalid barcode
         if (!$existingReview) {
             return view('pages.review-invalid', compact('token'));
         }
-        
+
         // If token exists and review_text is already filled - review completed
         if (!empty($existingReview->review_text)) {
             return view('pages.review-completed', compact('existingReview', 'token'));
         }
-        
+
         // Token exists but review_text is empty - show form to fill review
         // Try to find associated order
         $order = null;
         if ($existingReview->order_id) {
             $order = Order::find($existingReview->order_id);
         }
-        
+
         // Create mock order if no real order found
         if (!$order) {
             $order = (object) [
@@ -42,7 +42,7 @@ class ReviewController extends Controller
                 'created_at' => $existingReview->created_at ?? now()
             ];
         }
-        
+
         return view('pages.review-form', compact('order', 'existingReview', 'token'));
     }
 

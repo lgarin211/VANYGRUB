@@ -164,25 +164,25 @@ body {
     body {
         padding: 10px 5px;
     }
-    
+
     .completed-container {
         padding: 35px 25px;
         margin: 20px auto;
     }
-    
+
     .completed-title {
         font-size: 24px;
     }
-    
+
     .completed-icon {
         font-size: 60px;
     }
-    
+
     .btn-group {
         flex-direction: column;
         align-items: center;
     }
-    
+
     .btn {
         width: 100%;
         max-width: 280px;
@@ -200,11 +200,11 @@ body {
         margin: 10px auto;
         border-radius: 15px;
     }
-    
+
     .completed-title {
         font-size: 20px;
     }
-    
+
     .completed-icon {
         font-size: 50px;
     }
@@ -215,18 +215,18 @@ body {
     <div class="completed-icon">✅</div>
     <h1 class="completed-title">Review Sudah Selesai!</h1>
     <p class="completed-message">
-        Terima kasih! Review Anda sudah berhasil diterima sebelumnya. 
+        Terima kasih! Review Anda sudah berhasil diterima sebelumnya.
         Kami sangat menghargai feedback yang telah Anda berikan.
     </p>
 
     <div class="review-summary">
         <h4>📝 Ringkasan Review Anda</h4>
-        
+
         <div class="review-item">
             <span class="label">Nama Customer:</span>
             <span class="value">{{ $existingReview->customer_name ?: 'Anonymous' }}</span>
         </div>
-        
+
         <div class="review-item">
             <span class="label">Rating:</span>
             <span class="value">
@@ -238,12 +238,12 @@ body {
                 ({{ $existingReview->rating ?: 0 }}/5)
             </span>
         </div>
-        
+
         <div class="review-item">
             <span class="label">Tanggal Review:</span>
             <span class="value">{{ $existingReview->created_at ? $existingReview->created_at->format('d M Y H:i') : '-' }}</span>
         </div>
-        
+
         <div class="review-item">
             <span class="label">Status:</span>
             <span class="value">{{ $existingReview->is_approved ? '✅ Disetujui' : '⏳ Menunggu Persetujuan' }}</span>
