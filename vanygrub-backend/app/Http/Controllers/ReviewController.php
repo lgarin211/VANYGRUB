@@ -17,7 +17,7 @@ class ReviewController extends Controller
     {
         // Try to find the order by token, but don't require it
         $order = Order::where('order_number', $token)
-                     ->first();
+            ->first();
 
         // Check if review already exists for this token
         $existingReview = CustomerReview::where('review_token', $token)->first();
@@ -40,7 +40,7 @@ class ReviewController extends Controller
     {
         // Try to find the order by token
         $order = Order::where('order_number', $token)
-                     ->first();
+            ->first();
 
         // Check if review already exists for this token
         $existingReview = CustomerReview::where('review_token', $token)->first();
@@ -83,7 +83,7 @@ class ReviewController extends Controller
             if ($request->hasFile('photo')) {
                 $photo = $request->file('photo');
                 $filename = 'review_' . time() . '_' . uniqid() . '.' . $photo->getClientOriginalExtension();
-                
+
                 // Create reviews directory if not exists
                 $reviewsPath = storage_path('app/public/reviews');
                 if (!file_exists($reviewsPath)) {
@@ -93,7 +93,7 @@ class ReviewController extends Controller
                 // Resize and optimize image using native PHP GD
                 $sourceImage = null;
                 $imageType = exif_imagetype($photo->getPathname());
-                
+
                 switch ($imageType) {
                     case IMAGETYPE_JPEG:
                         $sourceImage = imagecreatefromjpeg($photo->getPathname());
@@ -112,7 +112,7 @@ class ReviewController extends Controller
                     // Get original dimensions
                     $originalWidth = imagesx($sourceImage);
                     $originalHeight = imagesy($sourceImage);
-                    
+
                     // Calculate new dimensions (max 400x400 while maintaining aspect ratio)
                     $maxSize = 400;
                     if ($originalWidth > $originalHeight) {
@@ -122,19 +122,19 @@ class ReviewController extends Controller
                         $newHeight = $maxSize;
                         $newWidth = ($originalWidth / $originalHeight) * $maxSize;
                     }
-                    
+
                     // Create new image
                     $resizedImage = imagecreatetruecolor($newWidth, $newHeight);
-                    
+
                     // Preserve transparency for PNG
                     if ($imageType == IMAGETYPE_PNG) {
                         imagealphablending($resizedImage, false);
                         imagesavealpha($resizedImage, true);
                     }
-                    
+
                     // Resize image
                     imagecopyresampled($resizedImage, $sourceImage, 0, 0, 0, 0, $newWidth, $newHeight, $originalWidth, $originalHeight);
-                    
+
                     // Save resized image
                     $fullPath = $reviewsPath . '/' . $filename;
                     switch ($imageType) {
@@ -148,11 +148,11 @@ class ReviewController extends Controller
                             imagegif($resizedImage, $fullPath);
                             break;
                     }
-                    
+
                     // Clean up memory
                     imagedestroy($sourceImage);
                     imagedestroy($resizedImage);
-                    
+
                     $photoUrl = Storage::url('reviews/' . $filename);
                 } else {
                     // Fallback: just move the file without resizing
