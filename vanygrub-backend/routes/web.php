@@ -58,9 +58,8 @@ Route::get('/orders/{order}/invoice', [\App\Http\Controllers\OrderController::cl
     ->name('orders.invoice');
 
 // Customer Review routes
-Route::get('/review/{token}', function ($token) {
-    return redirect("https://www.vanygroup.id/review/{$token}");
-})->name('review.form');
+Route::get('/review/{token}', [App\Http\Controllers\ReviewController::class, 'show'])->name('review.form');
+Route::post('/review/{token}/store', [App\Http\Controllers\ReviewController::class, 'store'])->name('review.store');
 
 // QR Batch Routes
 Route::get('/qr/batch/paper-selection', [App\Http\Controllers\QrBatchController::class, 'selectPaper'])->name('qr.batch.paper-selection');

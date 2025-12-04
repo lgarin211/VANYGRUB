@@ -34,6 +34,12 @@ class CustomerReview extends Model
         return $this->belongsTo(Order::class, 'order_id');
     }
 
+    // Allow manual reviews without order
+    public function hasOrder()
+    {
+        return !is_null($this->order_id);
+    }
+
     // Generate unique review token
     public static function generateReviewToken()
     {
