@@ -1197,6 +1197,8 @@ body::before {
   transition: all 0.3s ease;
   text-transform: uppercase;
   letter-spacing: 0.5px;
+  text-decoration: none;
+  display: inline-block;
 }
 
 .btn-add-cart, .btn-explore, .btn-discover, .btn-discover-quality, .btn-learn-more {
@@ -1204,10 +1206,20 @@ body::before {
   color: #fff;
 }
 
+.btn-add-cart:hover, .btn-explore:hover, .btn-discover:hover, .btn-discover-quality:hover, .btn-learn-more:hover {
+  background: #333;
+  color: #fff;
+}
+
 .btn-view, .btn-explore-brand, .btn-discover-innovation {
   background: transparent;
   color: #000;
   border: 1px solid #000;
+}
+
+.btn-view:hover, .btn-explore-brand:hover, .btn-discover-innovation:hover {
+  background: #000;
+  color: #fff;
 }
 
 .hoodie-image {
@@ -1824,26 +1836,26 @@ body::before {
     <div class="brand-welcome-section">
       <div class="welcome-content">
         <div class="welcome-info">
-          <div class="welcome-badge">Welcome</div>
+          <div class="welcome-badge">Selamat Datang</div>
           <h1 class="welcome-title">VANY GROUP</h1>
-          <div class="welcome-tagline">Premium Lifestyle Collection</div>
+          <div class="welcome-tagline">Keunggulan Tradisi & Inovasi Modern</div>
           <p class="welcome-description">
-            Discover our premium lifestyle brands that combine traditional craftsmanship with modern design.
-            Each brand tells a unique story of quality, heritage, and innovation.
+            VANY GROUP adalah rumah bagi brand-brand premium yang menggabungkan kekayaan warisan budaya Indonesia
+            dengan desain kontemporer. Dari fashion hingga hospitality, setiap brand kami mencerminkan komitmen
+            terhadap kualitas, kerajinan tangan, dan pengalaman pelanggan yang luar biasa.
           </p>
           <div class="brand-highlights">
             <div class="highlight-item">
-              <span class="highlight-number">3</span>
-              <span class="highlight-text">Premium Brands</span>
+              <span class="highlight-number">3+</span>
+              <span class="highlight-text">Brand Premium</span>
             </div>
             <div class="highlight-item">
-              <span class="highlight-number">5+</span>
-              <span class="highlight-text">Years Experience</span>
+              <span class="highlight-number">100%</span>
+              <span class="highlight-text">Kualitas Terjamin</span>
             </div>
           </div>
           <div class="welcome-actions">
-            <button class="btn-explore">Explore Brands</button>
-            <button class="btn-story">Our Story</button>
+            <a href="#brands-section" class="btn-explore">Jelajahi Brand</a>
           </div>
         </div>
         <div class="welcome-image">
@@ -1857,8 +1869,8 @@ body::before {
     </div>
 
     <!-- Our Brands Section -->
-    <div class="brands-showcase-section">
-      <h2 class="section-title">Our Brands</h2>
+    <div class="brands-showcase-section" id="brands-section">
+      <h2 class="section-title">Brand Kami</h2>
       <div class="brands-preview">
         @if(isset($categories) && $categories->isNotEmpty())
           @foreach($categories->take(4) as $category)
@@ -1898,14 +1910,13 @@ body::before {
               {{ $featuredBrand->description ?? 'Discover premium quality products with meticulous attention to detail and traditional craftsmanship.' }}
             </p>
           @else
-            <h3 class="brand-featured-title">Premium Collection</h3>
+            <h3 class="brand-featured-title">Koleksi Premium VANY GROUP</h3>
             <p class="brand-description">
-              Discover premium quality products with meticulous attention to detail and traditional craftsmanship.
+              Temukan produk berkualitas premium dengan perhatian detail yang teliti dan kerajinan tradisional yang dipadukan dengan sentuhan modern untuk gaya hidup Anda.
             </p>
           @endif
           <div class="brand-actions">
-            <button class="btn-discover">Discover More</button>
-            <button class="btn-explore-brand">Explore Brand</button>
+            <a href="/vny" class="btn-explore-brand">Jelajahi Brand VNY</a>
           </div>
         </div>
       </div>
@@ -1923,14 +1934,14 @@ body::before {
         </div>
         <div class="feature-content-large">
           <div class="feature-number-large">01</div>
-          <h3 class="feature-title">Quality Craftsmanship</h3>
+          <h3 class="feature-title">Kualitas Kerajinan Tangan</h3>
           <p class="feature-desc">
-            Every product in the VANY GROUP collection represents our commitment to exceptional quality and
-            meticulous attention to detail, combining traditional techniques with modern innovation.
+            Setiap produk dalam koleksi VANY GROUP merepresentasikan komitmen kami terhadap kualitas luar biasa
+            dengan perhatian detail yang cermat. Kami menggabungkan teknik tradisional warisan budaya Indonesia
+            dengan inovasi modern untuk menciptakan produk yang timeless dan berkelas.
           </p>
           <div class="feature-actions">
-            <button class="btn-learn-more">Learn More</button>
-            <button class="btn-discover-quality">Discover Quality</button>
+            <a href="#portfolio-section" class="btn-learn-more">Pelajari Lebih Lanjut</a>
           </div>
         </div>
       </div>
@@ -1945,23 +1956,24 @@ body::before {
         </div>
         <div class="feature-content-large">
           <div class="feature-number-large">02</div>
-          <h3 class="feature-title">Heritage & Innovation</h3>
+          <h3 class="feature-title">Warisan Budaya & Inovasi</h3>
           <p class="feature-desc">
-            Bridging timeless heritage with contemporary design, our brands celebrate cultural richness while
-            embracing modern lifestyle needs and aesthetic preferences.
+            Menjembatani warisan budaya Indonesia yang kaya dengan desain kontemporer, brand-brand kami
+            merayakan kekayaan budaya lokal sambil memenuhi kebutuhan gaya hidup modern. VNY untuk fashion
+            kontemporer, VanySongket untuk kain tradisional berkualitas, dan VanyVilla untuk pengalaman
+            hospitality yang berkesan.
           </p>
           <div class="feature-actions">
-            <button class="btn-learn-more">Explore Heritage</button>
-            <button class="btn-discover-innovation">View Collection</button>
+            <a href="/vny/about" class="btn-learn-more">Jelajahi Warisan</a>
           </div>
         </div>
       </div>
     </div>
 
     <!-- Brand Portfolio Showcase -->
-    <div class="featured-products-section">
-      <h2 class="featured-products-title">Our Portfolio</h2>
-      <p class="featured-subtitle">Explore the diverse range of brands under VANY GROUP, each representing excellence in their respective domains</p>
+    <div class="featured-products-section" id="portfolio-section">
+      <h2 class="featured-products-title">Portofolio Brand Kami</h2>
+      <p class="featured-subtitle">Jelajahi beragam brand di bawah naungan VANY GROUP, masing-masing merepresentasikan keunggulan di bidangnya</p>
 
       <!-- Brand Category Filter -->
       <div class="brand-filter">
@@ -1996,48 +2008,48 @@ body::before {
             <div class="product-image-featured">
               <img src="https://images.unsplash.com/photo-1503341504253-dff4815485f1?w=250&h=350&fit=crop&crop=center" alt="VNY Collection">
             </div>
-            <h4 class="product-name-featured">VNY Heritage</h4>
-            <p class="product-category-featured">Modern Heritage</p>
+            <h4 class="product-name-featured">VNY Fashion</h4>
+            <p class="product-category-featured">Fashion Kontemporer</p>
           </div>
 
           <div class="product-card-featured">
             <div class="product-image-featured">
               <img src="https://images.unsplash.com/photo-1601924994987-69e26d50dc26?w=250&h=350&fit=crop&crop=center" alt="VanySongket">
             </div>
-            <h4 class="product-name-featured">Traditional Songket</h4>
-            <p class="product-category-featured">Cultural Collection</p>
+            <h4 class="product-name-featured">VanySongket</h4>
+            <p class="product-category-featured">Kain Tradisional Premium</p>
           </div>
 
           <div class="product-card-featured">
             <div class="product-image-featured">
               <img src="https://images.unsplash.com/photo-1434389677669-e08b4cac3105?w=250&h=350&fit=crop&crop=center" alt="VanyVilla">
             </div>
-            <h4 class="product-name-featured">Villa Experience</h4>
-            <p class="product-category-featured">Hospitality</p>
+            <h4 class="product-name-featured">VanyVilla</h4>
+            <p class="product-category-featured">Hospitality & Villa</p>
           </div>
 
           <div class="product-card-featured">
             <div class="product-image-featured">
               <img src="https://images.unsplash.com/photo-1556821840-3a63f95609a7?w=250&h=350&fit=crop&crop=center" alt="Premium Line">
             </div>
-            <h4 class="product-name-featured">Premium Collection</h4>
-            <p class="product-category-featured">Luxury Series</p>
+            <h4 class="product-name-featured">Koleksi Premium</h4>
+            <p class="product-category-featured">Seri Eksklusif</p>
           </div>
 
           <div class="product-card-featured">
             <div class="product-image-featured">
               <img src="https://images.unsplash.com/photo-1549298916-b41d501d3772?w=250&h=350&fit=crop&crop=center" alt="Modern Design">
             </div>
-            <h4 class="product-name-featured">Contemporary Line</h4>
-            <p class="product-category-featured">Modern Design</p>
+            <h4 class="product-name-featured">Desain Kontemporer</h4>
+            <p class="product-category-featured">Gaya Modern</p>
           </div>
 
           <div class="product-card-featured">
             <div class="product-image-featured">
               <img src="https://images.unsplash.com/photo-1441984904996-e0b6ba687e04?w=250&h=350&fit=crop&crop=center" alt="Limited Edition">
             </div>
-            <h4 class="product-name-featured">Limited Edition</h4>
-            <p class="product-category-featured">Exclusive</p>
+            <h4 class="product-name-featured">Edisi Terbatas</h4>
+            <p class="product-category-featured">Koleksi Eksklusif</p>
           </div>
         @endif
       </div>
@@ -2055,11 +2067,11 @@ body::before {
       <div class="newsletter-content-final">
         <div class="newsletter-left">
           <div class="newsletter-badge-final">VANY GROUP</div>
-          <div class="newsletter-edition">Brand Updates</div>
-          <h3 class="newsletter-title-final">Stay Connected with Our Brands</h3>
+          <div class="newsletter-edition">Informasi Terkini</div>
+          <h3 class="newsletter-title-final">Tetap Terhubung dengan Brand Kami</h3>
           <div class="newsletter-form-final">
-            <input type="email" placeholder="Enter your email address" class="email-input-final">
-            <button class="subscribe-btn-final">Stay Updated</button>
+            <input type="email" placeholder="Masukkan alamat email Anda" class="email-input-final">
+            <button class="subscribe-btn-final">Berlangganan</button>
           </div>
         </div>
         <div class="newsletter-right">
@@ -2541,6 +2553,24 @@ document.addEventListener('DOMContentLoaded', function() {
             this.container.classList.remove("dragging");
         }
     }
+});
+
+// Smooth scroll for anchor links
+document.addEventListener('DOMContentLoaded', function() {
+    document.querySelectorAll('a[href^="#"]').forEach(anchor => {
+        anchor.addEventListener('click', function (e) {
+            e.preventDefault();
+            const targetId = this.getAttribute('href');
+            const targetElement = document.querySelector(targetId);
+
+            if (targetElement) {
+                targetElement.scrollIntoView({
+                    behavior: 'smooth',
+                    block: 'start'
+                });
+            }
+        });
+    });
 });
 </script>
 @endsection
