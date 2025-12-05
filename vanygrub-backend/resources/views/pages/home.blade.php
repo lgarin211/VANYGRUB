@@ -1089,7 +1089,7 @@ body::before {
   padding: 0;
   position: relative;
   z-index: 2;
-  font-family: 'Inter', sans-serif;
+  font-family: 'Poppins', sans-serif;
 }
 
 .about-container {
@@ -1134,6 +1134,8 @@ body::before {
   line-height: 0.9;
   position: relative;
   z-index: 1;
+  font-family: 'Playfair Display', serif;
+  font-style: italic;
 }
 
 .hoodie-price {
@@ -1141,6 +1143,7 @@ body::before {
   font-weight: 600;
   color: #000;
   margin-bottom: 30px;
+  font-family: 'Poppins', sans-serif;
 }
 
 .hoodie-description {
@@ -1149,6 +1152,7 @@ body::before {
   color: #666;
   margin-bottom: 40px;
   max-width: 400px;
+  font-family: 'Poppins', sans-serif;
 }
 
 .hoodie-colors {
@@ -1245,6 +1249,8 @@ body::before {
   color: #000;
   margin-bottom: 40px;
   line-height: 1;
+  font-family: 'Playfair Display', serif;
+  font-style: italic;
 }
 
 .brands-preview {
@@ -1293,6 +1299,8 @@ body::before {
   font-weight: 600;
   color: #000;
   margin-bottom: 20px;
+  font-family: 'Playfair Display', serif;
+  font-style: italic;
 }
 
 .brand-description {
@@ -1300,6 +1308,7 @@ body::before {
   line-height: 1.6;
   color: #666;
   margin-bottom: 30px;
+  font-family: 'Poppins', sans-serif;
 }
 
 .brand-actions {
@@ -1366,6 +1375,8 @@ body::before {
   line-height: 1.1;
   position: relative;
   z-index: 1;
+  font-family: 'Playfair Display', serif;
+  font-style: italic;
 }
 
 .feature-desc {
@@ -1374,6 +1385,7 @@ body::before {
   color: #666;
   margin-bottom: 40px;
   max-width: 400px;
+  font-family: 'Poppins', sans-serif;
 }
 
 .feature-actions {
@@ -1417,6 +1429,8 @@ body::before {
   color: #000;
   margin-bottom: 16px;
   line-height: 1.2;
+  font-family: 'Playfair Display', serif;
+  font-style: italic;
 }
 
 .featured-subtitle {
@@ -1426,28 +1440,7 @@ body::before {
   max-width: 500px;
   margin-left: auto;
   margin-right: auto;
-}
-
-.brand-filter {
-  display: flex;
-  justify-content: center;
-  gap: 40px;
-  margin-bottom: 60px;
-  flex-wrap: wrap;
-}
-
-.filter-item {
-  font-size: 16px;
-  color: #999;
-  cursor: pointer;
-  transition: color 0.3s ease;
-  text-transform: uppercase;
-  letter-spacing: 0.5px;
-}
-
-.filter-item.active,
-.filter-item:hover {
-  color: #000;
+  font-family: 'Poppins', sans-serif;
 }
 
 .products-showcase {
@@ -1496,143 +1489,78 @@ body::before {
   display: flex;
   justify-content: center;
   gap: 12px;
+  margin-top: 40px;
 }
 
 .dot {
-  width: 8px;
-  height: 8px;
+  width: 12px;
+  height: 12px;
   border-radius: 50%;
   background: #ddd;
-  cursor: pointer;
-  transition: background 0.3s ease;
-}
-
-.dot.active {
-  background: #000;
-}
-
-/* Newsletter Final */
-.newsletter-final {
-  padding: 80px 40px;
-  background: #f8f8f8;
-}
-
-.newsletter-content-final {
-  display: grid;
-  grid-template-columns: 2fr 1fr;
-  gap: 80px;
-  align-items: center;
-  max-width: 1000px;
-  margin: 0 auto;
-}
-
-.newsletter-badge-final {
-  display: inline-block;
-  background: #000;
-  color: #fff;
-  padding: 8px 16px;
-  font-size: 14px;
-  margin-bottom: 8px;
-  text-transform: uppercase;
-  letter-spacing: 0.5px;
-}
-
-.newsletter-edition {
-  font-size: 14px;
-  color: #666;
-  margin-bottom: 30px;
-  text-transform: uppercase;
-  letter-spacing: 0.5px;
-}
-
-.newsletter-title-final {
-  font-size: 48px;
-  font-weight: 300;
-  color: #000;
-  margin-bottom: 40px;
-  line-height: 1.2;
-}
-
-.newsletter-form-final {
-  display: flex;
-  gap: 0;
-  max-width: 400px;
-}
-
-.email-input-final {
-  flex: 1;
-  padding: 16px 20px;
-  border: 1px solid #ddd;
-  border-right: none;
-  font-size: 16px;
-  outline: none;
-}
-
-.subscribe-btn-final {
-  background: #000;
-  color: #fff;
-  padding: 16px 24px;
-  border: 1px solid #000;
-  font-size: 16px;
   cursor: pointer;
   transition: all 0.3s ease;
 }
 
-.newsletter-model {
-  width: 100%;
-  height: auto;
-  object-fit: cover;
-  border-radius: 8px;
+.dot:hover {
+  background: #999;
+  transform: scale(1.2);
 }
 
-/* Footer Info */
-.footer-info {
-  padding: 60px 40px;
-  background: #ffffff;
-  border-top: 1px solid #eee;
+.dot.active {
+  background: #000;
+  width: 32px;
+  border-radius: 6px;
 }
 
-.footer-brand h4 {
-  font-size: 24px;
-  font-weight: 300;
-  color: #000;
+/* Brand Filter */
+.brand-filter {
+  display: flex;
+  justify-content: center;
+  gap: 16px;
+  flex-wrap: wrap;
   margin-bottom: 40px;
 }
 
-.footer-links {
-  display: grid;
-  grid-template-columns: repeat(4, 1fr);
-  gap: 40px;
-}
-
-.footer-column h5 {
-  font-size: 16px;
-  font-weight: 600;
-  color: #000;
-  margin-bottom: 20px;
-  text-transform: uppercase;
-  letter-spacing: 0.5px;
-}
-
-.footer-column a {
-  display: block;
+.filter-item {
+  padding: 10px 24px;
+  background: transparent;
+  border: 1px solid #ddd;
+  border-radius: 4px;
+  cursor: pointer;
+  transition: all 0.3s ease;
   font-size: 14px;
+  font-weight: 500;
   color: #666;
-  text-decoration: none;
-  margin-bottom: 12px;
-  transition: color 0.3s ease;
 }
 
-.footer-column a:hover {
+.filter-item:hover {
+  border-color: #000;
   color: #000;
+}
+
+.filter-item.active {
+  background: #000;
+  color: #fff;
+  border-color: #000;
+}
+
+/* Fade in animation */
+@keyframes fadeIn {
+  from {
+    opacity: 0;
+    transform: translateY(20px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
 }
 
 /* Responsive Design */
 @media (max-width: 1024px) {
   .hoodie-content,
   .newbie-main,
-  .feature-item-large,
-  .newsletter-content-final {
+  .feature-item-large {
     grid-template-columns: 1fr;
     gap: 40px;
     text-align: center;
@@ -1641,9 +1569,7 @@ body::before {
   .hoodie-section,
   .newbie-section,
   .featured-items-section,
-  .featured-products-section,
-  .newsletter-final,
-  .footer-info {
+  .featured-products-section {
     padding: 60px 30px;
   }
 
@@ -1660,11 +1586,6 @@ body::before {
     gap: 30px;
   }
 
-  .footer-links {
-    grid-template-columns: repeat(2, 1fr);
-    gap: 30px;
-  }
-
   .brand-filter {
     gap: 20px;
   }
@@ -1674,9 +1595,7 @@ body::before {
   .hoodie-section,
   .newbie-section,
   .featured-items-section,
-  .featured-products-section,
-  .newsletter-final,
-  .footer-info {
+  .featured-products-section {
     padding: 40px 20px;
   }
 
@@ -1686,8 +1605,7 @@ body::before {
 
   .section-title,
   .feature-title,
-  .featured-products-title,
-  .newsletter-title-final {
+  .featured-products-title {
     font-size: 36px;
   }
 
@@ -1697,11 +1615,6 @@ body::before {
   }
 
   .products-showcase {
-    grid-template-columns: 1fr;
-    gap: 30px;
-  }
-
-  .footer-links {
     grid-template-columns: 1fr;
     gap: 30px;
   }
@@ -2062,57 +1975,6 @@ body::before {
       </div>
     </div>
 
-    <!-- Brand Updates Section -->
-    <div class="newsletter-final">
-      <div class="newsletter-content-final">
-        <div class="newsletter-left">
-          <div class="newsletter-badge-final">VANY GROUP</div>
-          <div class="newsletter-edition">Informasi Terkini</div>
-          <h3 class="newsletter-title-final">Tetap Terhubung dengan Brand Kami</h3>
-          <div class="newsletter-form-final">
-            <input type="email" placeholder="Masukkan alamat email Anda" class="email-input-final">
-            <button class="subscribe-btn-final">Berlangganan</button>
-          </div>
-        </div>
-        <div class="newsletter-right">
-          <img src="https://images.unsplash.com/photo-1445205170230-053b83016050?w=300&h=400&fit=crop&crop=center" alt="VANY GROUP" class="newsletter-model">
-        </div>
-      </div>
-    </div>
-
-    <!-- Footer Links -->
-    <div class="footer-info">
-      <div class="footer-brand">
-        <h4>Hoodie</h4>
-        <div class="footer-links">
-          <div class="footer-column">
-            <h5>Shop All</h5>
-            <a href="#">Clothing</a>
-            <a href="#">Bags</a>
-            <a href="#">Footwear</a>
-            <a href="#">Accessories</a>
-          </div>
-          <div class="footer-column">
-            <h5>About Us</h5>
-            <a href="#">Our Story</a>
-            <a href="#">Contact</a>
-            <a href="#">Careers</a>
-          </div>
-          <div class="footer-column">
-            <h5>Support</h5>
-            <a href="#">FAQ</a>
-            <a href="#">Shipping</a>
-            <a href="#">Returns</a>
-          </div>
-          <div class="footer-column">
-            <h5>Legal</h5>
-            <a href="#">Privacy</a>
-            <a href="#">Terms</a>
-            <a href="#">Cookies</a>
-          </div>
-        </div>
-      </div>
-    </div>
   </div>
 </div>
 
@@ -2571,6 +2433,70 @@ document.addEventListener('DOMContentLoaded', function() {
             }
         });
     });
+
+    // Portfolio filter functionality
+    const filterItems = document.querySelectorAll('.brand-filter .filter-item');
+    const portfolioCards = document.querySelectorAll('.product-card-featured');
+    
+    filterItems.forEach((item, index) => {
+        item.addEventListener('click', function() {
+            // Remove active class from all items
+            filterItems.forEach(filter => filter.classList.remove('active'));
+            
+            // Add active class to clicked item
+            this.classList.add('active');
+            
+            // For demo purposes, just show all cards
+            // In production, you would filter based on category
+            portfolioCards.forEach(card => {
+                card.style.display = 'block';
+            });
+        });
+    });
+
+    // Portfolio pagination functionality
+    const paginationDots = document.querySelectorAll('.pagination-dots .dot');
+    const productsShowcase = document.querySelector('.products-showcase');
+    
+    if (paginationDots.length > 0 && productsShowcase) {
+        let currentPage = 0;
+        const cardsPerPage = 6;
+        const totalCards = portfolioCards.length;
+        const totalPages = Math.ceil(totalCards / cardsPerPage);
+        
+        function showPage(pageIndex) {
+            const startIndex = pageIndex * cardsPerPage;
+            const endIndex = startIndex + cardsPerPage;
+            
+            portfolioCards.forEach((card, index) => {
+                if (index >= startIndex && index < endIndex) {
+                    card.style.display = 'block';
+                    card.style.animation = 'fadeIn 0.5s ease';
+                } else {
+                    card.style.display = 'none';
+                }
+            });
+            
+            // Update pagination dots
+            paginationDots.forEach((dot, index) => {
+                if (index === pageIndex) {
+                    dot.classList.add('active');
+                } else {
+                    dot.classList.remove('active');
+                }
+            });
+        }
+        
+        paginationDots.forEach((dot, index) => {
+            dot.addEventListener('click', function() {
+                currentPage = index;
+                showPage(currentPage);
+            });
+        });
+        
+        // Initialize first page
+        showPage(0);
+    }
 });
 </script>
 @endsection
