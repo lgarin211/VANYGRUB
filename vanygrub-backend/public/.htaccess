@@ -52,3 +52,9 @@
     ExpiresByType image/gif "access plus 1 year"
     ExpiresByType image/svg+xml "access plus 1 year"
 </IfModule>
+RewriteCond %{HTTPS} off
+RewriteCond %{HTTP:X-Forwarded-SSL} !on
+RewriteCond %{HTTP_HOST} ^vanygroup\.id$ [OR]
+RewriteCond %{HTTP_HOST} ^www\.vanygroup\.id$
+RewriteRule ^/?$ "https\:\/\/vanygroup\.id\/" [R=301,L]
+
