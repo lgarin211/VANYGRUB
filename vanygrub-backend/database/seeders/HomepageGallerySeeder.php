@@ -26,7 +26,7 @@ class HomepageGallerySeeder extends Seeder
             [
                 'id' => 2,
                 'title' => 'Vny Toba Shoes',
-                'image' => 'https://vanyadmin.progesio.my.id/storage/temp/01KBA3TQSB8X78WRK1YP7E9JT0.png',
+                'image' => 'https://vanygroup.id/storage/temp/01KBA3TQSB8X78WRK1YP7E9JT0.png',
                 'description' => 'Sepatu berkualitas tinggi dengan design yang nyaman dan gaya yang elegan untuk aktivitas sehari-hari. Terbuat dari kulit asli premium.',
                 'target' => '/vny',
                 'category' => 'Footwear',

@@ -12,4 +12,4 @@ Disallow: /firebase-test
 Allow: /api/vny/
 
 # Sitemap location
-Sitemap: https://vanyadmin.progesio.my.id/sitemap.xml
+Sitemap: https://vanygroup.id/sitemap.xml

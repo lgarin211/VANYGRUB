@@ -5,9 +5,9 @@ echo "=== Testing VNY API Endpoints ===\n\n";
 
 // Test Categories API
 echo "1. Testing Categories API:\n";
-echo "URL: https://vanyadmin.progesio.my.id/api/vny/categories\n\n";
+echo "URL: https://vanygroup.id/api/vny/categories\n\n";
 
-$categoriesResponse = @file_get_contents('https://vanyadmin.progesio.my.id/api/vny/categories');
+$categoriesResponse = @file_get_contents('https://vanygroup.id/api/vny/categories');
 if ($categoriesResponse === false) {
     echo "❌ Categories API Error: Cannot fetch data\n";
     echo "Last error: " . error_get_last()['message'] . "\n\n";
@@ -35,9 +35,9 @@ if ($categoriesResponse === false) {
 
 // Test Products API
 echo "2. Testing Products API:\n";
-echo "URL: https://vanyadmin.progesio.my.id/api/vny/products\n\n";
+echo "URL: https://vanygroup.id/api/vny/products\n\n";
 
-$productsResponse = @file_get_contents('https://vanyadmin.progesio.my.id/api/vny/products');
+$productsResponse = @file_get_contents('https://vanygroup.id/api/vny/products');
 if ($productsResponse === false) {
     echo "❌ Products API Error: Cannot fetch data\n";
     echo "Last error: " . error_get_last()['message'] . "\n\n";

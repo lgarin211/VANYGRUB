@@ -81,7 +81,7 @@ class FrontendController extends Controller
         // Fetch categories from specific API endpoint
         $categories = collect();
         try {
-            $categoriesResponse = \Http::timeout(15)->get('https://vanyadmin.progesio.my.id/api/vny/categories');
+            $categoriesResponse = \Http::timeout(15)->get('https://vanygroup.id/api/vny/categories');
 
             if ($categoriesResponse->successful()) {
                 $categoriesData = $categoriesResponse->json();
@@ -110,7 +110,7 @@ class FrontendController extends Controller
         // Fetch products from specific API endpoint
         $products = collect();
         try {
-            $productsResponse = \Http::timeout(15)->get('https://vanyadmin.progesio.my.id/api/vny/products');
+            $productsResponse = \Http::timeout(15)->get('https://vanygroup.id/api/vny/products');
 
             if ($productsResponse->successful()) {
                 $productsData = $productsResponse->json();
@@ -219,7 +219,7 @@ class FrontendController extends Controller
     {
         try {
             // Try to fetch product from API
-            $response = Http::timeout(15)->get("https://vanyadmin.progesio.my.id/api/vny/products/{$id}");
+            $response = Http::timeout(15)->get("https://vanygroup.id/api/vny/products/{$id}");
 
             if ($response->successful()) {
                 $productData = $response->json();

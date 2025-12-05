@@ -4,7 +4,7 @@
 echo "=== Testing Product Detail API ===\n\n";
 
 $productId = 16;
-$apiUrl = "https://vanyadmin.progesio.my.id/api/vny/products/{$productId}";
+$apiUrl = "https://vanygroup.id/api/vny/products/{$productId}";
 
 echo "Testing Product ID: {$productId}\n";
 echo "URL: {$apiUrl}\n\n";

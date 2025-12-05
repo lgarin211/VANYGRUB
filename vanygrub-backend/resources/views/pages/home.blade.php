@@ -1196,7 +1196,7 @@ document.addEventListener('DOMContentLoaded', function() {
     }, 5000);
 
     // Load data from API
-    fetch('https://vanyadmin.progesio.my.id/api/vny/homepage/constants')
+    fetch('https://vanygroup.id/api/vny/homepage/constants')
         .then(response => response.json())
         .then(data => {
             if (data.status === 'success' && data.data) {

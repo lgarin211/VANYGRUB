@@ -478,12 +478,12 @@ document.addEventListener('DOMContentLoaded', function() {
     };
 
     Promise.all([
-        fetchWithTimeout('https://vanyadmin.progesio.my.id/api/vny/data', 15000)
+        fetchWithTimeout('https://vanygroup.id/api/vny/data', 15000)
             .catch(error => {
                 console.error('VNY Data API Error:', error.message);
                 return null;
             }),
-        fetchWithTimeout('https://vanyadmin.progesio.my.id/api/vny/homepage/site-config', 15000)
+        fetchWithTimeout('https://vanygroup.id/api/vny/homepage/site-config', 15000)
             .catch(error => {
                 console.error('Site Config API Error:', error.message);
                 return null;

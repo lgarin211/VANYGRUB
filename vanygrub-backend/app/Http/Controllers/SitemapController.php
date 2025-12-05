@@ -45,7 +45,7 @@ class SitemapController extends Controller
         // Dynamic product pages
         try {
             // Try to get products from API
-            $response = Http::timeout(10)->get('https://vanyadmin.progesio.my.id/api/vny/products');
+            $response = Http::timeout(10)->get('https://vanygroup.id/api/vny/products');
 
             if ($response->successful()) {
                 $productsData = $response->json();
@@ -78,7 +78,7 @@ class SitemapController extends Controller
 
         // Category pages
         try {
-            $response = Http::timeout(10)->get('https://vanyadmin.progesio.my.id/api/vny/categories');
+            $response = Http::timeout(10)->get('https://vanygroup.id/api/vny/categories');
 
             if ($response->successful()) {
                 $categoriesData = $response->json();

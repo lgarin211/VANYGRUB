@@ -109,7 +109,7 @@ class CustomerReviewSeeder extends Seeder
                 'order_id' => $orderId,
                 'customer_name' => $customerName,
                 'customer_email' => $customerEmail,
-                'photo_url' => 'https://vanyadmin.progesio.my.id/storage/temp/01KBCDV2F4NZ67ZYQGV5V9R8RW.png',
+                'photo_url' => 'https://vanygroup.id/storage/temp/01KBCDV2F4NZ67ZYQGV5V9R8RW.png',
                 'review_text' => $reviewTexts[$i],
                 'rating' => rand(4, 5), // Random rating between 4-5 stars
                 'review_token' => $reviewToken,
@@ -146,7 +146,7 @@ class CustomerReviewSeeder extends Seeder
                 'order_id' => $orderId,
                 'customer_name' => $review['customer_name'],
                 'customer_email' => $review['email'],
-                'photo_url' => 'https://vanyadmin.progesio.my.id/storage/temp/01KBCDV2F4NZ67ZYQGV5V9R8RW.png',
+                'photo_url' => 'https://vanygroup.id/storage/temp/01KBCDV2F4NZ67ZYQGV5V9R8RW.png',
                 'review_text' => $review['review_text'],
                 'rating' => $review['rating'],
                 'review_token' => Str::random(32),

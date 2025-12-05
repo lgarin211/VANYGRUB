@@ -58,7 +58,7 @@ class CartController extends Controller
                         'name' => $item->product->name,
                         'slug' => $item->product->slug,
                         'main_image' => $item->product->main_image ?
-                            'http://vanyadmin.progesio.my.id/storage/' . $item->product->main_image : null,
+                            'http://vanygroup.id/storage/' . $item->product->main_image : null,
                         'price' => $item->product->price,
                         'in_stock' => $item->product->in_stock,
                     ] : null
@@ -369,7 +369,7 @@ class CartController extends Controller
      */
     private function getSelectedImage($item)
     {
-        $baseUrl = 'http://vanyadmin.progesio.my.id/storage/';
+        $baseUrl = 'http://vanygroup.id/storage/';
 
         // If cart item has a selected image, use it
         if ($item->selected_image) {

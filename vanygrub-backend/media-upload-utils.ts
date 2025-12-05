@@ -1,6 +1,6 @@
 // utils/mediaUpload.ts - Utility functions for media upload in Next.js
 
-const API_BASE_URL = process.env.NEXT_PUBLIC_API_URL || 'https://vanyadmin.progesio.my.id/api';
+const API_BASE_URL = process.env.NEXT_PUBLIC_API_URL || 'https://vanygroup.id/api';
 
 export interface MediaUploadResponse {
   success: boolean;
@@ -64,7 +64,7 @@ export async function uploadMultipleMedia(
   folder: string = 'general'
 ): Promise<MultipleMediaUploadResponse> {
   const formData = new FormData();
-  
+
   files.forEach((file) => {
     formData.append('files[]', file);
   });

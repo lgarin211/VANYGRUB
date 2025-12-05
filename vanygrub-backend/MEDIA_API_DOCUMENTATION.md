@@ -5,7 +5,7 @@ API untuk upload dan manajemen media (gambar, video, dokumen) yang dapat digunak
 
 ## Base URL
 ```
-https://vanyadmin.progesio.my.id/api/vny/media
+https://vanygroup.id/api/vny/media
 ```
 
 ## Endpoints
@@ -36,7 +36,7 @@ Upload satu file media ke server.
     "filename": "sample-image-1638360000.jpg",
     "original_name": "sample-image.jpg",
     "path": "media/image/gallery/sample-image-1638360000.jpg",
-    "url": "https://vanyadmin.progesio.my.id/storage/media/image/gallery/sample-image-1638360000.jpg",
+    "url": "https://vanygroup.id/storage/media/image/gallery/sample-image-1638360000.jpg",
     "size": 245760,
     "mime_type": "image/jpeg",
     "type": "image",
@@ -85,7 +85,7 @@ Upload beberapa file media sekaligus.
       "filename": "image1-1638360000.jpg",
       "original_name": "image1.jpg",
       "path": "media/image/gallery/image1-1638360000.jpg",
-      "url": "https://vanyadmin.progesio.my.id/storage/media/image/gallery/image1-1638360000.jpg",
+      "url": "https://vanygroup.id/storage/media/image/gallery/image1-1638360000.jpg",
       "size": 245760,
       "mime_type": "image/jpeg",
       "type": "image",
@@ -155,7 +155,7 @@ GET /list?type=image&folder=gallery&page=1&per_page=20
     {
       "filename": "sample-image-1638360000.jpg",
       "path": "media/image/gallery/sample-image-1638360000.jpg",
-      "url": "https://vanyadmin.progesio.my.id/storage/media/image/gallery/sample-image-1638360000.jpg",
+      "url": "https://vanygroup.id/storage/media/image/gallery/sample-image-1638360000.jpg",
       "size": 245760,
       "last_modified": 1638360000,
       "mime_type": "image/jpeg"
@@ -208,7 +208,7 @@ const uploadImage = async (file) => {
   formData.append('type', 'image');
   formData.append('folder', 'gallery');
 
-  const response = await fetch('https://vanyadmin.progesio.my.id/api/vny/media/upload', {
+  const response = await fetch('https://vanygroup.id/api/vny/media/upload', {
     method: 'POST',
     body: formData
   });
@@ -223,7 +223,7 @@ const uploadMultipleImages = async (files) => {
   formData.append('type', 'image');
   formData.append('folder', 'gallery');
 
-  const response = await fetch('https://vanyadmin.progesio.my.id/api/vny/media/upload-multiple', {
+  const response = await fetch('https://vanygroup.id/api/vny/media/upload-multiple', {
     method: 'POST',
     body: formData
   });
@@ -235,24 +235,24 @@ const uploadMultipleImages = async (files) => {
 ### cURL Examples
 ```bash
 # Upload single file
-curl -X POST https://vanyadmin.progesio.my.id/api/vny/media/upload \
+curl -X POST https://vanygroup.id/api/vny/media/upload \
   -F "file=@/path/to/image.jpg" \
   -F "type=image" \
   -F "folder=gallery"
 
 # Delete file
-curl -X DELETE https://vanyadmin.progesio.my.id/api/vny/media/delete \
+curl -X DELETE https://vanygroup.id/api/vny/media/delete \
   -H "Content-Type: application/json" \
   -d '{"path":"media/image/gallery/sample-image-1638360000.jpg"}'
 
 # Get media list
-curl "https://vanyadmin.progesio.my.id/api/vny/media/list?type=image&folder=gallery&page=1&per_page=20"
+curl "https://vanygroup.id/api/vny/media/list?type=image&folder=gallery&page=1&per_page=20"
 ```
 
 ## Admin Panel
 Media files dapat dikelola melalui Filament admin panel di:
 ```
-https://vanyadmin.progesio.my.id/admin/media
+https://vanygroup.id/admin/media
 ```
 
 Fitur admin panel:
