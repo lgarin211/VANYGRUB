@@ -12,7 +12,7 @@
                 <div class="mb-6">
                     <h3 class="text-2xl font-bold tracking-wide mb-4">VNY</h3>
                     <p class="text-white/80 text-sm leading-relaxed">
-                        Premium lifestyle collection yang memadukan tradisi dengan modernitas. 
+                        Premium lifestyle collection yang memadukan tradisi dengan modernitas.
                         Kualitas terbaik untuk gaya hidup yang berkelas.
                     </p>
                 </div>

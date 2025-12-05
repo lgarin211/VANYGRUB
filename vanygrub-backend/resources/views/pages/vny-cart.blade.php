@@ -116,7 +116,7 @@
 
                     <!-- Continue Shopping -->
                     <div class="mt-6">
-                        <button onclick="window.location.href='{{ route('vny.product') }}'" 
+                        <button onclick="window.location.href='{{ route('vny.product') }}'"
                                 class="inline-flex items-center text-red-600 hover:text-red-700 font-medium">
                             <svg class="w-5 h-5 mr-2" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                                 <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 19l-7-7 7-7"></path>
@@ -137,11 +137,11 @@
                         <div class="mb-6">
                             <label class="block text-sm font-medium text-gray-700 mb-2">Kode Promo</label>
                             <div class="flex gap-2">
-                                <input type="text" 
-                                       id="promoCode" 
-                                       placeholder="Masukkan kode promo" 
+                                <input type="text"
+                                       id="promoCode"
+                                       placeholder="Masukkan kode promo"
                                        class="flex-1 px-3 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-red-500 focus:border-red-500 text-sm">
-                                <button type="button" 
+                                <button type="button"
                                         onclick="applyPromoCode()"
                                         class="px-4 py-2 bg-red-600 text-white text-sm font-medium rounded-lg hover:bg-red-700 transition-colors">
                                     Gunakan
@@ -174,9 +174,9 @@
                                     <span class="text-gray-600">Ongkos kirim</span>
                                     <span id="shipping" class="font-medium">Rp 0</span>
                                 </div>
-                                
+
                                 <hr class="my-4">
-                                
+
                                 <div class="flex justify-between text-lg font-semibold">
                                     <span class="text-gray-900">Total</span>
                                     <span id="total" class="text-red-600">Rp 0</span>
@@ -249,7 +249,7 @@
                                    placeholder="Masukkan nama lengkap"
                                    class="w-full px-3 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-red-500 focus:border-red-500">
                         </div>
-                        
+
                         <div>
                             <label for="customerPhone" class="block text-sm font-medium text-gray-700 mb-1">
                                 Nomor Telepon <span class="text-red-500">*</span>
@@ -287,7 +287,7 @@
                                    placeholder="Jakarta"
                                    class="w-full px-3 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-red-500 focus:border-red-500">
                         </div>
-                        
+
                         <div>
                             <label for="shippingPostalCode" class="block text-sm font-medium text-gray-700 mb-1">
                                 Kode Pos <span class="text-red-500">*</span>
@@ -312,7 +312,7 @@
             <!-- Right side - Order Summary -->
             <div class="lg:w-1/3 bg-gray-50 p-6 border-l">
                 <h3 class="text-lg font-semibold text-gray-900 mb-4">Ringkasan Pesanan</h3>
-                
+
                 <!-- Cart Items Summary -->
                 <div id="checkoutItemsList" class="space-y-3 mb-4">
                     <!-- Items will be populated by JavaScript -->
@@ -348,7 +348,7 @@
                         </svg>
                         <span id="checkoutBtnText">Lengkapi Data Dulu</span>
                     </button>
-                    
+
                     <p class="text-xs text-gray-500 text-center">
                         <svg class="w-4 h-4 inline mr-1" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                             <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M13 16h-1v-4h-1m1-4h.01M21 12a9 9 0 11-18 0 9 9 0 0118 0z"></path>
@@ -413,7 +413,7 @@ function displayCart(cartData) {
     itemsList.innerHTML = items.map(item => {
         // Debug log for quantity
         console.log('Cart item:', item.name, 'Quantity:', item.quantity, 'ID:', item.id);
-        
+
         // Prioritize selected image, then fall back to product image
         const imageUrl = item.image || item.selected_image || item.product?.main_image || item.product?.image || 'https://images.unsplash.com/photo-1549298916-b41d501d3772?w=80&h=80&fit=crop';
 
@@ -444,13 +444,13 @@ function displayCart(cartData) {
                     <div class="flex items-center gap-2 mt-3">
                         <span class="text-sm text-gray-600">Jumlah:</span>
                         <div class="flex items-center gap-1 border rounded-lg">
-                            <button onclick="updateQuantity(${item.id}, ${(item.quantity || 1) - 1})" 
+                            <button onclick="updateQuantity(${item.id}, ${(item.quantity || 1) - 1})"
                                     class="w-8 h-8 flex items-center justify-center text-gray-600 hover:bg-gray-100 rounded-l-lg transition-colors ${(item.quantity || 1) <= 1 ? 'opacity-50 cursor-not-allowed' : ''}"
                                     ${(item.quantity || 1) <= 1 ? 'disabled' : ''}>
                                 <span class="text-lg">−</span>
                             </button>
                             <span class="w-12 text-center font-medium text-gray-900">${item.quantity || 1}</span>
-                            <button onclick="updateQuantity(${item.id}, ${(item.quantity || 1) + 1})" 
+                            <button onclick="updateQuantity(${item.id}, ${(item.quantity || 1) + 1})"
                                     class="w-8 h-8 flex items-center justify-center text-gray-600 hover:bg-gray-100 rounded-r-lg transition-colors">
                                 <span class="text-lg">+</span>
                             </button>
@@ -460,7 +460,7 @@ function displayCart(cartData) {
             </div>
 
             <!-- Remove Button -->
-            <button onclick="removeItem(${item.id})" 
+            <button onclick="removeItem(${item.id})"
                     class="ml-4 p-2 text-gray-400 hover:text-red-600 transition-colors"
                     title="Hapus item">
                 <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
@@ -517,7 +517,7 @@ async function updateQuantity(itemId, newQuantity) {
     if (quantitySpan) {
         const originalText = quantitySpan.textContent;
         quantitySpan.textContent = '...';
-        
+
         try {
             const response = await fetch(`/api/vny/cart/${itemId}`, {
                 method: 'PUT',
@@ -623,12 +623,12 @@ function openCheckoutModal() {
 
     // Populate checkout modal with cart data
     populateCheckoutModal(currentCartData);
-    
+
     // Setup form validation
     setTimeout(() => {
         setupFormValidation();
     }, 100); // Small delay to ensure DOM is ready
-    
+
     // Show modal
     document.getElementById('checkoutModal').classList.remove('hidden');
     document.body.style.overflow = 'hidden'; // Prevent body scroll
@@ -643,16 +643,16 @@ function closeCheckoutModal() {
 function validateCheckoutForm() {
     const requiredFields = [
         'customerName',
-        'customerPhone', 
+        'customerPhone',
         'customerEmail',
         'shippingAddress',
         'shippingCity',
         'shippingPostalCode',
         'orderNotes'
     ];
-    
+
     let isValid = true;
-    
+
     for (const fieldId of requiredFields) {
         const field = document.getElementById(fieldId);
         if (field) {
@@ -663,11 +663,11 @@ function validateCheckoutForm() {
             }
         }
     }
-    
+
     // Update button state
     const submitBtn = document.getElementById('checkoutSubmitBtn');
     const btnText = document.getElementById('checkoutBtnText');
-    
+
     if (isValid) {
         submitBtn.disabled = false;
         submitBtn.className = 'w-full flex items-center justify-center gap-2 px-4 py-3 bg-green-600 text-white font-medium rounded-lg hover:bg-green-700 transition-colors';
@@ -684,13 +684,13 @@ function setupFormValidation() {
     const requiredFields = [
         'customerName',
         'customerPhone',
-        'customerEmail', 
+        'customerEmail',
         'shippingAddress',
         'shippingCity',
         'shippingPostalCode',
         'orderNotes'
     ];
-    
+
     requiredFields.forEach(fieldId => {
         const field = document.getElementById(fieldId);
         if (field) {
@@ -698,28 +698,28 @@ function setupFormValidation() {
             field.addEventListener('blur', validateCheckoutForm);
         }
     });
-    
+
     // Initial validation
     validateCheckoutForm();
 }
 
 function populateCheckoutModal(cartData) {
     const { items, summary } = cartData;
-    
+
     // Populate items list in checkout modal
     const checkoutItemsList = document.getElementById('checkoutItemsList');
     checkoutItemsList.innerHTML = items.map(item => {
         const imageUrl = item.image || item.selected_image || item.product?.main_image || item.product?.image || 'https://images.unsplash.com/photo-1549298916-b41d501d3772?w=60&h=60&fit=crop';
-        
+
         let variants = [];
         if (item.color) variants.push(`Warna: ${item.color}`);
         if (item.size) variants.push(`Ukuran: ${item.size}`);
         const variantText = variants.join(' • ');
-        
+
         return `
         <div class="flex items-center gap-3">
-            <img src="${imageUrl}" 
-                 alt="${item.name}" 
+            <img src="${imageUrl}"
+                 alt="${item.name}"
                  class="w-12 h-12 object-cover rounded-lg border">
             <div class="flex-1 min-w-0">
                 <h4 class="font-medium text-gray-900 text-sm">${item.name}</h4>
@@ -729,7 +729,7 @@ function populateCheckoutModal(cartData) {
         </div>
         `;
     }).join('');
-    
+
     // Populate price summary
     const formatPrice = (price) => {
         if (typeof price === 'string' && price.startsWith('Rp')) return price;
@@ -741,7 +741,7 @@ function populateCheckoutModal(cartData) {
             maximumFractionDigits: 0
         }).format(numPrice).replace('IDR', 'Rp');
     };
-    
+
     document.getElementById('checkoutSubtotal').textContent = summary.subtotal_formatted || formatPrice(summary.subtotal);
     document.getElementById('checkoutTax').textContent = summary.tax_formatted || formatPrice(summary.tax);
     document.getElementById('checkoutShipping').textContent = summary.shipping_formatted || formatPrice(summary.shipping);
@@ -751,11 +751,11 @@ function populateCheckoutModal(cartData) {
 async function processCheckout() {
     const form = document.getElementById('checkoutForm');
     const formData = new FormData(form);
-    
+
     // Validate required fields
     const requiredFields = ['customer_name', 'customer_phone', 'customer_email', 'shipping_address', 'shipping_city', 'shipping_postal_code', 'notes'];
     let isValid = true;
-    
+
     const fieldIdMapping = {
         'customer_name': 'customerName',
         'customer_phone': 'customerPhone',
@@ -765,7 +765,7 @@ async function processCheckout() {
         'shipping_postal_code': 'shippingPostalCode',
         'notes': 'orderNotes'
     };
-    
+
     for (const field of requiredFields) {
         const value = formData.get(field)?.trim();
         if (!value) {
@@ -778,12 +778,12 @@ async function processCheckout() {
             break;
         }
     }
-    
+
     if (!isValid) {
         alert('Harap lengkapi semua field yang wajib diisi');
         return;
     }
-    
+
     try {
         // Prepare order data based on OrderController requirements
         const orderData = {
@@ -831,32 +831,32 @@ async function processCheckout() {
         });
 
         const result = await response.json();
-        
+
         if (response.ok && result.success) {
             // Success - get order code first
             const orderCode = result.data.order_code || result.data.id;
-            
+
             // Redirect to WhatsApp immediately while user interaction is still active
             await redirectToWhatsApp(orderData, orderCode);
-            
+
             // Then close modal and cleanup
             closeCheckoutModal();
-            
+
             // Clear cart after successful order
             await clearAllCart();
-            
+
             // Show success message
             alert(`Pesanan berhasil dibuat dengan kode: ${orderCode}\n\nPesan WhatsApp telah dibuka di tab baru untuk mengirim detail pesanan ke admin VNY Store.`);
-            
+
             // Clear the form
             form.reset();
-            
+
         } else {
             // Error handling
             console.error('Checkout error:', result);
             alert(result.message || 'Gagal memproses pesanan. Silakan coba lagi.');
         }
-        
+
     } catch (error) {
         console.error('Error during checkout:', error);
         alert('Terjadi kesalahan. Silakan coba lagi.');
@@ -875,7 +875,7 @@ const originalDisplayCart = displayCart;
 displayCart = function(cartData) {
     // Store cart data globally for checkout
     currentCartData = cartData;
-    
+
     // Call original function
     originalDisplayCart(cartData);
 };
@@ -884,18 +884,18 @@ async function redirectToWhatsApp(orderData, orderCode) {
     try {
         // Generate order details message
         const orderMessage = generateOrderMessage(orderData, orderCode);
-        
+
         // Use the specified WhatsApp number
         const waPhone = '6281315871101';
-        
+
         // Create WhatsApp URL
         const whatsappUrl = `https://wa.me/${waPhone}?text=${encodeURIComponent(orderMessage)}`;
-        
+
         console.log('Opening WhatsApp URL:', whatsappUrl);
-        
+
         // Open WhatsApp in new tab
         const newWindow = window.open(whatsappUrl, '_blank', 'noopener,noreferrer');
-        
+
         // Check if popup was blocked
         if (!newWindow) {
             // Fallback: try to navigate in current window
@@ -911,13 +911,13 @@ async function redirectToWhatsApp(orderData, orderCode) {
                 }
             }
         }
-        
+
     } catch (error) {
         console.error('Error redirecting to WhatsApp:', error);
         // Final fallback
         const defaultMessage = generateOrderMessage(orderData, orderCode);
         const fallbackUrl = `https://wa.me/6281315871101?text=${encodeURIComponent(defaultMessage)}`;
-        
+
         alert(`Terjadi kesalahan saat membuka WhatsApp. Silakan klik link berikut:\n${fallbackUrl}`);
     }
 }
@@ -931,19 +931,19 @@ function generateOrderMessage(orderData, orderCode) {
             maximumFractionDigits: 0
         }).format(price).replace('IDR', 'Rp');
     };
-    
+
     // Create message template following the provided format
     let message = `VNY - Premium Sneakers Collection\n`;
     message += `Discover premium sneakers and footwear collection\n\n`;
     message += `www.vanygroup.id\n\n`;
-    
+
     message += `*PESANAN BARU VNY STORE*\n\n`;
     message += `Kode Pesanan: ${orderCode}\n\n`;
-    
+
     // Check out link - using the order code as identifier
     message += `*LINK CEK PESANAN (KLIK DI SINI):*\n`;
     message += `https://www.vanygroup.id/checkout/${orderCode}\n\n`;
-    
+
     // Customer information
     message += `*Data Pembeli:*\n`;
     message += `Nama: ${orderData.customer_name.toUpperCase()}\n`;
@@ -954,27 +954,27 @@ function generateOrderMessage(orderData, orderCode) {
     message += `Kota: KOTA BOGOR\n`;
     message += `Kode Pos: 81851\n`;
     message += `Catatan: beli\n\n`;
-    
+
     // Order items details
     message += `*Detail Pesanan:*\n`;
     let subtotal = 0;
-    
+
     orderData.items.forEach((item, index) => {
         const itemTotal = item.price * item.quantity;
         subtotal += itemTotal;
-        
+
         message += `${index + 1}. ${currentCartData.items[index]?.name || 'Produk'}\n`;
         if (item.color) message += `   Warna: ${item.color}\n`;
         if (item.size) message += `   Ukuran: ${item.size}\n`;
         message += `   Qty: ${item.quantity}x\n`;
         message += `   Harga: ${formatPrice(item.price)}\n\n`;
     });
-    
+
     // Total calculation
     message += `*Total: ${formatPrice(orderData.total_amount)}*\n\n`;
-    
+
     message += `Terima kasih telah berbelanja di VNY Store!`;
-    
+
     return message;
 }
 </script>
