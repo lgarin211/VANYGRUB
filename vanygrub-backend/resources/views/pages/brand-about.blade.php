@@ -17,6 +17,8 @@
     $contactData = $aboutData->contact_data ?? [];
 @endphp
 
+@include('components.vny-navbar', ['currentPage' => 'about'])
+
 <style>
     @import url('https://fonts.googleapis.com/css2?family=Inter:wght@100;200;300;400;500;600;700;800;900&display=swap');
 
@@ -555,5 +557,7 @@ document.addEventListener('DOMContentLoaded', function() {
     });
 });
 </script>
+
+@include('components.vny-footer')
 
 @endsection

@@ -52,7 +52,7 @@
           </a>
         </li>
         <li>
-          <a href="#"
+          <a href="{{ route('vny.about') }}"
              class="block px-6 py-3 text-sm font-medium text-white transition-all duration-200 hover:bg-white/10 {{ $currentPage === 'about' ? 'border-b-2 border-white bg-white/20' : '' }}">
             ABOUT VNY
           </a>

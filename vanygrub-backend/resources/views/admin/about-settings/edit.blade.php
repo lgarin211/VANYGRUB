@@ -101,7 +101,7 @@
         <!-- History Section -->
         <div class="bg-white rounded-lg shadow p-6 mb-6">
             <h3 class="text-lg font-semibold text-gray-800 mb-6">History Timeline</h3>
-            
+
             <!-- Main History Title -->
             <div class="mb-6">
                 <label class="block text-sm font-medium text-gray-700 mb-2">Main History Title</label>
@@ -141,7 +141,7 @@
                         </button>
                         @endif
                     </div>
-                    
+
                     <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
                         <!-- Poster -->
                         <div>
@@ -230,7 +230,7 @@
                         </button>
                         @endif
                     </div>
-                    
+
                     <div class="grid grid-cols-1 md:grid-cols-3 gap-4">
                         <!-- Color -->
                         <div>
@@ -327,7 +327,7 @@ function addHistoryItem() {
                 <i class="fas fa-trash mr-1"></i>Remove
             </button>
         </div>
-        
+
         <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
             <div>
                 <label class="block text-sm font-medium text-gray-700 mb-2">Poster Image</label>
@@ -376,7 +376,7 @@ function addPhilosophyItem() {
                 <i class="fas fa-trash mr-1"></i>Remove
             </button>
         </div>
-        
+
         <div class="grid grid-cols-1 md:grid-cols-3 gap-4">
             <div>
                 <label class="block text-sm font-medium text-gray-700 mb-2">Color</label>

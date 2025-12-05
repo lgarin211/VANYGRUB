@@ -875,4 +875,7 @@ document.addEventListener('DOMContentLoaded', function() {
     }, 1000); // Wait for Firebase to initialize
 });
 </script>
+
+@include('components.vny-footer')
+
 @endsection

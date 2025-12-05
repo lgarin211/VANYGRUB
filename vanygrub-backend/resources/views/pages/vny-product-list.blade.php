@@ -436,4 +436,7 @@ function applyFilters() {
     window.location.href = newUrl;
 }
 </script>
+
+@include('components.vny-footer')
+
 @endsection

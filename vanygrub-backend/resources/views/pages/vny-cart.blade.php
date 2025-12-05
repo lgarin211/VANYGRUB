@@ -978,4 +978,7 @@ function generateOrderMessage(orderData, orderCode) {
     return message;
 }
 </script>
+
+@include('components.vny-footer')
+
 @endsection

@@ -1474,4 +1474,7 @@ function openCollectionModal(collection) {
     }
 }
 </script>
+
+@include('components.vny-footer')
+
 @endsection

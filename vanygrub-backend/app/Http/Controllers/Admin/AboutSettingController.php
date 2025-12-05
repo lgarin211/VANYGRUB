@@ -271,7 +271,7 @@ class AboutSettingController extends Controller
             for ($i = 0; $i < count($years); $i++) {
                 if (!empty($years[$i])) {
                     $posterPath = $existingPosters[$i] ?? '';
-                    
+
                     // Handle poster upload
                     if ($request->hasFile('history_posters') && isset($request->file('history_posters')[$i])) {
                         // Delete old poster if exists

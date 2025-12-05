@@ -16,8 +16,11 @@
                 <a href="{{ route('home') }}" class="text-gray-700 hover:text-red-600 transition-colors duration-200 {{ request()->routeIs('home') ? 'text-red-600 font-semibold' : '' }}">
                     Home
                 </a>
-                <a href="{{ route('vny.store') }}" class="text-gray-700 hover:text-red-600 transition-colors duration-200 {{ request()->routeIs('vny.*') ? 'text-red-600 font-semibold' : '' }}">
+                <a href="{{ route('vny.store') }}" class="text-gray-700 hover:text-red-600 transition-colors duration-200 {{ request()->routeIs('vny.store') || request()->routeIs('vny.products.*') ? 'text-red-600 font-semibold' : '' }}">
                     VNY Store
+                </a>
+                <a href="{{ route('vny.about') }}" class="text-gray-700 hover:text-red-600 transition-colors duration-200 {{ request()->routeIs('vny.about') ? 'text-red-600 font-semibold' : '' }}">
+                    VNY About
                 </a>
                 <a href="{{ route('gallery') }}" class="text-gray-700 hover:text-red-600 transition-colors duration-200 {{ request()->routeIs('gallery') ? 'text-red-600 font-semibold' : '' }}">
                     Gallery
@@ -49,7 +52,8 @@
         <div class="md:hidden hidden" id="mobile-menu">
             <div class="px-2 pt-2 pb-3 space-y-1 bg-white border-t">
                 <a href="{{ route('home') }}" class="block px-3 py-2 text-gray-700 hover:text-red-600 {{ request()->routeIs('home') ? 'text-red-600 font-semibold' : '' }}">Home</a>
-                <a href="{{ route('vny.store') }}" class="block px-3 py-2 text-gray-700 hover:text-red-600 {{ request()->routeIs('vny.*') ? 'text-red-600 font-semibold' : '' }}">VNY Store</a>
+                <a href="{{ route('vny.store') }}" class="block px-3 py-2 text-gray-700 hover:text-red-600 {{ request()->routeIs('vny.store') || request()->routeIs('vny.products.*') ? 'text-red-600 font-semibold' : '' }}">VNY Store</a>
+                <a href="{{ route('vny.about') }}" class="block px-3 py-2 text-gray-700 hover:text-red-600 {{ request()->routeIs('vny.about') ? 'text-red-600 font-semibold' : '' }}">VNY About</a>
                 <a href="{{ route('gallery') }}" class="block px-3 py-2 text-gray-700 hover:text-red-600 {{ request()->routeIs('gallery') ? 'text-red-600 font-semibold' : '' }}">Gallery</a>
                 <a href="{{ route('about') }}" class="block px-3 py-2 text-gray-700 hover:text-red-600 {{ request()->routeIs('about') ? 'text-red-600 font-semibold' : '' }}">About</a>
                 <a href="{{ route('transactions') }}" class="block px-3 py-2 text-gray-700 hover:text-red-600 {{ request()->routeIs('transactions') ? 'text-red-600 font-semibold' : '' }}">Transactions</a>
