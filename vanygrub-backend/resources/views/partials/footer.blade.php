@@ -36,6 +36,7 @@
                     <li><a href="{{ route('gallery') }}" class="text-gray-300 transition-colors duration-200 hover:text-white">Gallery</a></li>
                     <li><a href="{{ route('about') }}" class="text-gray-300 transition-colors duration-200 hover:text-white">About</a></li>
                     <li><a href="{{ route('transactions') }}" class="text-gray-300 transition-colors duration-200 hover:text-white">Transactions</a></li>
+                    <li><a href="{{ route('sitemap.html') }}" class="text-gray-300 transition-colors duration-200 hover:text-white">Sitemap</a></li>
                 </ul>
             </div>
 
@@ -85,6 +86,7 @@
                     <a href="#" class="text-sm text-gray-300 transition-colors duration-200 hover:text-white">Privacy Policy</a>
                     <a href="#" class="text-sm text-gray-300 transition-colors duration-200 hover:text-white">Terms of Service</a>
                     <a href="#" class="text-sm text-gray-300 transition-colors duration-200 hover:text-white">Cookie Policy</a>
+                    <a href="{{ route('sitemap.html') }}" class="text-sm text-gray-300 transition-colors duration-200 hover:text-white">Sitemap</a>
                 </div>
             </div>
         </div>

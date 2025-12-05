@@ -1,0 +1,129 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Test Style Fix - Size Selection</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <style>
+        /* Test styling sebelum fix - ini yang menyebabkan masalah */
+        .problematic-size-option:before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: -100%;
+            width: 100%;
+            height: 100%;
+            background: linear-gradient(90deg, transparent, rgba(239, 68, 68, 0.3), transparent);
+            transition: left 0.5s;
+        }
+
+        .problematic-size-option:hover:before {
+            left: 100%;
+        }
+
+        /* Style yang sudah diperbaiki */
+        .fixed-size-option {
+            /* Tidak ada pseudo-element yang mengganggu */
+        }
+    </style>
+</head>
+
+<body class="bg-gray-100 p-8">
+    <div class="max-w-4xl mx-auto">
+        <h1 class="text-2xl font-bold mb-8">Test Style Fix - Pemilihan Ukuran</h1>
+
+        <!-- Before Fix - Masalah layar merah -->
+        <div class="mb-12 p-6 bg-white rounded-lg">
+            <h2 class="text-xl font-semibold mb-4 text-red-600">❌ BEFORE (Bermasalah)</h2>
+            <p class="mb-4 text-sm text-gray-600">Hover pada button di bawah ini akan menampilkan efek gradien merah
+                yang mengganggu:</p>
+            <div class="grid grid-cols-4 gap-3">
+                <button
+                    class="problematic-size-option relative overflow-hidden px-3 py-3 text-sm font-semibold text-center text-gray-700 transition-all duration-200 bg-white border-2 border-gray-200 rounded-xl hover:border-red-400 hover:bg-red-50 hover:text-red-600">
+                    <span class="block">36</span>
+                    <div
+                        class="absolute inset-0 transition-opacity duration-200 bg-red-600 rounded-xl opacity-0 pointer-events-none group-hover:opacity-10">
+                    </div>
+                </button>
+                <button
+                    class="problematic-size-option relative overflow-hidden px-3 py-3 text-sm font-semibold text-center text-gray-700 transition-all duration-200 bg-white border-2 border-gray-200 rounded-xl hover:border-red-400 hover:bg-red-50 hover:text-red-600">
+                    <span class="block">37</span>
+                    <div
+                        class="absolute inset-0 transition-opacity duration-200 bg-red-600 rounded-xl opacity-0 pointer-events-none group-hover:opacity-10">
+                    </div>
+                </button>
+                <button
+                    class="problematic-size-option relative overflow-hidden px-3 py-3 text-sm font-semibold text-center text-gray-700 transition-all duration-200 bg-white border-2 border-gray-200 rounded-xl hover:border-red-400 hover:bg-red-50 hover:text-red-600">
+                    <span class="block">38</span>
+                    <div
+                        class="absolute inset-0 transition-opacity duration-200 bg-red-600 rounded-xl opacity-0 pointer-events-none group-hover:opacity-10">
+                    </div>
+                </button>
+                <button
+                    class="problematic-size-option relative overflow-hidden px-3 py-3 text-sm font-semibold text-center text-gray-700 transition-all duration-200 bg-white border-2 border-gray-200 rounded-xl hover:border-red-400 hover:bg-red-50 hover:text-red-600">
+                    <span class="block">39</span>
+                    <div
+                        class="absolute inset-0 transition-opacity duration-200 bg-red-600 rounded-xl opacity-0 pointer-events-none group-hover:opacity-10">
+                    </div>
+                </button>
+            </div>
+        </div>
+
+        <!-- After Fix - Bersih dan tidak mengganggu -->
+        <div class="mb-12 p-6 bg-white rounded-lg">
+            <h2 class="text-xl font-semibold mb-4 text-green-600">✅ AFTER (Sudah Diperbaiki)</h2>
+            <p class="mb-4 text-sm text-gray-600">Style yang sudah diperbaiki, hover bersih tanpa overlay merah yang
+                mengganggu:</p>
+            <div class="grid grid-cols-4 gap-3">
+                <button
+                    class="fixed-size-option px-3 py-3 text-sm font-semibold text-center text-gray-700 transition-all duration-200 bg-white border-2 border-gray-300 rounded-lg hover:border-red-500 hover:text-red-600 focus:outline-none focus:ring-2 focus:ring-red-500 focus:ring-offset-1"
+                    onclick="selectSize(this, '36')">
+                    <span class="block">36</span>
+                </button>
+                <button
+                    class="fixed-size-option px-3 py-3 text-sm font-semibold text-center text-gray-700 transition-all duration-200 bg-white border-2 border-gray-300 rounded-lg hover:border-red-500 hover:text-red-600 focus:outline-none focus:ring-2 focus:ring-red-500 focus:ring-offset-1"
+                    onclick="selectSize(this, '37')">
+                    <span class="block">37</span>
+                </button>
+                <button
+                    class="fixed-size-option px-3 py-3 text-sm font-semibold text-center text-gray-700 transition-all duration-200 bg-white border-2 border-gray-300 rounded-lg hover:border-red-500 hover:text-red-600 focus:outline-none focus:ring-2 focus:ring-red-500 focus:ring-offset-1"
+                    onclick="selectSize(this, '38')">
+                    <span class="block">38</span>
+                </button>
+                <button
+                    class="fixed-size-option px-3 py-3 text-sm font-semibold text-center text-white transition-all duration-200 bg-red-600 border-2 border-red-600 rounded-lg shadow-md focus:outline-none focus:ring-2 focus:ring-red-500 focus:ring-offset-1">
+                    <span class="block">39</span>
+                </button>
+            </div>
+            <p class="mt-4 text-sm text-green-600">✅ Button terakhir menunjukkan state selected (dipilih)</p>
+        </div>
+
+        <div class="p-6 bg-blue-50 rounded-lg">
+            <h3 class="font-semibold mb-2">Masalah yang Diperbaiki:</h3>
+            <ul class="list-disc pl-5 space-y-1 text-sm">
+                <li>Menghapus pseudo-element `:before` dengan gradien merah yang mengganggu</li>
+                <li>Menghapus overlay div dengan `bg-red-600` yang menyebabkan "layar merah"</li>
+                <li>Menyederhanakan JavaScript untuk mencegah konflik styling</li>
+                <li>Menggunakan Tailwind classes yang lebih sederhana dan stabil</li>
+            </ul>
+        </div>
+    </div>
+
+    <script>
+        function selectSize(button, size) {
+            // Reset all buttons
+            document.querySelectorAll('.fixed-size-option').forEach(btn => {
+                btn.className = 'fixed-size-option px-3 py-3 text-sm font-semibold text-center text-gray-700 transition-all duration-200 bg-white border-2 border-gray-300 rounded-lg hover:border-red-500 hover:text-red-600 focus:outline-none focus:ring-2 focus:ring-red-500 focus:ring-offset-1';
+            });
+
+            // Set selected state
+            button.className = 'fixed-size-option px-3 py-3 text-sm font-semibold text-center text-white transition-all duration-200 bg-red-600 border-2 border-red-600 rounded-lg shadow-md focus:outline-none focus:ring-2 focus:ring-red-500 focus:ring-offset-1';
+
+            console.log('Size selected:', size);
+        }
+    </script>
+</body>
+
+</html>

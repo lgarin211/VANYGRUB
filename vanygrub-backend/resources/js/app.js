@@ -1,4 +1,27 @@
 import './bootstrap';
+import './firebase';
+import './vny-auth';
+
+// Import Firebase utilities
+import { onAuthStateChange, getCurrentUser } from './firebase-auth';
+import { getCollection, addDocument } from './firebase-firestore';
+import { uploadFile, validateImageFile } from './firebase-storage';
+
+// Make Firebase utilities available globally
+window.Firebase = {
+    auth: {
+        onAuthStateChange,
+        getCurrentUser
+    },
+    firestore: {
+        getCollection,
+        addDocument
+    },
+    storage: {
+        uploadFile,
+        validateImageFile
+    }
+};
 
 // VNY Store JavaScript utilities
 window.VNY = {

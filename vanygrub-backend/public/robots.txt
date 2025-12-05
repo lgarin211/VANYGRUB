@@ -1,2 +1,15 @@
 User-agent: *
-Disallow:
+Allow: /
+
+# Disallow admin and test pages
+Disallow: /admin
+Disallow: /api/documentation
+Disallow: /test
+Disallow: /tailwind-test
+Disallow: /firebase-test
+
+# Allow API endpoints for developers
+Allow: /api/vny/
+
+# Sitemap location
+Sitemap: https://vanyadmin.progesio.my.id/sitemap.xml

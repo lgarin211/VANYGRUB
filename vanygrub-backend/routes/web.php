@@ -45,6 +45,18 @@ Route::get('/tailwind-test', function () {
     return view('pages.tailwind-test');
 })->name('tailwind.test');
 
+// Firebase Test Route
+Route::get('/firebase-test', function () {
+    return view('pages.firebase-test');
+})->name('firebase.test');
+
+// SEO Routes
+Route::get('/sitemap.xml', [App\Http\Controllers\SitemapController::class, 'index'])->name('sitemap');
+Route::get('/robots.txt', [App\Http\Controllers\SitemapController::class, 'robots'])->name('robots');
+Route::get('/sitemap', function () {
+    return view('pages.sitemap');
+})->name('sitemap.html');
+
 // Checkout Routes
 Route::get('/checkout/{code?}', [FrontendController::class, 'checkout'])->name('checkout');
 

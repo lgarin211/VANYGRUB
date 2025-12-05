@@ -15,5 +15,8 @@
         "postcss": "^8.4.32",
         "tailwindcss": "^3.3.6",
         "vite": "^7.2.6"
+    },
+    "dependencies": {
+        "firebase": "^12.6.0"
     }
 }

@@ -30,6 +30,48 @@
     <meta name="twitter:description" content="@yield('twitter_description', 'Discover premium sneakers, fashion, and footwear collection from Vany Villa Balige, Vany Villa Bandung, and VNY Fashion.')">
     <meta name="twitter:image" content="@yield('twitter_image', 'https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcQdOGheV5b6MiiOF3tc7Sam_QMPFqPEwTEzZA&s')">
 
+    <!-- Canonical URL -->
+    <link rel="canonical" href="{{ url()->current() }}">
+
+    <!-- Sitemap and Robots -->
+    <link rel="sitemap" type="application/xml" title="Sitemap" href="{{ route('sitemap') }}">
+    
+    <!-- Schema.org Structured Data -->
+    <script type="application/ld+json">
+    {
+        "@context": "https://schema.org",
+        "@type": "Organization",
+        "name": "VANY GROUP",
+        "alternateName": ["VNY Fashion", "Vany Villa Balige", "Vany Villa Bandung"],
+        "url": "{{ config('app.url') }}",
+        "logo": "{{ config('app.url') }}/images/vny-logo.png",
+        "description": "Premium sneakers, fashion, and footwear collection specializing in Batak ethnic designs and modern fashion.",
+        "founder": {
+            "@type": "Person",
+            "name": "Melfarina Sianipar"
+        },
+        "address": {
+            "@type": "PostalAddress",
+            "addressCountry": "ID",
+            "addressRegion": "North Sumatra",
+            "addressLocality": "Balige"
+        },
+        "sameAs": [
+            "https://facebook.com/vanygroup",
+            "https://instagram.com/vanygroup"
+        ],
+        "contactPoint": {
+            "@type": "ContactPoint",
+            "telephone": "+62-813-1587-1101",
+            "contactType": "Customer Service",
+            "availableLanguage": ["Indonesian", "English"]
+        }
+    }
+    </script>
+
+    @yield('structured_data')
+    <meta name="twitter:image" content="@yield('twitter_image', 'https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcQdOGheV5b6MiiOF3tc7Sam_QMPFqPEwTEzZA&s')">
+
     <!-- Brand & Social Media References -->
     <meta name="brand:vany-villa-balige" content="@vanyvillabalige">
     <meta name="brand:vany-villa-bandung" content="@vanyvillabandung">
