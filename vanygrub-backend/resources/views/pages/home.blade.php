@@ -2437,15 +2437,15 @@ document.addEventListener('DOMContentLoaded', function() {
     // Portfolio filter functionality
     const filterItems = document.querySelectorAll('.brand-filter .filter-item');
     const portfolioCards = document.querySelectorAll('.product-card-featured');
-    
+
     filterItems.forEach((item, index) => {
         item.addEventListener('click', function() {
             // Remove active class from all items
             filterItems.forEach(filter => filter.classList.remove('active'));
-            
+
             // Add active class to clicked item
             this.classList.add('active');
-            
+
             // For demo purposes, just show all cards
             // In production, you would filter based on category
             portfolioCards.forEach(card => {
@@ -2457,17 +2457,17 @@ document.addEventListener('DOMContentLoaded', function() {
     // Portfolio pagination functionality
     const paginationDots = document.querySelectorAll('.pagination-dots .dot');
     const productsShowcase = document.querySelector('.products-showcase');
-    
+
     if (paginationDots.length > 0 && productsShowcase) {
         let currentPage = 0;
         const cardsPerPage = 6;
         const totalCards = portfolioCards.length;
         const totalPages = Math.ceil(totalCards / cardsPerPage);
-        
+
         function showPage(pageIndex) {
             const startIndex = pageIndex * cardsPerPage;
             const endIndex = startIndex + cardsPerPage;
-            
+
             portfolioCards.forEach((card, index) => {
                 if (index >= startIndex && index < endIndex) {
                     card.style.display = 'block';
@@ -2476,7 +2476,7 @@ document.addEventListener('DOMContentLoaded', function() {
                     card.style.display = 'none';
                 }
             });
-            
+
             // Update pagination dots
             paginationDots.forEach((dot, index) => {
                 if (index === pageIndex) {
@@ -2486,14 +2486,14 @@ document.addEventListener('DOMContentLoaded', function() {
                 }
             });
         }
-        
+
         paginationDots.forEach((dot, index) => {
             dot.addEventListener('click', function() {
                 currentPage = index;
                 showPage(currentPage);
             });
         });
-        
+
         // Initialize first page
         showPage(0);
     }

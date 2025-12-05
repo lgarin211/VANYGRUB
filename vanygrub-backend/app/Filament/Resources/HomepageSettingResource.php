@@ -48,12 +48,12 @@ class HomepageSettingResource extends Resource
                                                     ])
                                                     ->required()
                                                     ->unique(ignoreRecord: true),
-                                                
+
                                                 Forms\Components\Toggle::make('is_active')
                                                     ->label('Active')
                                                     ->default(true)
                                                     ->inline(false),
-                                                
+
                                                 Forms\Components\TextInput::make('display_order')
                                                     ->label('Display Order')
                                                     ->numeric()
@@ -75,30 +75,30 @@ class HomepageSettingResource extends Resource
                                                     ->label('Badge Text')
                                                     ->placeholder('Selamat Datang')
                                                     ->maxLength(255),
-                                                
+
                                                 Forms\Components\TextInput::make('welcome_title')
                                                     ->label('Title')
                                                     ->placeholder('VANY GROUP')
                                                     ->maxLength(255),
                                             ]),
-                                        
+
                                         Forms\Components\TextInput::make('welcome_tagline')
                                             ->label('Tagline')
                                             ->placeholder('Keunggulan Tradisi & Inovasi Modern')
                                             ->maxLength(255),
-                                        
+
                                         Forms\Components\Textarea::make('welcome_description')
                                             ->label('Description')
                                             ->placeholder('Deskripsi lengkap tentang VANY GROUP...')
                                             ->rows(4),
-                                        
+
                                         Forms\Components\FileUpload::make('welcome_image')
                                             ->label('Welcome Image')
                                             ->image()
                                             ->directory('homepage/welcome')
                                             ->maxSize(2048),
                                     ]),
-                                
+
                                 Section::make('Highlights')
                                     ->description('Statistik atau highlight angka')
                                     ->schema([
@@ -108,24 +108,24 @@ class HomepageSettingResource extends Resource
                                                     ->label('Highlight 1 Number')
                                                     ->placeholder('3+')
                                                     ->maxLength(50),
-                                                
+
                                                 Forms\Components\TextInput::make('highlight_1_text')
                                                     ->label('Highlight 1 Text')
                                                     ->placeholder('Brand Premium')
                                                     ->maxLength(255),
-                                                
+
                                                 Forms\Components\TextInput::make('highlight_2_number')
                                                     ->label('Highlight 2 Number')
                                                     ->placeholder('100%')
                                                     ->maxLength(50),
-                                                
+
                                                 Forms\Components\TextInput::make('highlight_2_text')
                                                     ->label('Highlight 2 Text')
                                                     ->placeholder('Kualitas Terjamin')
                                                     ->maxLength(255),
                                             ]),
                                     ]),
-                                
+
                                 Section::make('Button')
                                     ->schema([
                                         Grid::make(2)
@@ -134,7 +134,7 @@ class HomepageSettingResource extends Resource
                                                     ->label('Button Text')
                                                     ->placeholder('Jelajahi Brand')
                                                     ->maxLength(255),
-                                                
+
                                                 Forms\Components\TextInput::make('welcome_button_link')
                                                     ->label('Button Link')
                                                     ->placeholder('#brands-section')
@@ -153,33 +153,33 @@ class HomepageSettingResource extends Resource
                                             ->label('Section Title')
                                             ->placeholder('Brand Kami')
                                             ->maxLength(255),
-                                        
+
                                         Forms\Components\Textarea::make('brand_section_description')
                                             ->label('Section Description')
                                             ->rows(2),
-                                        
+
                                         Forms\Components\TextInput::make('brand_featured_title')
                                             ->label('Featured Brand Title')
                                             ->placeholder('Koleksi Premium VANY GROUP')
                                             ->maxLength(255),
-                                        
+
                                         Forms\Components\Textarea::make('brand_featured_description')
                                             ->label('Featured Brand Description')
                                             ->rows(3),
-                                        
+
                                         Forms\Components\FileUpload::make('brand_featured_image')
                                             ->label('Featured Brand Image')
                                             ->image()
                                             ->directory('homepage/brands')
                                             ->maxSize(2048),
-                                        
+
                                         Grid::make(2)
                                             ->schema([
                                                 Forms\Components\TextInput::make('brand_button_text')
                                                     ->label('Button Text')
                                                     ->placeholder('Jelajahi Brand VNY')
                                                     ->maxLength(255),
-                                                
+
                                                 Forms\Components\TextInput::make('brand_button_link')
                                                     ->label('Button Link')
                                                     ->placeholder('/vny')
@@ -200,37 +200,37 @@ class HomepageSettingResource extends Resource
                                                     ->label('Number')
                                                     ->placeholder('01')
                                                     ->maxLength(10),
-                                                
+
                                                 Forms\Components\TextInput::make('value_1_title')
                                                     ->label('Title')
                                                     ->placeholder('Kualitas Kerajinan Tangan')
                                                     ->maxLength(255),
                                             ]),
-                                        
+
                                         Forms\Components\Textarea::make('value_1_description')
                                             ->label('Description')
                                             ->rows(3),
-                                        
+
                                         Forms\Components\FileUpload::make('value_1_image')
                                             ->label('Image')
                                             ->image()
                                             ->directory('homepage/values')
                                             ->maxSize(2048),
-                                        
+
                                         Grid::make(2)
                                             ->schema([
                                                 Forms\Components\TextInput::make('value_1_button_text')
                                                     ->label('Button Text')
                                                     ->placeholder('Pelajari Lebih Lanjut')
                                                     ->maxLength(255),
-                                                
+
                                                 Forms\Components\TextInput::make('value_1_button_link')
                                                     ->label('Button Link')
                                                     ->placeholder('#portfolio-section')
                                                     ->maxLength(255),
                                             ]),
                                     ]),
-                                
+
                                 Section::make('Value 2 - Heritage & Innovation')
                                     ->description('Section kedua tentang warisan budaya')
                                     ->schema([
@@ -240,30 +240,30 @@ class HomepageSettingResource extends Resource
                                                     ->label('Number')
                                                     ->placeholder('02')
                                                     ->maxLength(10),
-                                                
+
                                                 Forms\Components\TextInput::make('value_2_title')
                                                     ->label('Title')
                                                     ->placeholder('Warisan Budaya & Inovasi')
                                                     ->maxLength(255),
                                             ]),
-                                        
+
                                         Forms\Components\Textarea::make('value_2_description')
                                             ->label('Description')
                                             ->rows(3),
-                                        
+
                                         Forms\Components\FileUpload::make('value_2_image')
                                             ->label('Image')
                                             ->image()
                                             ->directory('homepage/values')
                                             ->maxSize(2048),
-                                        
+
                                         Grid::make(2)
                                             ->schema([
                                                 Forms\Components\TextInput::make('value_2_button_text')
                                                     ->label('Button Text')
                                                     ->placeholder('Jelajahi Warisan')
                                                     ->maxLength(255),
-                                                
+
                                                 Forms\Components\TextInput::make('value_2_button_link')
                                                     ->label('Button Link')
                                                     ->placeholder('/vny/about')
@@ -282,7 +282,7 @@ class HomepageSettingResource extends Resource
                                             ->label('Section Title')
                                             ->placeholder('Portofolio Brand Kami')
                                             ->maxLength(255),
-                                        
+
                                         Forms\Components\Textarea::make('portfolio_subtitle')
                                             ->label('Section Subtitle')
                                             ->placeholder('Jelajahi beragam brand...')
@@ -301,14 +301,14 @@ class HomepageSettingResource extends Resource
                 Tables\Columns\TextColumn::make('section_name')
                     ->label('Section')
                     ->badge()
-                    ->color(fn (string $state): string => match ($state) {
+                    ->color(fn(string $state): string => match ($state) {
                         'welcome' => 'success',
                         'brands' => 'info',
                         'values' => 'warning',
                         'portfolio' => 'primary',
                         default => 'gray',
                     })
-                    ->formatStateUsing(fn (string $state): string => match ($state) {
+                    ->formatStateUsing(fn(string $state): string => match ($state) {
                         'welcome' => '👋 Welcome',
                         'brands' => '🏢 Brands',
                         'values' => '⭐ Values',
@@ -317,21 +317,21 @@ class HomepageSettingResource extends Resource
                     })
                     ->searchable()
                     ->sortable(),
-                
+
                 Tables\Columns\IconColumn::make('is_active')
                     ->label('Status')
                     ->boolean()
                     ->sortable(),
-                
+
                 Tables\Columns\TextColumn::make('display_order')
                     ->label('Order')
                     ->sortable(),
-                
+
                 Tables\Columns\TextColumn::make('welcome_title')
                     ->label('Title/Content')
                     ->limit(30)
                     ->searchable(),
-                
+
                 Tables\Columns\TextColumn::make('updated_at')
                     ->label('Last Updated')
                     ->dateTime('d M Y, H:i')
@@ -347,7 +347,7 @@ class HomepageSettingResource extends Resource
                         'values' => 'Values',
                         'portfolio' => 'Portfolio',
                     ]),
-                
+
                 Tables\Filters\TernaryFilter::make('is_active')
                     ->label('Status')
                     ->placeholder('All')
