@@ -15,20 +15,7 @@
     overflow: hidden;
 }
 
-.size-option:before {
-    content: '';
-    position: absolute;
-    top: 0;
-    left: -100%;
-    width: 100%;
-    height: 100%;
-    background: linear-gradient(90deg, transparent, rgba(239, 68, 68, 0.3), transparent);
-    transition: left 0.5s;
-}
-
-.size-option:hover:before {
-    left: 100%;
-}
+/* Hover effect dihandle langsung oleh Tailwind classes */
 
 .size-option.selected {
     animation: pulseSize 0.3s ease-in-out;
@@ -279,21 +266,13 @@
                             </div>
 
                             <!-- Size Grid - Responsive and Better Spacing -->
-                            <div class="grid grid-cols-4 sm:grid-cols-5 md:grid-cols-6 lg:grid-cols-8 gap-3">
+                            <div class="grid grid-cols-4 gap-3 sm:grid-cols-5 md:grid-cols-6 lg:grid-cols-8">
                                 @foreach($product['sizes'] as $size)
-                                    <button class="relative group size-option px-3 py-3 text-sm font-semibold text-center text-gray-700 transition-all duration-200 bg-white border-2 border-gray-200 rounded-xl hover:border-red-400 hover:bg-red-50 hover:text-red-600 hover:shadow-md focus:outline-none focus:ring-2 focus:ring-red-500 focus:ring-offset-2"
+                                    <button class="px-3 py-3 text-sm font-semibold text-center text-gray-700 transition-all duration-200 bg-white border-2 border-gray-300 rounded-lg size-option hover:border-red-500 hover:text-red-600 focus:outline-none focus:ring-2 focus:ring-red-500 focus:ring-offset-1"
                                             onclick="selectSize(this, '{{ $size }}')">
                                         <span class="block">{{ $size }}</span>
 
-                                        <!-- Selected indicator -->
-                                        <div class="absolute inset-0 flex items-center justify-center transition-opacity duration-200 opacity-0 pointer-events-none size-selected-indicator">
-                                            <svg class="w-4 h-4 text-white" fill="currentColor" viewBox="0 0 20 20">
-                                                <path fill-rule="evenodd" d="M16.707 5.293a1 1 0 010 1.414l-8 8a1 1 0 01-1.414 0l-4-4a1 1 0 011.414-1.414L8 12.586l7.293-7.293a1 1 0 011.414 0z" clip-rule="evenodd"></path>
-                                            </svg>
-                                        </div>
 
-                                        <!-- Hover effect -->
-                                        <div class="absolute inset-0 transition-opacity duration-200 bg-red-600 rounded-xl opacity-0 pointer-events-none group-hover:opacity-10"></div>
                                     </button>
                                 @endforeach
                             </div>
@@ -318,7 +297,7 @@
                         <h3 class="text-lg font-semibold text-gray-900">Jumlah</h3>
                         <div class="flex items-center justify-between">
                             <span class="text-sm font-medium text-gray-600">Quantity:</span>
-                            <div class="flex items-center bg-white border-2 border-gray-200 rounded-xl shadow-sm">
+                            <div class="flex items-center bg-white border-2 border-gray-200 shadow-sm rounded-xl">
                                 <button onclick="decreaseQuantity()"
                                         class="p-3 text-gray-600 transition-all duration-200 hover:bg-red-50 hover:text-red-600 rounded-l-xl focus:outline-none focus:ring-2 focus:ring-red-500 focus:ring-offset-2">
                                     <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
@@ -326,7 +305,7 @@
                                     </svg>
                                 </button>
                                 <div class="flex items-center justify-center min-w-[60px] px-4 py-3 bg-gray-50 border-x-2 border-gray-200">
-                                    <span class="font-bold text-lg text-gray-800" id="quantity">1</span>
+                                    <span class="text-lg font-bold text-gray-800" id="quantity">1</span>
                                 </div>
                                 <button onclick="increaseQuantity()"
                                         class="p-3 text-gray-600 transition-all duration-200 hover:bg-red-50 hover:text-red-600 rounded-r-xl focus:outline-none focus:ring-2 focus:ring-red-500 focus:ring-offset-2">
@@ -343,10 +322,10 @@
                             <span class="flex items-center space-x-1">
                                 @if($product['inStock'] ?? true)
                                     <div class="w-2 h-2 bg-green-500 rounded-full animate-pulse"></div>
-                                    <span class="text-green-600 font-medium">Tersedia</span>
+                                    <span class="font-medium text-green-600">Tersedia</span>
                                 @else
                                     <div class="w-2 h-2 bg-red-500 rounded-full"></div>
-                                    <span class="text-red-600 font-medium">Habis</span>
+                                    <span class="font-medium text-red-600">Habis</span>
                                 @endif
                             </span>
                         </div>
@@ -356,7 +335,7 @@
                     <div class="pt-6 space-y-4">
                         <!-- Main Action Button -->
                         <button id="actionBtn" onclick="handleAction()"
-                                class="w-full py-4 px-6 rounded-xl font-bold text-gray-600 bg-gray-200 cursor-not-allowed transition-all border-2 border-dashed border-gray-300">
+                                class="w-full px-6 py-4 font-bold text-gray-600 transition-all bg-gray-200 border-2 border-gray-300 border-dashed cursor-not-allowed rounded-xl">
                             <div class="flex items-center justify-center space-x-2">
                                 <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                                     <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 8v4l3 3m6-3a9 9 0 11-18 0 9 9 0 0118 0z"></path>
@@ -367,13 +346,13 @@
 
                         <!-- Secondary Actions -->
                         <div class="grid grid-cols-2 gap-3">
-                            <button class="flex items-center justify-center space-x-2 py-3 px-4 bg-white border-2 border-gray-200 rounded-xl text-gray-600 hover:border-red-300 hover:bg-red-50 hover:text-red-600 transition-all duration-200">
+                            <button class="flex items-center justify-center px-4 py-3 space-x-2 text-gray-600 transition-all duration-200 bg-white border-2 border-gray-200 rounded-xl hover:border-red-300 hover:bg-red-50 hover:text-red-600">
                                 <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                                     <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4.318 6.318a4.5 4.5 0 000 6.364L12 20.364l7.682-7.682a4.5 4.5 0 00-6.364-6.364L12 7.636l-1.318-1.318a4.5 4.5 0 00-6.364 0z"></path>
                                 </svg>
                                 <span class="font-medium">Wishlist</span>
                             </button>
-                            <button class="flex items-center justify-center space-x-2 py-3 px-4 bg-white border-2 border-gray-200 rounded-xl text-gray-600 hover:border-blue-300 hover:bg-blue-50 hover:text-blue-600 transition-all duration-200">
+                            <button class="flex items-center justify-center px-4 py-3 space-x-2 text-gray-600 transition-all duration-200 bg-white border-2 border-gray-200 rounded-xl hover:border-blue-300 hover:bg-blue-50 hover:text-blue-600">
                                 <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                                     <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M8.684 13.342C8.886 12.938 9 12.482 9 12c0-.482-.114-.938-.316-1.342m0 2.684a3 3 0 110-2.684m0 2.684l6.632 3.316m-6.632-6l6.632-3.316m0 0a3 3 0 105.367-2.684 3 3 0 00-5.367 2.684zm0 9.316a3 3 0 105.367 2.684 3 3 0 00-5.367-2.684z"></path>
                                 </svg>
@@ -479,24 +458,11 @@ function selectColor(button, color) {
 function selectSize(button, size) {
     // Update all size buttons to default state
     document.querySelectorAll('.size-option').forEach(btn => {
-        btn.className = 'relative group size-option px-3 py-3 text-sm font-semibold text-center text-gray-700 transition-all duration-200 bg-white border-2 border-gray-200 rounded-xl hover:border-red-400 hover:bg-red-50 hover:text-red-600 hover:shadow-md focus:outline-none focus:ring-2 focus:ring-red-500 focus:ring-offset-2';
-
-        // Hide selected indicator
-        const indicator = btn.querySelector('.size-selected-indicator');
-        if (indicator) {
-            indicator.classList.add('opacity-0');
-        }
+        btn.className = 'size-option px-3 py-3 text-sm font-semibold text-center text-gray-700 transition-all duration-200 bg-white border-2 border-gray-300 rounded-lg hover:border-red-500 hover:text-red-600 focus:outline-none focus:ring-2 focus:ring-red-500 focus:ring-offset-1';
     });
 
     // Update selected button to active state
-    button.className = 'relative group size-option px-3 py-3 text-sm font-semibold text-center text-white transition-all duration-200 bg-red-600 border-2 border-red-600 rounded-xl shadow-lg transform scale-105 focus:outline-none focus:ring-2 focus:ring-red-500 focus:ring-offset-2';
-
-    // Show selected indicator
-    const selectedIndicator = button.querySelector('.size-selected-indicator');
-    if (selectedIndicator) {
-        selectedIndicator.classList.remove('opacity-0');
-        selectedIndicator.classList.add('opacity-100');
-    }
+    button.className = 'size-option px-3 py-3 text-sm font-semibold text-center text-white transition-all duration-200 bg-red-600 border-2 border-red-600 rounded-lg shadow-md focus:outline-none focus:ring-2 focus:ring-red-500 focus:ring-offset-1';
 
     // Update selected size text and variables
     selectedSize = size;
