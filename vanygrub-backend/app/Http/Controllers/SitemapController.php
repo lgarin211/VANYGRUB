@@ -46,7 +46,7 @@ class SitemapController extends Controller
         try {
             // Try to get products from API
             $response = Http::timeout(10)->get('https://vanyadmin.progesio.my.id/api/vny/products');
-            
+
             if ($response->successful()) {
                 $productsData = $response->json();
                 if (isset($productsData['data']) && is_array($productsData['data'])) {
@@ -54,7 +54,7 @@ class SitemapController extends Controller
                         if (isset($product['id'])) {
                             $urls[] = [
                                 'loc' => $baseUrl . '/vny/product/' . $product['id'],
-                                'lastmod' => isset($product['updatedAt']) ? 
+                                'lastmod' => isset($product['updatedAt']) ?
                                     Carbon::parse($product['updatedAt'])->format('Y-m-d') : $lastmod,
                                 'changefreq' => 'weekly',
                                 'priority' => '0.7'
@@ -79,7 +79,7 @@ class SitemapController extends Controller
         // Category pages
         try {
             $response = Http::timeout(10)->get('https://vanyadmin.progesio.my.id/api/vny/categories');
-            
+
             if ($response->successful()) {
                 $categoriesData = $response->json();
                 if (isset($categoriesData['data']) && is_array($categoriesData['data'])) {
@@ -87,7 +87,7 @@ class SitemapController extends Controller
                         if (isset($category['slug'])) {
                             $urls[] = [
                                 'loc' => $baseUrl . '/category/' . $category['slug'],
-                                'lastmod' => isset($category['updatedAt']) ? 
+                                'lastmod' => isset($category['updatedAt']) ?
                                     Carbon::parse($category['updatedAt'])->format('Y-m-d') : $lastmod,
                                 'changefreq' => 'weekly',
                                 'priority' => '0.6'

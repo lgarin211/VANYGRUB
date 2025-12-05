@@ -620,7 +620,7 @@ async function addToCart() {
             actionBtn.disabled = false;
             actionBtn.innerHTML = originalContent;
             actionBtn.className = 'w-full py-4 px-6 rounded-xl font-bold text-white bg-gradient-to-r from-red-600 to-red-700 hover:from-red-700 hover:to-red-800 cursor-pointer transition-all duration-300 shadow-lg hover:shadow-xl transform hover:scale-[1.02]';
-            
+
             if (window.VNYAuth) {
                 window.VNYAuth.showModal();
             } else {
@@ -759,7 +759,7 @@ async function toggleWishlist() {
     const wishlistBtn = document.getElementById('wishlistBtn');
     const wishlistIcon = document.getElementById('wishlistIcon');
     const wishlistText = document.getElementById('wishlistText');
-    
+
     // Check if already in wishlist (simple check with localStorage for now)
     const productId = @json($product['id']);
     const wishlistKey = `wishlist_${currentUser.uid}_${productId}`;
@@ -769,22 +769,22 @@ async function toggleWishlist() {
         if (isInWishlist) {
             // Remove from wishlist
             localStorage.removeItem(wishlistKey);
-            
+
             // Update UI to unfilled heart
             wishlistIcon.innerHTML = '<path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4.318 6.318a4.5 4.5 0 000 6.364L12 20.364l7.682-7.682a4.5 4.5 0 00-6.364-6.364L12 7.636l-1.318-1.318a4.5 4.5 0 00-6.364 0z"></path>';
             wishlistBtn.className = 'flex items-center justify-center px-4 py-3 space-x-2 text-gray-600 transition-all duration-200 bg-white border-2 border-gray-200 rounded-xl hover:border-red-300 hover:bg-red-50 hover:text-red-600';
             wishlistText.textContent = 'Wishlist';
-            
+
             showMessage('Dihapus dari wishlist', 'success');
         } else {
             // Add to wishlist
             localStorage.setItem(wishlistKey, 'true');
-            
+
             // Update UI to filled heart
             wishlistIcon.innerHTML = '<path fill="currentColor" d="M4.318 6.318a4.5 4.5 0 000 6.364L12 20.364l7.682-7.682a4.5 4.5 0 00-6.364-6.364L12 7.636l-1.318-1.318a4.5 4.5 0 00-6.364 0z"></path>';
             wishlistBtn.className = 'flex items-center justify-center px-4 py-3 space-x-2 text-red-600 transition-all duration-200 bg-red-50 border-2 border-red-300 rounded-xl hover:border-red-400 hover:bg-red-100';
             wishlistText.textContent = 'In Wishlist';
-            
+
             showMessage('Ditambahkan ke wishlist', 'success');
 
             // Save to Firebase Firestore
@@ -816,12 +816,12 @@ function checkWishlistStatus() {
     const productId = @json($product['id']);
     const wishlistKey = `wishlist_${currentUser.uid}_${productId}`;
     const isInWishlist = localStorage.getItem(wishlistKey);
-    
+
     if (isInWishlist) {
         const wishlistBtn = document.getElementById('wishlistBtn');
         const wishlistIcon = document.getElementById('wishlistIcon');
         const wishlistText = document.getElementById('wishlistText');
-        
+
         wishlistIcon.innerHTML = '<path fill="currentColor" d="M4.318 6.318a4.5 4.5 0 000 6.364L12 20.364l7.682-7.682a4.5 4.5 0 00-6.364-6.364L12 7.636l-1.318-1.318a4.5 4.5 0 00-6.364 0z"></path>';
         wishlistBtn.className = 'flex items-center justify-center px-4 py-3 space-x-2 text-red-600 transition-all duration-200 bg-red-50 border-2 border-red-300 rounded-xl hover:border-red-400 hover:bg-red-100';
         wishlistText.textContent = 'In Wishlist';
@@ -832,14 +832,14 @@ function checkWishlistStatus() {
 function showMessage(message, type = 'info') {
     const messageDiv = document.createElement('div');
     messageDiv.className = `fixed top-4 right-4 px-6 py-3 rounded-lg shadow-lg z-50 transition-all duration-300 ${
-        type === 'success' ? 'bg-green-500 text-white' : 
-        type === 'error' ? 'bg-red-500 text-white' : 
+        type === 'success' ? 'bg-green-500 text-white' :
+        type === 'error' ? 'bg-red-500 text-white' :
         'bg-blue-500 text-white'
     }`;
     messageDiv.textContent = message;
-    
+
     document.body.appendChild(messageDiv);
-    
+
     setTimeout(() => {
         messageDiv.remove();
     }, 3000);

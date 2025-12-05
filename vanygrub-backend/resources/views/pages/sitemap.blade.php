@@ -22,7 +22,7 @@
     <!-- Sitemap Content -->
     <div class="container px-4 py-12 mx-auto">
         <div class="grid grid-cols-1 gap-8 lg:grid-cols-2">
-            
+
             <!-- Main Pages -->
             <div class="p-6 bg-white rounded-lg shadow-md">
                 <h2 class="mb-6 text-2xl font-bold text-gray-900">📋 Halaman Utama</h2>

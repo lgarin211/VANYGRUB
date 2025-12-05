@@ -35,7 +35,7 @@
 
     <!-- Sitemap and Robots -->
     <link rel="sitemap" type="application/xml" title="Sitemap" href="{{ route('sitemap') }}">
-    
+
     <!-- Schema.org Structured Data -->
     <script type="application/ld+json">
     {
