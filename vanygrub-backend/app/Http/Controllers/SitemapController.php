@@ -20,7 +20,7 @@ class SitemapController extends Controller
         $baseUrl = config('app.url');
         $lastmod = Carbon::now()->format('Y-m-d');
 
-        // Static pages
+        // Static pages - only user-facing pages
         $staticPages = [
             ['url' => '/', 'priority' => '1.0', 'changefreq' => 'daily'],
             ['url' => '/vny', 'priority' => '0.9', 'changefreq' => 'daily'],
@@ -31,6 +31,7 @@ class SitemapController extends Controller
             ['url' => '/vny/cart', 'priority' => '0.4', 'changefreq' => 'monthly'],
             ['url' => '/customerreview', 'priority' => '0.5', 'changefreq' => 'weekly'],
             ['url' => '/customerreview/all', 'priority' => '0.4', 'changefreq' => 'weekly'],
+            ['url' => '/sitemap', 'priority' => '0.3', 'changefreq' => 'monthly'],
         ];
 
         foreach ($staticPages as $page) {
@@ -124,18 +125,18 @@ class SitemapController extends Controller
     private function generateSitemapXml($urls)
     {
         $xml = '<?xml version="1.0" encoding="UTF-8"?>' . "\n";
-        $xml .= '<urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9"' . "\n";
-        $xml .= '        xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"' . "\n";
-        $xml .= '        xsi:schemaLocation="http://www.sitemaps.org/schemas/sitemap/0.9' . "\n";
-        $xml .= '        http://www.sitemaps.org/schemas/sitemap/0.9/sitemap.xsd">' . "\n";
+        $xml .= '<urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9" ';
+        $xml .= 'xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" ';
+        $xml .= 'xsi:schemaLocation="http://www.sitemaps.org/schemas/sitemap/0.9 ';
+        $xml .= 'http://www.sitemaps.org/schemas/sitemap/0.9/sitemap.xsd">' . "\n";
 
         foreach ($urls as $url) {
-            $xml .= '    <url>' . "\n";
-            $xml .= '        <loc>' . htmlspecialchars($url['loc']) . '</loc>' . "\n";
-            $xml .= '        <lastmod>' . $url['lastmod'] . '</lastmod>' . "\n";
-            $xml .= '        <changefreq>' . $url['changefreq'] . '</changefreq>' . "\n";
-            $xml .= '        <priority>' . $url['priority'] . '</priority>' . "\n";
-            $xml .= '    </url>' . "\n";
+            $xml .= '  <url>' . "\n";
+            $xml .= '    <loc>' . htmlspecialchars($url['loc'], ENT_XML1) . '</loc>' . "\n";
+            $xml .= '    <lastmod>' . $url['lastmod'] . '</lastmod>' . "\n";
+            $xml .= '    <changefreq>' . $url['changefreq'] . '</changefreq>' . "\n";
+            $xml .= '    <priority>' . $url['priority'] . '</priority>' . "\n";
+            $xml .= '  </url>' . "\n";
         }
 
         $xml .= '</urlset>';
