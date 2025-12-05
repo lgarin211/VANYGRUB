@@ -1,0 +1,15 @@
+<svg width="400" height="300" viewBox="0 0 400 300" xmlns="http://www.w3.org/2000/svg">
+  <defs>
+    <linearGradient id="gorgaBg" x1="0%" y1="0%" x2="100%" y2="100%">
+      <stop offset="0%" stop-color="#f59e0b"/>
+      <stop offset="100%" stop-color="#amber-600"/>
+    </linearGradient>
+  </defs>
+  <rect width="400" height="300" fill="url(#gorgaBg)"/>
+  <g transform="translate(200,150)">
+    <path d="M-50,-50 Q-50,-100 0,-100 Q50,-100 50,-50 Q50,0 0,0 Q-50,0 -50,-50" fill="rgba(255,255,255,0.3)" stroke="white" stroke-width="2"/>
+    <path d="M-30,-30 Q-30,-60 0,-60 Q30,-60 30,-30 Q30,0 0,0 Q-30,0 -30,-30" fill="rgba(255,255,255,0.2)"/>
+    <circle cx="0" cy="-30" r="10" fill="white" opacity="0.8"/>
+  </g>
+  <text x="200" y="250" text-anchor="middle" fill="white" font-family="Arial, sans-serif" font-size="20" font-weight="bold">Motif Gorga</text>
+</svg>

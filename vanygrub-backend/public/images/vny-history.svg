@@ -1,0 +1,24 @@
+<svg width="800" height="480" viewBox="0 0 800 480" xmlns="http://www.w3.org/2000/svg">
+  <defs>
+    <linearGradient id="vnyBg" x1="0%" y1="0%" x2="100%" y2="100%">
+      <stop offset="0%" stop-color="#1e40af"/>
+      <stop offset="100%" stop-color="#1d4ed8"/>
+    </linearGradient>
+  </defs>
+  <rect width="800" height="480" fill="url(#vnyBg)"/>
+  <rect x="50" y="50" width="700" height="380" fill="rgba(255,255,255,0.1)" rx="20"/>
+  <text x="400" y="150" text-anchor="middle" fill="white" font-family="Arial, sans-serif" font-size="32" font-weight="bold">VNY TOBA SHOES</text>
+  <text x="400" y="200" text-anchor="middle" fill="white" font-family="Arial, sans-serif" font-size="18">Kualitas Terbaik Untuk Kaki Anda</text>
+  <text x="400" y="250" text-anchor="middle" fill="white" font-family="Arial, sans-serif" font-size="16">Est. 2019</text>
+  <!-- Shoe silhouettes -->
+  <g fill="rgba(255,255,255,0.3)">
+    <ellipse cx="250" cy="320" rx="40" ry="12"/>
+    <path d="M210 320 C210 310, 220 305, 240 305 L280 305 C290 305, 290 310, 290 315 L290 325 C290 330, 280 335, 270 335 L220 335 C210 335, 210 330, 210 320 Z"/>
+
+    <ellipse cx="400" cy="330" rx="45" ry="14"/>
+    <path d="M355 330 C355 318, 365 312, 385 312 L425 312 C435 312, 445 318, 445 325 L445 335 C445 342, 435 348, 425 348 L365 348 C355 348, 355 342, 355 330 Z"/>
+
+    <ellipse cx="550" cy="325" rx="38" ry="11"/>
+    <path d="M512 325 C512 316, 522 311, 540 311 L575 311 C585 311, 588 316, 588 320 L588 330 C588 335, 578 340, 568 340 L522 340 C512 340, 512 335, 512 325 Z"/>
+  </g>
+</svg>

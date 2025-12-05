@@ -1,0 +1,22 @@
+<svg width="800" height="480" viewBox="0 0 800 480" xmlns="http://www.w3.org/2000/svg">
+  <defs>
+    <linearGradient id="villaBg" x1="0%" y1="0%" x2="100%" y2="100%">
+      <stop offset="0%" stop-color="#065f46"/>
+      <stop offset="100%" stop-color="#047857"/>
+    </linearGradient>
+  </defs>
+  <rect width="800" height="480" fill="url(#villaBg)"/>
+  <rect x="50" y="50" width="700" height="380" fill="rgba(255,255,255,0.1)" rx="20"/>
+  <text x="400" y="150" text-anchor="middle" fill="white" font-family="Arial, sans-serif" font-size="32" font-weight="bold">VANYVILLA</text>
+  <text x="400" y="200" text-anchor="middle" fill="white" font-family="Arial, sans-serif" font-size="18">Premium Hospitality Experience</text>
+  <text x="400" y="250" text-anchor="middle" fill="white" font-family="Arial, sans-serif" font-size="16">Est. 2021</text>
+  <!-- Villa/house icons -->
+  <g fill="rgba(255,255,255,0.3)">
+    <rect x="200" y="320" width="60" height="40" rx="5"/>
+    <polygon points="200,320 260,320 230,300" fill="rgba(255,255,255,0.4)"/>
+    <rect x="320" y="310" width="80" height="50" rx="5"/>
+    <polygon points="320,310 400,310 360,285" fill="rgba(255,255,255,0.4)"/>
+    <rect x="480" y="325" width="70" height="35" rx="5"/>
+    <polygon points="480,325 550,325 515,305" fill="rgba(255,255,255,0.4)"/>
+  </g>
+</svg>

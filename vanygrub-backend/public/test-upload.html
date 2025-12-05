@@ -1,0 +1,92 @@
+<!DOCTYPE html>
+<html lang="id">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Test Upload Gambar</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+</head>
+
+<body class="bg-gray-100 min-h-screen py-8">
+    <div class="max-w-2xl mx-auto bg-white rounded-lg shadow p-6">
+        <h1 class="text-2xl font-bold mb-6">Test Upload Gambar About Setting</h1>
+
+        <form action="/api/test-upload" method="POST" enctype="multipart/form-data" class="space-y-6">
+            <div>
+                <label class="block text-sm font-medium text-gray-700 mb-2">Hero Image</label>
+                <input type="file" name="hero_image" accept="image/*"
+                    class="w-full px-3 py-2 border border-gray-300 rounded-lg">
+            </div>
+
+            <div>
+                <label class="block text-sm font-medium text-gray-700 mb-2">History Image</label>
+                <input type="file" name="history_image" accept="image/*"
+                    class="w-full px-3 py-2 border border-gray-300 rounded-lg">
+            </div>
+
+            <div>
+                <label class="block text-sm font-medium text-gray-700 mb-2">Philosophy Images</label>
+                <input type="file" name="philosophy_images[]" accept="image/*" multiple
+                    class="w-full px-3 py-2 border border-gray-300 rounded-lg">
+            </div>
+
+            <button type="submit" class="w-full bg-blue-600 text-white px-4 py-2 rounded-lg hover:bg-blue-700">
+                Test Upload
+            </button>
+        </form>
+
+        <div class="mt-8">
+            <h2 class="text-lg font-semibold mb-4">Halaman Admin:</h2>
+            <div class="space-y-2">
+                <a href="http://localhost:8000/admin/about-settings"
+                    class="inline-block bg-green-600 text-white px-4 py-2 rounded-lg hover:bg-green-700">
+                    Admin About Settings
+                </a>
+                <a href="http://localhost:8000/admin/about-settings/create"
+                    class="inline-block bg-purple-600 text-white px-4 py-2 rounded-lg hover:bg-purple-700 ml-2">
+                    Create New Setting
+                </a>
+            </div>
+        </div>
+
+        <div class="mt-4">
+            <h2 class="text-lg font-semibold mb-4">✅ Edit Forms (FIXED):</h2>
+            <div class="space-y-2">
+                <a href="http://localhost:8000/admin/about-settings/1/edit"
+                    class="inline-block bg-green-600 text-white px-4 py-2 rounded-lg hover:bg-green-700">
+                    ✅ Edit Setting 1 (VNY)
+                </a>
+                <a href="http://localhost:8000/admin/about-settings/2/edit"
+                    class="inline-block bg-green-600 text-white px-4 py-2 rounded-lg hover:bg-green-700 ml-2">
+                    Edit Setting 2
+                </a>
+                <a href="http://localhost:8000/admin/about-settings/3/edit"
+                    class="inline-block bg-green-600 text-white px-4 py-2 rounded-lg hover:bg-green-700 ml-2">
+                    Edit Setting 3
+                </a>
+            </div>
+            <p class="text-sm text-green-600 mt-2">✅ Controller dan validasi sudah diperbaiki!</p>
+        </div>
+
+        <div class="mt-4">
+            <h2 class="text-lg font-semibold mb-4">Halaman About:</h2>
+            <div class="space-y-2">
+                <a href="http://localhost:8000/vny/about"
+                    class="inline-block bg-purple-600 text-white px-4 py-2 rounded-lg hover:bg-purple-700">VNY About
+                    (FIXED)</a>
+                <a href="http://localhost:8000/brand/vanygrub"
+                    class="inline-block bg-amber-600 text-white px-4 py-2 rounded-lg hover:bg-amber-700 ml-2">VanyGrub
+                    About</a>
+                <a href="http://localhost:8000/brand/vanytech"
+                    class="inline-block bg-blue-600 text-white px-4 py-2 rounded-lg hover:bg-blue-700 ml-2">VanyTech
+                    About</a>
+                <a href="http://localhost:8000/brand/vanynature"
+                    class="inline-block bg-green-600 text-white px-4 py-2 rounded-lg hover:bg-green-700 ml-2">VanyNature
+                    About</a>
+            </div>
+        </div>
+    </div>
+</body>
+
+</html>

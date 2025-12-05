@@ -347,4 +347,103 @@ class FrontendController extends Controller
     {
         return view('pages.vny-cart');
     }
+
+    /**
+     * VNY About Page
+     */
+    public function vnyAbout()
+    {
+        $aboutData = \App\Models\AboutSetting::getByBrand('vny');
+
+        if (!$aboutData) {
+            // Return default data if not found
+            $aboutData = $this->getDefaultAboutData('vny');
+        }
+
+        return view('pages.brand-about', compact('aboutData'));
+    }
+
+    /**
+     * VanySongket About Page
+     */
+    public function vanysongketAbout()
+    {
+        $aboutData = \App\Models\AboutSetting::getByBrand('vanysongket');
+
+        if (!$aboutData) {
+            $aboutData = $this->getDefaultAboutData('vanysongket');
+        }
+
+        return view('pages.brand-about', compact('aboutData'));
+    }
+
+    /**
+     * VanyVilla About Page
+     */
+    public function vanyvillaAbout()
+    {
+        $aboutData = \App\Models\AboutSetting::getByBrand('vanyvilla');
+
+        if (!$aboutData) {
+            $aboutData = $this->getDefaultAboutData('vanyvilla');
+        }
+
+        return view('pages.brand-about', compact('aboutData'));
+    }
+
+    /**
+     * Get default about data for brands
+     */
+    private function getDefaultAboutData($brand)
+    {
+        $defaultData = [
+            'vny' => [
+                'brand' => 'vny',
+                'title' => 'VNY Toba Shoes',
+                'subtitle' => 'Memadukan Kearifan Budaya Batak dengan Inovasi Modern dalam Setiap Langkah',
+                'description' => 'VNY Toba Shoes lahir dari sebuah visi untuk melestarikan kekayaan budaya Batak.',
+                'colors' => ['primary' => '#f59e0b', 'secondary' => '#dc2626', 'accent' => '#ea580c'],
+                'hero_data' => ['background' => 'amber-900', 'pattern' => 'traditional'],
+                'history_data' => ['established' => '2019', 'customers' => '500+', 'products' => '20+'],
+                'philosophy_data' => [
+                    ['name' => 'Gorga', 'color' => 'amber', 'meaning' => 'Keindahan, kemakmuran, dan perlindungan'],
+                    ['name' => 'Ulos', 'color' => 'red', 'meaning' => 'Kehangatan, kasih sayang, dan persatuan'],
+                    ['name' => 'Singa', 'color' => 'orange', 'meaning' => 'Kekuatan, keberanian, dan kepemimpinan']
+                ],
+                'contact_data' => ['email' => 'info@vnygroup.com', 'phone' => '+62 813-1587-1101', 'location' => 'Medan, North Sumatra']
+            ],
+            'vanysongket' => [
+                'brand' => 'vanysongket',
+                'title' => 'VanySongket',
+                'subtitle' => 'Melestarikan Keanggunan Songket Tradisional dengan Sentuhan Modern',
+                'description' => 'VanySongket menghadirkan koleksi songket premium yang memadukan tradisi dengan desain kontemporer.',
+                'colors' => ['primary' => '#dc2626', 'secondary' => '#f59e0b', 'accent' => '#7c3aed'],
+                'hero_data' => ['background' => 'red-900', 'pattern' => 'songket'],
+                'history_data' => ['established' => '2020', 'customers' => '300+', 'products' => '50+'],
+                'philosophy_data' => [
+                    ['name' => 'Tradisi', 'color' => 'red', 'meaning' => 'Mempertahankan warisan leluhur'],
+                    ['name' => 'Keanggunan', 'color' => 'purple', 'meaning' => 'Elegansi dalam setiap helai benang'],
+                    ['name' => 'Modernitas', 'color' => 'amber', 'meaning' => 'Inovasi untuk generasi masa kini']
+                ],
+                'contact_data' => ['email' => 'info@vanysongket.com', 'phone' => '+62 813-1587-1102', 'location' => 'Palembang, South Sumatra']
+            ],
+            'vanyvilla' => [
+                'brand' => 'vanyvilla',
+                'title' => 'VanyVilla',
+                'subtitle' => 'Pengalaman Menginap Premium dengan Sentuhan Budaya Nusantara',
+                'description' => 'VanyVilla menawarkan akomodasi premium yang memadukan kenyamanan modern dengan kearifan lokal.',
+                'colors' => ['primary' => '#065f46', 'secondary' => '#d97706', 'accent' => '#7c2d12'],
+                'hero_data' => ['background' => 'green-900', 'pattern' => 'tropical'],
+                'history_data' => ['established' => '2021', 'guests' => '1000+', 'properties' => '5'],
+                'philosophy_data' => [
+                    ['name' => 'Hospitalitas', 'color' => 'green', 'meaning' => 'Keramahan khas Nusantara'],
+                    ['name' => 'Sustainability', 'color' => 'amber', 'meaning' => 'Wisata berkelanjutan'],
+                    ['name' => 'Authenticity', 'color' => 'orange', 'meaning' => 'Pengalaman budaya autentik']
+                ],
+                'contact_data' => ['email' => 'info@vanyvilla.com', 'phone' => '+62 813-1587-1103', 'location' => 'Yogyakarta, DIY']
+            ]
+        ];
+
+        return (object) $defaultData[$brand];
+    }
 }

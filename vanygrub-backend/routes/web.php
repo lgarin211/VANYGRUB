@@ -33,9 +33,20 @@ Route::get('/transactions', [FrontendController::class, 'transactions'])->name('
 
 // Product Routes
 Route::get('/vny/product', [FrontendController::class, 'productList'])->name('vny.product');
+Route::get('/vny/products', [FrontendController::class, 'productList'])->name('vny.products'); // Alias for consistency
 Route::get('/vny/product/{id}', [FrontendController::class, 'productDetail'])->name('product.detail');
 Route::get('/category/{slug}', [FrontendController::class, 'categoryProducts'])->name('category.products');
 Route::get('/search', [FrontendController::class, 'search'])->name('search');
+
+// Brand About Routes
+Route::get('/vny/about', [FrontendController::class, 'vnyAbout'])->name('vny.about');
+Route::get('/vanysongket/about', [FrontendController::class, 'vanysongketAbout'])->name('vanysongket.about');
+Route::get('/vanyvilla/about', [FrontendController::class, 'vanyvillaAbout'])->name('vanyvilla.about');
+
+// Admin Routes
+Route::prefix('admin')->name('admin.')->group(function () {
+    Route::resource('about-settings', App\Http\Controllers\Admin\AboutSettingController::class);
+});
 
 // Cart Route
 Route::get('/vny/cart', [FrontendController::class, 'cart'])->name('vny.cart');
