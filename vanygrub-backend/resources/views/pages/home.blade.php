@@ -26,8 +26,7 @@ body {
   padding: 20px 15px;
   position: relative;
   overflow-x: hidden;
-  height: 100dvh;
-  overflow: hidden !important;
+  min-height: 100dvh;
 }
 
 body::before {
@@ -1082,6 +1081,654 @@ body::before {
     font-size: 13px;
   }
 }
+
+/* About Section Styling */
+.about-section {
+  width: 100%;
+  background: #ffffff;
+  padding: 0;
+  position: relative;
+  z-index: 2;
+  font-family: 'Inter', sans-serif;
+}
+
+.about-container {
+  max-width: 1200px;
+  margin: 0 auto;
+  padding: 0;
+}
+
+/* Brand Welcome Section */
+.hoodie-section {
+  padding: 80px 40px;
+  background: #ffffff;
+}
+
+.hoodie-content {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 80px;
+  align-items: center;
+}
+
+.hoodie-info {
+  position: relative;
+}
+
+.product-badge {
+  position: absolute;
+  top: -20px;
+  right: 0;
+  font-size: 120px;
+  font-weight: 200;
+  color: #f5f5f5;
+  line-height: 1;
+  z-index: 0;
+}
+
+.hoodie-title {
+  font-size: 80px;
+  font-weight: 300;
+  color: #000;
+  margin: 0 0 20px 0;
+  line-height: 0.9;
+  position: relative;
+  z-index: 1;
+}
+
+.hoodie-price {
+  font-size: 24px;
+  font-weight: 600;
+  color: #000;
+  margin-bottom: 30px;
+}
+
+.hoodie-description {
+  font-size: 16px;
+  line-height: 1.6;
+  color: #666;
+  margin-bottom: 40px;
+  max-width: 400px;
+}
+
+.hoodie-colors {
+  display: flex;
+  gap: 12px;
+  margin-bottom: 40px;
+}
+
+.color-dot {
+  width: 20px;
+  height: 20px;
+  border-radius: 50%;
+  background: #000;
+  cursor: pointer;
+  position: relative;
+}
+
+.color-dot.gray {
+  background: #ccc;
+}
+
+.color-dot.active::after {
+  content: '';
+  position: absolute;
+  top: -3px;
+  left: -3px;
+  right: -3px;
+  bottom: -3px;
+  border: 2px solid #000;
+  border-radius: 50%;
+}
+
+.hoodie-actions {
+  display: flex;
+  gap: 20px;
+}
+
+.btn-add-cart, .btn-view, .btn-explore, .btn-discover, .btn-explore-brand,
+.btn-discover-quality, .btn-discover-innovation, .btn-learn-more {
+  padding: 16px 32px;
+  border: none;
+  border-radius: 0;
+  font-size: 14px;
+  font-weight: 500;
+  cursor: pointer;
+  transition: all 0.3s ease;
+  text-transform: uppercase;
+  letter-spacing: 0.5px;
+}
+
+.btn-add-cart, .btn-explore, .btn-discover, .btn-discover-quality, .btn-learn-more {
+  background: #000;
+  color: #fff;
+}
+
+.btn-view, .btn-explore-brand, .btn-discover-innovation {
+  background: transparent;
+  color: #000;
+  border: 1px solid #000;
+}
+
+.hoodie-image {
+  text-align: center;
+}
+
+.hoodie-img {
+  width: 100%;
+  max-width: 400px;
+  height: auto;
+  object-fit: contain;
+}
+
+/* Our Brands Section */
+.brands-showcase-section {
+  padding: 80px 40px;
+  background: #f8f8f8;
+}
+
+.section-title {
+  font-size: 60px;
+  font-weight: 300;
+  color: #000;
+  margin-bottom: 40px;
+  line-height: 1;
+}
+
+.brands-preview {
+  display: flex;
+  gap: 20px;
+  margin-bottom: 40px;
+  justify-content: center;
+}
+
+.brand-preview {
+  width: 60px;
+  height: 80px;
+  border-radius: 8px;
+  overflow: hidden;
+}
+
+.brand-preview img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+}
+
+.brands-main {
+  display: grid;
+  grid-template-columns: 2fr 1fr;
+  gap: 60px;
+  align-items: center;
+}
+
+.brands-image {
+  text-align: center;
+  background: #e8e8e8;
+  border-radius: 20px;
+  padding: 40px;
+}
+
+.main-brand-image {
+  width: 100%;
+  max-width: 300px;
+  height: auto;
+  object-fit: contain;
+}
+
+.brand-featured-title {
+  font-size: 24px;
+  font-weight: 600;
+  color: #000;
+  margin-bottom: 20px;
+}
+
+.brand-description {
+  font-size: 16px;
+  line-height: 1.6;
+  color: #666;
+  margin-bottom: 30px;
+}
+
+.brand-actions {
+  display: flex;
+  gap: 16px;
+}
+
+/* Featured Items Section */
+.featured-items-section {
+  padding: 80px 40px;
+  background: #ffffff;
+}
+
+.feature-item-large {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 60px;
+  margin-bottom: 80px;
+  align-items: center;
+}
+
+.feature-item-large:nth-child(even) {
+  grid-template-columns: 1fr 1fr;
+}
+
+.feature-item-large:nth-child(even) .feature-image-large {
+  order: 2;
+}
+
+.feature-item-large:nth-child(even) .feature-content-large {
+  order: 1;
+}
+
+.feature-image-large {
+  text-align: center;
+}
+
+.feature-img-large {
+  width: 100%;
+  max-width: 350px;
+  height: auto;
+  object-fit: contain;
+}
+
+.feature-content-large {
+  position: relative;
+}
+
+.feature-number-large {
+  font-size: 120px;
+  font-weight: 200;
+  color: #f5f5f5;
+  position: absolute;
+  top: -40px;
+  right: 0;
+  z-index: 0;
+}
+
+.feature-title {
+  font-size: 48px;
+  font-weight: 300;
+  color: #000;
+  margin-bottom: 24px;
+  line-height: 1.1;
+  position: relative;
+  z-index: 1;
+}
+
+.feature-desc {
+  font-size: 16px;
+  line-height: 1.6;
+  color: #666;
+  margin-bottom: 40px;
+  max-width: 400px;
+}
+
+.feature-actions {
+  display: flex;
+  gap: 16px;
+}
+
+.btn-learn-more, .btn-add-wishlist {
+  padding: 16px 32px;
+  border: none;
+  border-radius: 0;
+  font-size: 14px;
+  font-weight: 500;
+  cursor: pointer;
+  transition: all 0.3s ease;
+  text-transform: uppercase;
+  letter-spacing: 0.5px;
+}
+
+.btn-learn-more {
+  background: #000;
+  color: #fff;
+}
+
+.btn-add-wishlist {
+  background: transparent;
+  color: #000;
+  border: 1px solid #000;
+}
+
+/* Brand Portfolio Showcase */
+.featured-products-section {
+  padding: 80px 40px;
+  background: #ffffff;
+  text-align: center;
+}
+
+.featured-products-title {
+  font-size: 48px;
+  font-weight: 300;
+  color: #000;
+  margin-bottom: 16px;
+  line-height: 1.2;
+}
+
+.featured-subtitle {
+  font-size: 16px;
+  color: #666;
+  margin-bottom: 60px;
+  max-width: 500px;
+  margin-left: auto;
+  margin-right: auto;
+}
+
+.brand-filter {
+  display: flex;
+  justify-content: center;
+  gap: 40px;
+  margin-bottom: 60px;
+  flex-wrap: wrap;
+}
+
+.filter-item {
+  font-size: 16px;
+  color: #999;
+  cursor: pointer;
+  transition: color 0.3s ease;
+  text-transform: uppercase;
+  letter-spacing: 0.5px;
+}
+
+.filter-item.active,
+.filter-item:hover {
+  color: #000;
+}
+
+.products-showcase {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 40px;
+  margin-bottom: 40px;
+}
+
+.product-card-featured {
+  text-align: center;
+}
+
+.product-image-featured {
+  margin-bottom: 20px;
+  overflow: hidden;
+  border-radius: 8px;
+}
+
+.product-image-featured img {
+  width: 100%;
+  height: 300px;
+  object-fit: cover;
+  transition: transform 0.3s ease;
+}
+
+.product-card-featured:hover .product-image-featured img {
+  transform: scale(1.05);
+}
+
+.product-name-featured {
+  font-size: 16px;
+  font-weight: 500;
+  color: #000;
+  margin-bottom: 8px;
+}
+
+.product-category-featured {
+  font-size: 14px;
+  font-weight: 400;
+  color: #666;
+  font-style: italic;
+}
+
+.pagination-dots {
+  display: flex;
+  justify-content: center;
+  gap: 12px;
+}
+
+.dot {
+  width: 8px;
+  height: 8px;
+  border-radius: 50%;
+  background: #ddd;
+  cursor: pointer;
+  transition: background 0.3s ease;
+}
+
+.dot.active {
+  background: #000;
+}
+
+/* Newsletter Final */
+.newsletter-final {
+  padding: 80px 40px;
+  background: #f8f8f8;
+}
+
+.newsletter-content-final {
+  display: grid;
+  grid-template-columns: 2fr 1fr;
+  gap: 80px;
+  align-items: center;
+  max-width: 1000px;
+  margin: 0 auto;
+}
+
+.newsletter-badge-final {
+  display: inline-block;
+  background: #000;
+  color: #fff;
+  padding: 8px 16px;
+  font-size: 14px;
+  margin-bottom: 8px;
+  text-transform: uppercase;
+  letter-spacing: 0.5px;
+}
+
+.newsletter-edition {
+  font-size: 14px;
+  color: #666;
+  margin-bottom: 30px;
+  text-transform: uppercase;
+  letter-spacing: 0.5px;
+}
+
+.newsletter-title-final {
+  font-size: 48px;
+  font-weight: 300;
+  color: #000;
+  margin-bottom: 40px;
+  line-height: 1.2;
+}
+
+.newsletter-form-final {
+  display: flex;
+  gap: 0;
+  max-width: 400px;
+}
+
+.email-input-final {
+  flex: 1;
+  padding: 16px 20px;
+  border: 1px solid #ddd;
+  border-right: none;
+  font-size: 16px;
+  outline: none;
+}
+
+.subscribe-btn-final {
+  background: #000;
+  color: #fff;
+  padding: 16px 24px;
+  border: 1px solid #000;
+  font-size: 16px;
+  cursor: pointer;
+  transition: all 0.3s ease;
+}
+
+.newsletter-model {
+  width: 100%;
+  height: auto;
+  object-fit: cover;
+  border-radius: 8px;
+}
+
+/* Footer Info */
+.footer-info {
+  padding: 60px 40px;
+  background: #ffffff;
+  border-top: 1px solid #eee;
+}
+
+.footer-brand h4 {
+  font-size: 24px;
+  font-weight: 300;
+  color: #000;
+  margin-bottom: 40px;
+}
+
+.footer-links {
+  display: grid;
+  grid-template-columns: repeat(4, 1fr);
+  gap: 40px;
+}
+
+.footer-column h5 {
+  font-size: 16px;
+  font-weight: 600;
+  color: #000;
+  margin-bottom: 20px;
+  text-transform: uppercase;
+  letter-spacing: 0.5px;
+}
+
+.footer-column a {
+  display: block;
+  font-size: 14px;
+  color: #666;
+  text-decoration: none;
+  margin-bottom: 12px;
+  transition: color 0.3s ease;
+}
+
+.footer-column a:hover {
+  color: #000;
+}
+
+/* Responsive Design */
+@media (max-width: 1024px) {
+  .hoodie-content,
+  .newbie-main,
+  .feature-item-large,
+  .newsletter-content-final {
+    grid-template-columns: 1fr;
+    gap: 40px;
+    text-align: center;
+  }
+
+  .hoodie-section,
+  .newbie-section,
+  .featured-items-section,
+  .featured-products-section,
+  .newsletter-final,
+  .footer-info {
+    padding: 60px 30px;
+  }
+
+  .hoodie-title,
+  .section-title,
+  .feature-title,
+  .featured-products-title,
+  .newsletter-title-final {
+    font-size: 48px;
+  }
+
+  .products-showcase {
+    grid-template-columns: repeat(2, 1fr);
+    gap: 30px;
+  }
+
+  .footer-links {
+    grid-template-columns: repeat(2, 1fr);
+    gap: 30px;
+  }
+
+  .brand-filter {
+    gap: 20px;
+  }
+}
+
+@media (max-width: 768px) {
+  .hoodie-section,
+  .newbie-section,
+  .featured-items-section,
+  .featured-products-section,
+  .newsletter-final,
+  .footer-info {
+    padding: 40px 20px;
+  }
+
+  .hoodie-title {
+    font-size: 48px;
+  }
+
+  .section-title,
+  .feature-title,
+  .featured-products-title,
+  .newsletter-title-final {
+    font-size: 36px;
+  }
+
+  .product-badge,
+  .feature-number-large {
+    font-size: 80px;
+  }
+
+  .products-showcase {
+    grid-template-columns: 1fr;
+    gap: 30px;
+  }
+
+  .footer-links {
+    grid-template-columns: 1fr;
+    gap: 30px;
+  }
+
+  .brand-filter {
+    flex-direction: column;
+    gap: 16px;
+  }
+
+  .newbie-products {
+    flex-wrap: wrap;
+    gap: 12px;
+  }
+
+  .mini-product {
+    width: 50px;
+    height: 70px;
+  }
+
+  .newsletter-form-final {
+    flex-direction: column;
+    gap: 12px;
+  }
+
+  .hoodie-actions,
+  .newbie-actions,
+  .feature-actions {
+    flex-direction: column;
+    gap: 12px;
+  }
+
+  .btn-add-cart,
+  .btn-view,
+  .btn-learn-more,
+  .btn-add-wishlist {
+    width: 100%;
+    text-align: center;
+  }
+}
 @endsection
 
 @section('content')
@@ -1168,6 +1815,295 @@ body::before {
     </div>
   </div>
 </div>
+
+<!-- About Section -->
+<div class="about-section">
+  <div class="about-container">
+
+    <!-- Brand Welcome Section -->
+    <div class="brand-welcome-section">
+      <div class="welcome-content">
+        <div class="welcome-info">
+          <div class="welcome-badge">Welcome</div>
+          <h1 class="welcome-title">VANY GROUP</h1>
+          <div class="welcome-tagline">Premium Lifestyle Collection</div>
+          <p class="welcome-description">
+            Discover our premium lifestyle brands that combine traditional craftsmanship with modern design.
+            Each brand tells a unique story of quality, heritage, and innovation.
+          </p>
+          <div class="brand-highlights">
+            <div class="highlight-item">
+              <span class="highlight-number">3</span>
+              <span class="highlight-text">Premium Brands</span>
+            </div>
+            <div class="highlight-item">
+              <span class="highlight-number">5+</span>
+              <span class="highlight-text">Years Experience</span>
+            </div>
+          </div>
+          <div class="welcome-actions">
+            <button class="btn-explore">Explore Brands</button>
+            <button class="btn-story">Our Story</button>
+          </div>
+        </div>
+        <div class="welcome-image">
+          @if(isset($products) && $products->isNotEmpty())
+            <img src="{{ $products->first()->image ?? 'https://images.unsplash.com/photo-1556821840-3a63f95609a7?w=500&h=700&fit=crop&crop=center' }}" alt="Featured Product" class="welcome-img">
+          @else
+            <img src="https://images.unsplash.com/photo-1556821840-3a63f95609a7?w=500&h=700&fit=crop&crop=center" alt="VANY GROUP" class="welcome-img">
+          @endif
+        </div>
+      </div>
+    </div>
+
+    <!-- Our Brands Section -->
+    <div class="brands-showcase-section">
+      <h2 class="section-title">Our Brands</h2>
+      <div class="brands-preview">
+        @if(isset($categories) && $categories->isNotEmpty())
+          @foreach($categories->take(4) as $category)
+            <div class="brand-preview">
+              <img src="{{ $category->image ?? 'https://images.unsplash.com/photo-1434389677669-e08b4cac3105?w=100&h=120&fit=crop&crop=center' }}" alt="{{ $category->name }}">
+            </div>
+          @endforeach
+        @else
+          <div class="brand-preview">
+            <img src="https://images.unsplash.com/photo-1434389677669-e08b4cac3105?w=100&h=120&fit=crop&crop=center" alt="VNY">
+          </div>
+          <div class="brand-preview">
+            <img src="https://images.unsplash.com/photo-1601924994987-69e26d50dc26?w=100&h=120&fit=crop&crop=center" alt="VanySongket">
+          </div>
+          <div class="brand-preview">
+            <img src="https://images.unsplash.com/photo-1556821840-3a63f95609a7?w=100&h=120&fit=crop&crop=center" alt="VanyVilla">
+          </div>
+          <div class="brand-preview">
+            <img src="https://images.unsplash.com/photo-1441984904996-e0b6ba687e04?w=100&h=120&fit=crop&crop=center" alt="Coming Soon">
+          </div>
+        @endif
+      </div>
+      <div class="brands-main">
+        <div class="brands-image">
+          @if(isset($brands) && $brands->isNotEmpty())
+            @php $featuredBrand = $brands->first(); @endphp
+            <img src="{{ $featuredBrand->hero_data['image'] ?? 'https://images.unsplash.com/photo-1601924994987-69e26d50dc26?w=600&h=400&fit=crop&crop=center' }}" alt="{{ $featuredBrand->title }}" class="main-brand-image">
+          @else
+            <img src="https://images.unsplash.com/photo-1601924994987-69e26d50dc26?w=600&h=400&fit=crop&crop=center" alt="VANY GROUP Collection" class="main-brand-image">
+          @endif
+        </div>
+        <div class="brands-info">
+          @if(isset($brands) && $brands->isNotEmpty())
+            @php $featuredBrand = $brands->first(); @endphp
+            <h3 class="brand-featured-title">{{ $featuredBrand->title }}</h3>
+            <p class="brand-description">
+              {{ $featuredBrand->description ?? 'Discover premium quality products with meticulous attention to detail and traditional craftsmanship.' }}
+            </p>
+          @else
+            <h3 class="brand-featured-title">Premium Collection</h3>
+            <p class="brand-description">
+              Discover premium quality products with meticulous attention to detail and traditional craftsmanship.
+            </p>
+          @endif
+          <div class="brand-actions">
+            <button class="btn-discover">Discover More</button>
+            <button class="btn-explore-brand">Explore Brand</button>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- Brand Values -->
+    <div class="featured-items-section">
+      <div class="feature-item-large">
+        <div class="feature-image-large">
+          @if(isset($categories) && $categories->isNotEmpty())
+            <img src="{{ $categories->first()->image ?? 'https://images.unsplash.com/photo-1434389677669-e08b4cac3105?w=500&h=700&fit=crop&crop=center' }}" alt="Quality Craftsmanship" class="feature-img-large">
+          @else
+            <img src="https://images.unsplash.com/photo-1434389677669-e08b4cac3105?w=500&h=700&fit=crop&crop=center" alt="Quality Craftsmanship" class="feature-img-large">
+          @endif
+        </div>
+        <div class="feature-content-large">
+          <div class="feature-number-large">01</div>
+          <h3 class="feature-title">Quality Craftsmanship</h3>
+          <p class="feature-desc">
+            Every product in the VANY GROUP collection represents our commitment to exceptional quality and
+            meticulous attention to detail, combining traditional techniques with modern innovation.
+          </p>
+          <div class="feature-actions">
+            <button class="btn-learn-more">Learn More</button>
+            <button class="btn-discover-quality">Discover Quality</button>
+          </div>
+        </div>
+      </div>
+
+      <div class="feature-item-large">
+        <div class="feature-image-large">
+          @if(isset($categories) && $categories->count() > 1)
+            <img src="{{ $categories->skip(1)->first()->image ?? 'https://images.unsplash.com/photo-1441984904996-e0b6ba687e04?w=500&h=700&fit=crop&crop=center' }}" alt="Heritage Design" class="feature-img-large">
+          @else
+            <img src="https://images.unsplash.com/photo-1441984904996-e0b6ba687e04?w=500&h=700&fit=crop&crop=center" alt="Heritage Design" class="feature-img-large">
+          @endif
+        </div>
+        <div class="feature-content-large">
+          <div class="feature-number-large">02</div>
+          <h3 class="feature-title">Heritage & Innovation</h3>
+          <p class="feature-desc">
+            Bridging timeless heritage with contemporary design, our brands celebrate cultural richness while
+            embracing modern lifestyle needs and aesthetic preferences.
+          </p>
+          <div class="feature-actions">
+            <button class="btn-learn-more">Explore Heritage</button>
+            <button class="btn-discover-innovation">View Collection</button>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- Brand Portfolio Showcase -->
+    <div class="featured-products-section">
+      <h2 class="featured-products-title">Our Portfolio</h2>
+      <p class="featured-subtitle">Explore the diverse range of brands under VANY GROUP, each representing excellence in their respective domains</p>
+
+      <!-- Brand Category Filter -->
+      <div class="brand-filter">
+        @if(isset($categories) && $categories->isNotEmpty())
+          @foreach($categories->take(7) as $index => $category)
+            <div class="filter-item {{ $index == 0 ? 'active' : '' }}">{{ $category->name }}</div>
+          @endforeach
+        @else
+          <div class="filter-item active">VNY</div>
+          <div class="filter-item">VanySongket</div>
+          <div class="filter-item">VanyVilla</div>
+          <div class="filter-item">Heritage</div>
+          <div class="filter-item">Modern</div>
+          <div class="filter-item">Traditional</div>
+          <div class="filter-item">New</div>
+        @endif
+      </div>
+
+      <div class="products-showcase">
+        @if(isset($products) && $products->isNotEmpty())
+          @foreach($products->take(6) as $product)
+            <div class="product-card-featured">
+              <div class="product-image-featured">
+                <img src="{{ $product->image ?? 'https://images.unsplash.com/photo-1503341504253-dff4815485f1?w=250&h=350&fit=crop&crop=center' }}" alt="{{ $product->name }}">
+              </div>
+              <h4 class="product-name-featured">{{ $product->name }}</h4>
+              <p class="product-category-featured">{{ $product->category->name ?? 'Premium Collection' }}</p>
+            </div>
+          @endforeach
+        @else
+          <div class="product-card-featured">
+            <div class="product-image-featured">
+              <img src="https://images.unsplash.com/photo-1503341504253-dff4815485f1?w=250&h=350&fit=crop&crop=center" alt="VNY Collection">
+            </div>
+            <h4 class="product-name-featured">VNY Heritage</h4>
+            <p class="product-category-featured">Modern Heritage</p>
+          </div>
+
+          <div class="product-card-featured">
+            <div class="product-image-featured">
+              <img src="https://images.unsplash.com/photo-1601924994987-69e26d50dc26?w=250&h=350&fit=crop&crop=center" alt="VanySongket">
+            </div>
+            <h4 class="product-name-featured">Traditional Songket</h4>
+            <p class="product-category-featured">Cultural Collection</p>
+          </div>
+
+          <div class="product-card-featured">
+            <div class="product-image-featured">
+              <img src="https://images.unsplash.com/photo-1434389677669-e08b4cac3105?w=250&h=350&fit=crop&crop=center" alt="VanyVilla">
+            </div>
+            <h4 class="product-name-featured">Villa Experience</h4>
+            <p class="product-category-featured">Hospitality</p>
+          </div>
+
+          <div class="product-card-featured">
+            <div class="product-image-featured">
+              <img src="https://images.unsplash.com/photo-1556821840-3a63f95609a7?w=250&h=350&fit=crop&crop=center" alt="Premium Line">
+            </div>
+            <h4 class="product-name-featured">Premium Collection</h4>
+            <p class="product-category-featured">Luxury Series</p>
+          </div>
+
+          <div class="product-card-featured">
+            <div class="product-image-featured">
+              <img src="https://images.unsplash.com/photo-1549298916-b41d501d3772?w=250&h=350&fit=crop&crop=center" alt="Modern Design">
+            </div>
+            <h4 class="product-name-featured">Contemporary Line</h4>
+            <p class="product-category-featured">Modern Design</p>
+          </div>
+
+          <div class="product-card-featured">
+            <div class="product-image-featured">
+              <img src="https://images.unsplash.com/photo-1441984904996-e0b6ba687e04?w=250&h=350&fit=crop&crop=center" alt="Limited Edition">
+            </div>
+            <h4 class="product-name-featured">Limited Edition</h4>
+            <p class="product-category-featured">Exclusive</p>
+          </div>
+        @endif
+      </div>
+
+      <!-- Portfolio Navigation -->
+      <div class="pagination-dots">
+        <div class="dot active"></div>
+        <div class="dot"></div>
+        <div class="dot"></div>
+      </div>
+    </div>
+
+    <!-- Brand Updates Section -->
+    <div class="newsletter-final">
+      <div class="newsletter-content-final">
+        <div class="newsletter-left">
+          <div class="newsletter-badge-final">VANY GROUP</div>
+          <div class="newsletter-edition">Brand Updates</div>
+          <h3 class="newsletter-title-final">Stay Connected with Our Brands</h3>
+          <div class="newsletter-form-final">
+            <input type="email" placeholder="Enter your email address" class="email-input-final">
+            <button class="subscribe-btn-final">Stay Updated</button>
+          </div>
+        </div>
+        <div class="newsletter-right">
+          <img src="https://images.unsplash.com/photo-1445205170230-053b83016050?w=300&h=400&fit=crop&crop=center" alt="VANY GROUP" class="newsletter-model">
+        </div>
+      </div>
+    </div>
+
+    <!-- Footer Links -->
+    <div class="footer-info">
+      <div class="footer-brand">
+        <h4>Hoodie</h4>
+        <div class="footer-links">
+          <div class="footer-column">
+            <h5>Shop All</h5>
+            <a href="#">Clothing</a>
+            <a href="#">Bags</a>
+            <a href="#">Footwear</a>
+            <a href="#">Accessories</a>
+          </div>
+          <div class="footer-column">
+            <h5>About Us</h5>
+            <a href="#">Our Story</a>
+            <a href="#">Contact</a>
+            <a href="#">Careers</a>
+          </div>
+          <div class="footer-column">
+            <h5>Support</h5>
+            <a href="#">FAQ</a>
+            <a href="#">Shipping</a>
+            <a href="#">Returns</a>
+          </div>
+          <div class="footer-column">
+            <h5>Legal</h5>
+            <a href="#">Privacy</a>
+            <a href="#">Terms</a>
+            <a href="#">Cookies</a>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+
 @endsection
 
 @section('scripts')

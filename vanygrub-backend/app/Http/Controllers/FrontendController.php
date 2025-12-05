@@ -19,14 +19,21 @@ class FrontendController extends Controller
     }
 
     /**
-     * Homepage
+     * Homepage - Welcome page for all brands
      */
     public function home()
     {
         $apiData = $this->dataController->getAllData();
         $data = json_decode($apiData->getContent(), true);
 
-        return view('pages.home', compact('data'));
+        // Get all active brands
+        $brands = \App\Models\AboutSetting::where('is_active', true)->get();
+
+        // Get gallery/product images for showcase
+        $categories = \App\Models\Category::where('is_active', true)->take(6)->get();
+        $products = \App\Models\Product::where('status', 'active')->take(8)->get();
+
+        return view('pages.home', compact('data', 'brands', 'categories', 'products'));
     }
 
     /**
