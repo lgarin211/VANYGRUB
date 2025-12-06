@@ -90,18 +90,6 @@
                         Indonesia
                     </div>
                 </div>
-
-                @if($showNewsletter)
-                <div class="mt-6">
-                    <p class="text-sm text-white/80 mb-3">Get updates on new collections</p>
-                    <div class="flex">
-                        <input type="email" placeholder="Your email" class="flex-1 px-3 py-2 text-sm bg-white/10 border border-white/20 rounded-l-lg placeholder-white/50 text-white focus:outline-none focus:border-white/40">
-                        <button class="px-4 py-2 text-sm font-medium bg-white text-gray-900 rounded-r-lg hover:bg-gray-100 transition-colors duration-200">
-                            Subscribe
-                        </button>
-                    </div>
-                </div>
-                @endif
             </div>
         </div>
 

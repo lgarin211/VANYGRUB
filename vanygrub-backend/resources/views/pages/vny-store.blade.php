@@ -324,7 +324,7 @@
 </section>
 
 <!-- Special Offer Section -->
-<section class="py-16 vny-header-gradient">
+<section class="py-16 vny-header-gradient" style="display:none">
   <div class="px-5 mx-auto max-w-7xl">
     <div class="text-center text-white" id="specialOfferContent">
       <!-- Special offer will be loaded here via JavaScript -->
