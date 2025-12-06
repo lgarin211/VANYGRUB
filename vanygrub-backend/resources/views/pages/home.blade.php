@@ -1773,7 +1773,7 @@ body::before {
         </div>
         <div class="welcome-image">
           @if(isset($products) && $products->isNotEmpty())
-            <img src="{{ $products->first()->image ?? 'https://images.unsplash.com/photo-1556821840-3a63f95609a7?w=500&h=700&fit=crop&crop=center' }}" alt="Featured Product" class="welcome-img">
+            <img src="{{ $products->first()->image ? (str_starts_with($products->first()->image, 'http') ? $products->first()->image : '/storage/' . $products->first()->image) : 'https://images.unsplash.com/photo-1556821840-3a63f95609a7?w=500&h=700&fit=crop&crop=center' }}" alt="Featured Product" class="welcome-img">
           @else
             <img src="https://images.unsplash.com/photo-1556821840-3a63f95609a7?w=500&h=700&fit=crop&crop=center" alt="VANY GROUP" class="welcome-img">
           @endif
@@ -1788,7 +1788,7 @@ body::before {
         @if(isset($categories) && $categories->isNotEmpty())
           @foreach($categories->take(4) as $category)
             <div class="brand-preview">
-              <img src="{{ $category->image ?? 'https://images.unsplash.com/photo-1434389677669-e08b4cac3105?w=100&h=120&fit=crop&crop=center' }}" alt="{{ $category->name }}">
+              <img src="{{ $category->image ? (str_starts_with($category->image, 'http') ? $category->image : '/storage/' . $category->image) : 'https://images.unsplash.com/photo-1434389677669-e08b4cac3105?w=100&h=120&fit=crop&crop=center' }}" alt="{{ $category->name }}">
             </div>
           @endforeach
         @else
@@ -1810,7 +1810,7 @@ body::before {
         <div class="brands-image">
           @if(isset($brands) && $brands->isNotEmpty())
             @php $featuredBrand = $brands->first(); @endphp
-            <img src="{{ $featuredBrand->hero_data['image'] ?? 'https://images.unsplash.com/photo-1601924994987-69e26d50dc26?w=600&h=400&fit=crop&crop=center' }}" alt="{{ $featuredBrand->title }}" class="main-brand-image">
+            <img src="{{ isset($featuredBrand->hero_data['image']) ? (str_starts_with($featuredBrand->hero_data['image'], 'http') ? $featuredBrand->hero_data['image'] : '/storage/' . $featuredBrand->hero_data['image']) : 'https://images.unsplash.com/photo-1601924994987-69e26d50dc26?w=600&h=400&fit=crop&crop=center' }}" alt="{{ $featuredBrand->title }}" class="main-brand-image">
           @else
             <img src="https://images.unsplash.com/photo-1601924994987-69e26d50dc26?w=600&h=400&fit=crop&crop=center" alt="VANY GROUP Collection" class="main-brand-image">
           @endif
@@ -1840,7 +1840,7 @@ body::before {
       <div class="feature-item-large">
         <div class="feature-image-large">
           @if(isset($categories) && $categories->isNotEmpty())
-            <img src="{{ $categories->first()->image ?? 'https://images.unsplash.com/photo-1434389677669-e08b4cac3105?w=500&h=700&fit=crop&crop=center' }}" alt="Quality Craftsmanship" class="feature-img-large">
+            <img src="{{ $categories->first()->image ? (str_starts_with($categories->first()->image, 'http') ? $categories->first()->image : '/storage/' . $categories->first()->image) : 'https://images.unsplash.com/photo-1434389677669-e08b4cac3105?w=500&h=700&fit=crop&crop=center' }}" alt="Quality Craftsmanship" class="feature-img-large">
           @else
             <img src="https://images.unsplash.com/photo-1434389677669-e08b4cac3105?w=500&h=700&fit=crop&crop=center" alt="Quality Craftsmanship" class="feature-img-large">
           @endif
@@ -1862,7 +1862,7 @@ body::before {
       <div class="feature-item-large">
         <div class="feature-image-large">
           @if(isset($categories) && $categories->count() > 1)
-            <img src="{{ $categories->skip(1)->first()->image ?? 'https://images.unsplash.com/photo-1441984904996-e0b6ba687e04?w=500&h=700&fit=crop&crop=center' }}" alt="Heritage Design" class="feature-img-large">
+            <img src="{{ $categories->skip(1)->first()->image ? (str_starts_with($categories->skip(1)->first()->image, 'http') ? $categories->skip(1)->first()->image : '/storage/' . $categories->skip(1)->first()->image) : 'https://images.unsplash.com/photo-1441984904996-e0b6ba687e04?w=500&h=700&fit=crop&crop=center' }}" alt="Heritage Design" class="feature-img-large">
           @else
             <img src="https://images.unsplash.com/photo-1441984904996-e0b6ba687e04?w=500&h=700&fit=crop&crop=center" alt="Heritage Design" class="feature-img-large">
           @endif
@@ -1910,7 +1910,7 @@ body::before {
           @foreach($products->take(6) as $product)
             <div class="product-card-featured">
               <div class="product-image-featured">
-                <img src="{{ $product->image ?? 'https://images.unsplash.com/photo-1503341504253-dff4815485f1?w=250&h=350&fit=crop&crop=center' }}" alt="{{ $product->name }}">
+                <img src="{{ $product->image ? (str_starts_with($product->image, 'http') ? $product->image : '/storage/' . $product->image) : 'https://images.unsplash.com/photo-1503341504253-dff4815485f1?w=250&h=350&fit=crop&crop=center' }}" alt="{{ $product->name }}">
               </div>
               <h4 class="product-name-featured">{{ $product->name }}</h4>
               <p class="product-category-featured">{{ $product->category->name ?? 'Premium Collection' }}</p>
